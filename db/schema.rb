@@ -10,7 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_09_094640) do
+ActiveRecord::Schema.define(version: 2018_11_12_070627) do
+
+  create_table "module_types", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "role_permissions", force: :cascade do |t|
+    t.integer "module_type_id"
+    t.integer "role_id"
+    t.boolean "create_rule", default: false
+    t.boolean "edit_rule", default: false
+    t.boolean "update_rule", default: false
+    t.boolean "delete_rule", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["module_type_id"], name: "index_role_permissions_on_module_type_id"
+    t.index ["role_id"], name: "index_role_permissions_on_role_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_roles", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "role_permission_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_permission_id"], name: "index_user_roles_on_role_permission_id"
+    t.index ["user_id"], name: "index_user_roles_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name"

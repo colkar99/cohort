@@ -7,6 +7,7 @@ module V1
 	   command = AuthenticateUser.call(params[:email], params[:password])
 	   @user = User.find_by_email(params[:email])
 	   if command.success?
+	   	byebug
 	     render json: { auth_token: command.result }
 	     @user.access_token = command.result
 	     @user.save!

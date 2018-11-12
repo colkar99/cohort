@@ -8,7 +8,7 @@ module V1
 			if @user.save
 	      		command = AuthenticateUser.call(@user.email, @user.password)
 	      		if command.success?
-	      			
+	      			byebug
 		    	  render json: {auth_token: command.result, user: return_user(@user)} 
 		    	  @user.access_token = command.result
 		    	  @user.save!
@@ -24,7 +24,7 @@ module V1
 	    private
 
 	    def user_params
-	    	params.require(:user).permit(:first_name,:last_name, :email, :phone_number,
+	    	params.require(:user).permit(:first_name,:full_name,:last_name, :email, :phone_number,
 	    								:password, :password_confirmation,:user_main_image,
 	   									:credentials,:commitment)
 	    end
