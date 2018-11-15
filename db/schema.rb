@@ -10,13 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_15_051254) do
+ActiveRecord::Schema.define(version: 2018_11_15_052259) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "program_types", force: :cascade do |t|
+    t.string "program_type_title"
+    t.text "program_type_description"
+    t.string "program_type_duration"
+    t.string "program_type_logo"
+    t.string "program_type_main_image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "isDelete"
+    t.integer "deleted_by"
+    t.string "deleted_date"
+    t.integer "created_by"
   end
 
   create_table "role_permissions", force: :cascade do |t|
