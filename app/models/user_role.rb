@@ -1,4 +1,5 @@
 class UserRole < ApplicationRecord
-  belongs_to :user ,:dependent => :delete
-  belongs_to :role_permission
+  belongs_to :user
+  belongs_to :role
+  belongs_to :module_type
 end

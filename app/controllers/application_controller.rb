@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-	before_action :authenticate_request, :current_user
+	before_action :authenticate_request
 	attr_reader :current_user
 
 	private
@@ -10,7 +10,13 @@ class ApplicationController < ActionController::API
 	end
 
 	def current_user
-		User.find_by_email(params[:email])
+		auth_token = request.headers['HTTP_AUTHORIZATION']
+		User.find_by_access_token(auth_token)
 	end
 
+
+
+
+	
+	
 end

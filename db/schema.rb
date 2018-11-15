@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_12_070627) do
+ActiveRecord::Schema.define(version: 2018_11_13_122752) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
@@ -41,10 +41,18 @@ ActiveRecord::Schema.define(version: 2018_11_12_070627) do
 
   create_table "user_roles", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "role_permission_id"
+    t.integer "role_id"
+    t.integer "module_type_id"
+    t.boolean "create_rule", default: false
+    t.boolean "update_rule", default: false
+    t.boolean "delete_rule", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["role_permission_id"], name: "index_user_roles_on_role_permission_id"
+    t.boolean "isDelete", default: false
+    t.integer "created_by"
+    t.integer "deleted_by"
+    t.index ["module_type_id"], name: "index_user_roles_on_module_type_id"
+    t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
 
@@ -61,6 +69,10 @@ ActiveRecord::Schema.define(version: 2018_11_12_070627) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "phone_number"
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_date"
+    t.integer "created_by"
   end
 
 end
