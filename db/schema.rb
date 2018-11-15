@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_122752) do
+ActiveRecord::Schema.define(version: 2018_11_15_051254) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
@@ -73,6 +73,13 @@ ActiveRecord::Schema.define(version: 2018_11_13_122752) do
     t.integer "deleted_by"
     t.datetime "deleted_date"
     t.integer "created_by"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state_province_region"
+    t.string "zip_pincode_postalcode"
+    t.string "country"
+    t.string "geo_location"
   end
 
 end
