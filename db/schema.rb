@@ -10,11 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_15_052259) do
+ActiveRecord::Schema.define(version: 2018_11_19_114910) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "program_locations", force: :cascade do |t|
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state_province_region"
+    t.string "zip_pincode_postalcode"
+    t.string "country"
+    t.string "geo_location"
+    t.integer "created_by"
+    t.boolean "isDelete", default: false
+    t.string "deleted_by"
+    t.string "delete_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -33,6 +49,31 @@ ActiveRecord::Schema.define(version: 2018_11_15_052259) do
     t.integer "created_by"
   end
 
+  create_table "programs", force: :cascade do |t|
+    t.integer "program_type_id"
+    t.string "title"
+    t.text "description"
+    t.string "start_date"
+    t.string "end_date"
+    t.integer "program_admin_id"
+    t.integer "seat_size"
+    t.integer "location_id"
+    t.string "industry"
+    t.string "main_image"
+    t.string "logo_image"
+    t.string "duration"
+    t.string "application_start_date"
+    t.string "application_end_date"
+    t.integer "created_by"
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.string "deleted_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_programs_on_location_id"
+    t.index ["program_type_id"], name: "index_programs_on_program_type_id"
+  end
+
   create_table "role_permissions", force: :cascade do |t|
     t.integer "module_type_id"
     t.integer "role_id"
@@ -49,6 +90,33 @@ ActiveRecord::Schema.define(version: 2018_11_15_052259) do
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "startup_profiles", force: :cascade do |t|
+    t.string "startup_name"
+    t.string "password_digest"
+    t.string "email"
+    t.string "main_image"
+    t.string "thumb_image"
+    t.string "logo_image"
+    t.string "founded_date"
+    t.text "description"
+    t.boolean "incorporated"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state_province_region"
+    t.string "zip_pincode_postalcode"
+    t.string "country"
+    t.string "geo_location"
+    t.integer "created_by"
+    t.boolean "isDelete", default: false
+    t.string "deleted_by"
+    t.string "delete_at"
+    t.integer "team_size"
+    t.string "current_stage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

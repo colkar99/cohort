@@ -1,0 +1,2 @@
+class StartupProfile < ApplicationRecord
+end
