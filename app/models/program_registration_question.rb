@@ -1,0 +1,2 @@
+class ProgramRegQuestion < ApplicationRecord
+end

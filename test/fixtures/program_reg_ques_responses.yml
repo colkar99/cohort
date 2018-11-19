@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  program_reg_question: one
+  startup_profile: one
+  response: MyText
+  response_id: 1
+  reviewer_rating: 1
+  reviewer_feedback: MyText
+  program_location: one
+
+two:
+  program_reg_question: two
+  startup_profile: two
+  response: MyText
+  response_id: 1
+  reviewer_rating: 1
+  reviewer_feedback: MyText
+  program_location: two

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_19_114910) do
+ActiveRecord::Schema.define(version: 2018_11_19_123801) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
@@ -31,6 +31,44 @@ ActiveRecord::Schema.define(version: 2018_11_19_114910) do
     t.boolean "isDelete", default: false
     t.string "deleted_by"
     t.string "delete_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "program_reg_ques_responses", force: :cascade do |t|
+    t.integer "program_reg_question_id"
+    t.integer "startup_profile_id"
+    t.text "response"
+    t.integer "response_id"
+    t.integer "reviewer_rating"
+    t.text "reviewer_feedback"
+    t.integer "program_location_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_location_id"], name: "index_program_reg_ques_responses_on_program_location_id"
+    t.index ["program_reg_question_id"], name: "index_program_reg_ques_responses_on_program_reg_question_id"
+    t.index ["startup_profile_id"], name: "index_program_reg_ques_responses_on_startup_profile_id"
+  end
+
+  create_table "program_registration_questions", force: :cascade do |t|
+    t.string "title"
+    t.text "question"
+    t.text "description"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.integer "created_by"
+    t.string "deleted_date"
+    t.text "placeholder"
+    t.integer "program_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_program_registration_questions_on_program_id"
+  end
+
+  create_table "program_statuses", force: :cascade do |t|
+    t.string "status"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -94,6 +132,39 @@ ActiveRecord::Schema.define(version: 2018_11_19_114910) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "social_media", force: :cascade do |t|
+    t.string "name"
+    t.boolean "isActive", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "social_media_links", force: :cascade do |t|
+    t.integer "social_media_id"
+    t.integer "startup_profile_id"
+    t.string "response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["social_media_id"], name: "index_social_media_links_on_social_media_id"
+    t.index ["startup_profile_id"], name: "index_social_media_links_on_startup_profile_id"
+  end
+
+  create_table "startup_profile_questions", force: :cascade do |t|
+    t.string "title"
+    t.text "question"
+    t.text "description"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.integer "created_by"
+    t.string "deleted_date"
+    t.text "placeholder"
+    t.integer "program_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_startup_profile_questions_on_program_id"
+  end
+
   create_table "startup_profiles", force: :cascade do |t|
     t.string "startup_name"
     t.string "password_digest"
@@ -119,6 +190,37 @@ ActiveRecord::Schema.define(version: 2018_11_19_114910) do
     t.string "current_stage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "startup_question_responses", force: :cascade do |t|
+    t.integer "startup_question_id"
+    t.integer "startup_profile_id"
+    t.text "response"
+    t.integer "program_id"
+    t.integer "reviewer_rating"
+    t.text "reviewer_feedback"
+    t.integer "program_location_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_startup_question_responses_on_program_id"
+    t.index ["program_location_id"], name: "index_startup_question_responses_on_program_location_id"
+    t.index ["startup_profile_id"], name: "index_startup_question_responses_on_startup_profile_id"
+    t.index ["startup_question_id"], name: "index_startup_question_responses_on_startup_question_id"
+  end
+
+  create_table "startup_registrations", force: :cascade do |t|
+    t.string "startup_name"
+    t.string "founded_date"
+    t.string "website_url"
+    t.string "entity_type"
+    t.integer "program_id"
+    t.integer "startup_profile_id"
+    t.integer "program_status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_startup_registrations_on_program_id"
+    t.index ["program_status_id"], name: "index_startup_registrations_on_program_status_id"
+    t.index ["startup_profile_id"], name: "index_startup_registrations_on_startup_profile_id"
   end
 
   create_table "user_roles", force: :cascade do |t|
