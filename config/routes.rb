@@ -9,6 +9,18 @@ Rails.application.routes.draw do
 		post 'v1/create-user-role', to: 'user_roles#create'
 		post 'v1/edit-user-role', to: 'user_roles#edit'
 		post 'v1/delete-user-role', to: 'user_roles#delete'
+		post 'v1/create-program-type', to: 'program_types#create'
+		put 'v1/edit-program-type', to: 'program_types#edit'
+		get 'v1/show-program-types', to: 'program_types#show'
+		post 'v1/delete-program-type', to: 'program_types#delete'
+
+		####Program Location######
+		post 'v1/create-program-location', to: 'program_locations#create'
+		put 'v1/edit-program-location', to: 'program_locations#edit'
+		get 'v1/show-program-locations', to: 'program_locations#show'
+		post 'v1/delete-program-location', to: 'program_locations#delete'
+		###############
+
 	end
 
 end
