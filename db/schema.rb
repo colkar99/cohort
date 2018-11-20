@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_19_123801) do
+ActiveRecord::Schema.define(version: 2018_11_20_073053) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
@@ -63,7 +63,9 @@ ActiveRecord::Schema.define(version: 2018_11_19_123801) do
     t.integer "program_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "program_location_id"
     t.index ["program_id"], name: "index_program_registration_questions_on_program_id"
+    t.index ["program_location_id"], name: "index_program_registration_questions_on_program_location_id"
   end
 
   create_table "program_statuses", force: :cascade do |t|

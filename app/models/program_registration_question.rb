@@ -1,2 +1,2 @@
-class ProgramRegQuestion < ApplicationRecord
+class ProgramRegistrationQuestion < ApplicationRecord
 end

@@ -21,6 +21,13 @@ Rails.application.routes.draw do
 		post 'v1/delete-program-location', to: 'program_locations#delete'
 		###############
 
+		####Program Registration Questions######
+		post 'v1/create-program-registration-question', to: 'program_registration_questions#create'
+		put 'v1/edit-program-registration-question', to: 'program_registration_questions#edit'
+		get 'v1/show-program-registration-questions', to: 'program_registration_questions#show'
+		post 'v1/delete-program-registration-question', to: 'program_registration_questions#delete'
+		###############
+
 	end
 
 end
