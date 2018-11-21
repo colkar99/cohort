@@ -39,6 +39,10 @@ Rails.application.routes.draw do
 		post 'v1/delete-startup-profile-question', to: 'startup_profile_questions#delete'
 		###############
 
+		######startup profile ###########
+		post 'v1/startup/direct-registration', to: 'startup_profiles#direct_registration'
+		#################################
+
 	end
 
 end
