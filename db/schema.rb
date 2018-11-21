@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_20_073053) do
+ActiveRecord::Schema.define(version: 2018_11_21_092711) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
@@ -97,7 +97,6 @@ ActiveRecord::Schema.define(version: 2018_11_20_073053) do
     t.string "end_date"
     t.integer "program_admin_id"
     t.integer "seat_size"
-    t.integer "location_id"
     t.string "industry"
     t.string "main_image"
     t.string "logo_image"
@@ -110,7 +109,9 @@ ActiveRecord::Schema.define(version: 2018_11_20_073053) do
     t.string "deleted_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["location_id"], name: "index_programs_on_location_id"
+    t.integer "ProgramLocation_id"
+    t.boolean "isActive", default: true
+    t.index ["ProgramLocation_id"], name: "index_programs_on_ProgramLocation_id"
     t.index ["program_type_id"], name: "index_programs_on_program_type_id"
   end
 
@@ -164,7 +165,9 @@ ActiveRecord::Schema.define(version: 2018_11_20_073053) do
     t.integer "program_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "program_location_id"
     t.index ["program_id"], name: "index_startup_profile_questions_on_program_id"
+    t.index ["program_location_id"], name: "index_startup_profile_questions_on_program_location_id"
   end
 
   create_table "startup_profiles", force: :cascade do |t|

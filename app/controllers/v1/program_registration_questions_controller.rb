@@ -22,11 +22,11 @@ module V1
 		 	binding.pry
 		 	module_grand_access = user_validate("update")
 		 	if module_grand_access
-			 	@program_type = ProgramType.find(params[:program_type][:id])
-			 	if @program_type.update(program_type_params)
-			 		render json: @program_type ,status: :created 
+			 	@program_reg_que = ProgramRegistrationQuestion.find(params[:program_registration_question][:id])
+			 	if @program_reg_que.update(program_registration_question_params)
+			 		render json: @program_reg_que ,status: :created 
 			 	else
-			 		render json: @program_type, status: :unprocessable_entity
+			 		render json: @program_reg_que, status: :unprocessable_entity
 			 	end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
@@ -35,23 +35,22 @@ module V1
 	 	end
 ########
 		def show
-		
-			@program_types = ProgramType.all
-			render json: @program_types ,status: :created
+			@program_reg_ques = ProgramRegistrationQuestion.all
+			render json: @program_reg_ques ,status: :created
 		end
 		########
 		def delete
 			binding.pry
 		 	module_grand_access = user_validate("delete")
 		 	if module_grand_access
-			 	@program_type = ProgramType.find(params[:program_type][:id])
-			 	@program_type.isDelete = true
-			 	@program_type.deleted_date = Time.now
-			 	@program_type.deleted_by = current_user.id
-			 	if @program_type.update(program_type_params)
-			 		render json: @program_type ,status: :created 
+			 	@program_reg_que = ProgramRegistrationQuestion.find(params[:program_registration_question][:id])
+			 	@program_reg_que.isDelete = true
+			 	@program_reg_que.deleted_date = Time.now
+			 	@program_reg_que.deleted_by = current_user.id
+			 	if @program_reg_que.update(program_registration_question_params)
+			 		render json: @program_reg_que ,status: :created 
 			 	else
-			 		render json: @program_type, status: :unprocessable_entity
+			 		render json: @program_reg_que, status: :unprocessable_entity
 			 	end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
@@ -98,13 +97,14 @@ module V1
 		private
 
 		def program_registration_question_params
-		    params.require(:program_registation_question).permit(:id,
+		    params.require(:program_registration_question).permit(:id,
 		    									:title,
 		    									:question,
 		    									:description,
 		    									:isActive,
 		    									:program_id,
-		    									:program_location_id
+		    									:program_location_id,
+		    									:placeholder
 		    									 )
 		end
 

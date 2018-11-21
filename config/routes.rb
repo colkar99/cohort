@@ -20,12 +20,23 @@ Rails.application.routes.draw do
 		get 'v1/show-program-locations', to: 'program_locations#show'
 		post 'v1/delete-program-location', to: 'program_locations#delete'
 		###############
+		####Program ######
+		post 'v1/create-program', to: 'programs#create'
+		put 'v1/edit-program', to: 'programs#edit'
+		get 'v1/show-programs', to: 'programs#show'
+		post 'v1/delete-program', to: 'programs#delete'
 
 		####Program Registration Questions######
 		post 'v1/create-program-registration-question', to: 'program_registration_questions#create'
 		put 'v1/edit-program-registration-question', to: 'program_registration_questions#edit'
 		get 'v1/show-program-registration-questions', to: 'program_registration_questions#show'
 		post 'v1/delete-program-registration-question', to: 'program_registration_questions#delete'
+		###############
+		####startup Registration Questions######
+		post 'v1/create-startup-profile-question', to: 'startup_profile_questions#create'
+		put 'v1/edit-startup-profile-question', to: 'startup_profile_questions#edit'
+		get 'v1/show-startup-profile-questions', to: 'startup_profile_questions#show'
+		post 'v1/delete-startup-profile-question', to: 'startup_profile_questions#delete'
 		###############
 
 	end
