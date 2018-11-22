@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_21_092711) do
+ActiveRecord::Schema.define(version: 2018_11_22_094503) do
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
@@ -73,6 +73,11 @@ ActiveRecord::Schema.define(version: 2018_11_21_092711) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "created_by"
+    t.boolean "isDelete", default: false
+    t.boolean "isActive", default: true
+    t.datetime "deleted_at"
+    t.string "deleted_by"
   end
 
   create_table "program_types", force: :cascade do |t|
@@ -223,6 +228,11 @@ ActiveRecord::Schema.define(version: 2018_11_21_092711) do
     t.integer "program_status_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "created_by"
+    t.boolean "isDelete", default: false
+    t.boolean "isActive", default: true
+    t.datetime "deleted_at"
+    t.string "deleted_by"
     t.index ["program_id"], name: "index_startup_registrations_on_program_id"
     t.index ["program_status_id"], name: "index_startup_registrations_on_program_status_id"
     t.index ["startup_profile_id"], name: "index_startup_registrations_on_startup_profile_id"
