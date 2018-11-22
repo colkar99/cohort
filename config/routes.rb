@@ -57,6 +57,13 @@ Rails.application.routes.draw do
 		post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
 
+		################program status########
+		post 'v1/program/registration', to: 'startup_registrations#create'
+		get 'v1/show-statuses', to: 'program_statuses#show'
+		put 'v1/edit-status', to: 'program_statuses#edit'
+		post 'v1/delete-status', to: 'program_statuses#delete'
+		######################################
+
 	end
 
 end

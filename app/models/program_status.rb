@@ -1,3 +1,3 @@
 class ProgramStatus < ApplicationRecord
-	has_many :program_registrations
+	has_many :startup_registrations
 end
