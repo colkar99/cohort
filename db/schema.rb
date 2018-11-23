@@ -10,7 +10,109 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_22_094503) do
+ActiveRecord::Schema.define(version: 2018_11_23_064837) do
+
+  create_table "activities", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.text "placeholder"
+    t.integer "order"
+    t.integer "framework_id"
+    t.integer "created_by"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["framework_id"], name: "index_activities_on_framework_id"
+  end
+
+  create_table "activity_responses", force: :cascade do |t|
+    t.text "startup_response"
+    t.integer "framework_id"
+    t.integer "startup_profile_id"
+    t.integer "activity_id"
+    t.integer "checklist_id"
+    t.boolean "checklist_status", default: false
+    t.integer "admin_rating"
+    t.text "admin_feedback"
+    t.integer "mentor_rating"
+    t.text "mentor_feedback"
+    t.integer "created_by"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_activity_responses_on_activity_id"
+    t.index ["checklist_id"], name: "index_activity_responses_on_checklist_id"
+    t.index ["framework_id"], name: "index_activity_responses_on_framework_id"
+    t.index ["startup_profile_id"], name: "index_activity_responses_on_startup_profile_id"
+  end
+
+  create_table "checklists", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "framework_id"
+    t.integer "activity_id"
+    t.integer "created_by"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_checklists_on_activity_id"
+    t.index ["framework_id"], name: "index_checklists_on_framework_id"
+  end
+
+  create_table "current_state_forms", force: :cascade do |t|
+    t.text "revenue"
+    t.text "traction"
+    t.text "solution_readiness"
+    t.text "investment"
+    t.text "team_velocity"
+    t.text "partners"
+    t.text "vendors"
+    t.text "vendors_costs"
+    t.text "experiment_testing"
+    t.text "customer_segment"
+    t.text "problem_validation"
+    t.text "channels"
+    t.text "governance"
+    t.integer "startup_profile_id"
+    t.integer "program_id"
+    t.integer "responser_id"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_current_state_forms_on_program_id"
+    t.index ["startup_profile_id"], name: "index_current_state_forms_on_startup_profile_id"
+  end
+
+  create_table "frameworks", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "activity_name"
+    t.integer "level", default: 0
+    t.string "main_image"
+    t.string "thumb_image"
+    t.string "url"
+    t.integer "created_by"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "program_id"
+    t.index ["program_id"], name: "index_frameworks_on_program_id"
+  end
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"

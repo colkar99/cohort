@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  revenue: MyText
+  traction: MyText
+  solution_readiness: MyText
+  investment: MyText
+  team_velocity: MyText
+  partners: MyText
+  vendors: MyText
+  vendors_costs: MyText
+  experiment_testing: MyText
+  customer_segment: MyText
+  problem_validation: MyText
+  channels: MyText
+  governance: MyText
+  startup_profile: one
+  program: one
+
+two:
+  revenue: MyText
+  traction: MyText
+  solution_readiness: MyText
+  investment: MyText
+  team_velocity: MyText
+  partners: MyText
+  vendors: MyText
+  vendors_costs: MyText
+  experiment_testing: MyText
+  customer_segment: MyText
+  problem_validation: MyText
+  channels: MyText
+  governance: MyText
+  startup_profile: two
+  program: two
