@@ -81,11 +81,21 @@ Rails.application.routes.draw do
 		put 'v1/program/delete-framework', to: 'frameworks#delete' 
 		###########################
 
+		##########Activities###########################
 		post 'v1/program/framework/create-activity' , to: 'activities#create'
 		get 'v1/program/framework/show-all-activities', to: 'activities#show_all'
 		post 'v1/program/framework/show-activity', to: 'activities#show' 
 		put 'v1/program/framework/edit-activity', to: 'activities#edit' 
 		put 'v1/program/framework/delete-activity', to: 'activities#delete' 
+		##############################
+
+		################checklists###########################
+		post 'v1/program/framework/activity/create-checklist' , to: 'checklists#create'
+		get 'v1/program/framework/activity/show-all-checklists', to: 'checklists#show_all'
+		post 'v1/program/framework/activity/show-checklist', to: 'checklists#show' 
+		put 'v1/program/framework/activity/edit-checklist', to: 'checklists#edit' 
+		put 'v1/program/framework/activity/delete-checklist', to: 'checklists#delete' 
+		###################################
 
 
 
