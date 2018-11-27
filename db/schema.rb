@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_23_064837) do
+ActiveRecord::Schema.define(version: 2018_11_27_041312) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -84,13 +84,16 @@ ActiveRecord::Schema.define(version: 2018_11_23_064837) do
     t.text "governance"
     t.integer "startup_profile_id"
     t.integer "program_id"
-    t.integer "responser_id"
     t.boolean "isActive", default: true
     t.boolean "isDelete", default: false
     t.integer "deleted_by"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "reviewer_rating"
+    t.string "reviewer_feedback"
+    t.integer "reviewer_id"
+    t.integer "total_rating"
     t.index ["program_id"], name: "index_current_state_forms_on_program_id"
     t.index ["startup_profile_id"], name: "index_current_state_forms_on_startup_profile_id"
   end
@@ -110,8 +113,6 @@ ActiveRecord::Schema.define(version: 2018_11_23_064837) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "program_id"
-    t.index ["program_id"], name: "index_frameworks_on_program_id"
   end
 
   create_table "module_types", force: :cascade do |t|
@@ -218,7 +219,9 @@ ActiveRecord::Schema.define(version: 2018_11_23_064837) do
     t.datetime "updated_at", null: false
     t.integer "ProgramLocation_id"
     t.boolean "isActive", default: true
+    t.integer "framework_id"
     t.index ["ProgramLocation_id"], name: "index_programs_on_ProgramLocation_id"
+    t.index ["framework_id"], name: "index_programs_on_framework_id"
     t.index ["program_type_id"], name: "index_programs_on_program_type_id"
   end
 
