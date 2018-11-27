@@ -70,8 +70,9 @@ Rails.application.routes.draw do
 		post 'v1/program/user/show-current-state-form', to: 'current_state_forms#admin_show'
 		put 'v1/program/edit-current-state-form', to: 'current_state_forms#edit'
 		put 'v1/program/user/edit-current-state-form', to: 'current_state_forms#admin_edit'
-		post 'v1/delete-status', to: 'program_statuses#delete'
+		# post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
+		
 
 	end
 
