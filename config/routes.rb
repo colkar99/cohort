@@ -72,7 +72,23 @@ Rails.application.routes.draw do
 		put 'v1/program/user/edit-current-state-form', to: 'current_state_forms#admin_edit'
 		# post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
-		
+
+		########Frameworks#########
+		post 'v1/program/create-framework' ,to: 'frameworks#create'
+		get 'v1/program/show-all-framworks', to: 'frameworks#show_all'
+		post 'v1/program/show-framework', to: 'frameworks#show' 
+		put 'v1/program/edit-framework', to: 'frameworks#edit' 
+		put 'v1/program/delete-framework', to: 'frameworks#delete' 
+		###########################
+
+		post 'v1/program/framework/create-activity' , to: 'activities#create'
+		get 'v1/program/framework/show-all-activities', to: 'activities#show_all'
+		post 'v1/program/framework/show-activity', to: 'activities#show' 
+		put 'v1/program/framework/edit-activity', to: 'activities#edit' 
+		put 'v1/program/framework/delete-activity', to: 'activities#delete' 
+
+
+
 
 	end
 

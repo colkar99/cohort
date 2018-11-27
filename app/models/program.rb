@@ -5,5 +5,5 @@ class Program < ApplicationRecord
   has_many :startup_registration_questions
   has_many :startup_registrations
   has_many :startup_profiles ,through: :startup_registrations
-  has_one :framework
+  belongs_to :framework
 end
