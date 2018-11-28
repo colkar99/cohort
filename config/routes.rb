@@ -57,14 +57,14 @@ Rails.application.routes.draw do
 		post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
 
-		################program status########
+		################startup registration########
 		post 'v1/program/registration', to: 'startup_registrations#create'
-		get 'v1/show-statuses', to: 'program_statuses#show'
-		put 'v1/edit-status', to: 'program_statuses#edit'
-		post 'v1/delete-status', to: 'program_statuses#delete'
+		# get 'v1/show-statuses', to: 'program_statuses#show'
+		# put 'v1/edit-status', to: 'program_statuses#edit'
+		# post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
 
-				################program status########
+		################current state form########
 		post 'v1/program/create-current-state-form', to: 'current_state_forms#create'
 		post 'v1/program/show-current-state-form', to: 'current_state_forms#show'
 		post 'v1/program/user/show-current-state-form', to: 'current_state_forms#admin_show'
@@ -72,6 +72,17 @@ Rails.application.routes.draw do
 		put 'v1/program/user/edit-current-state-form', to: 'current_state_forms#admin_edit'
 		# post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
+		###########road map#############
+		post 'v1/program/startup/create-road-map', to: 'road_maps#create'
+		post 'v1/program/startup/show-road-maps', to: 'road_maps#show_all'
+		put 'v1/program/startup/edit-road-map-startup', to: 'road_maps#startup_edit'
+		put 'v1/program/startup/edit-road-map-admin', to: 'road_maps#admin_edit'
+		###########road map#############
+
+		######Resource Api's###########
+		post 'v1/program/startup/request-resource', to: 'resources#create'
+		###############################
+
 
 		########Frameworks#########
 		post 'v1/program/create-framework' ,to: 'frameworks#create'
@@ -96,6 +107,12 @@ Rails.application.routes.draw do
 		put 'v1/program/framework/activity/edit-checklist', to: 'checklists#edit' 
 		put 'v1/program/framework/activity/delete-checklist', to: 'checklists#delete' 
 		###################################
+
+		######Activity response##############
+		post 'v1/program/framework/activity/create-activity-response', to: 'activity_responses#create'
+		put 'v1/program/framework/activity/rating-activity-response', to: 'activity_responses#rating_by_admin'
+		post 'v1/program/framework/activity/show-activity-response', to: 'activity_responses#show_all'
+		#####################################
 
 
 

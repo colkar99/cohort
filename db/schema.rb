@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_27_041312) do
+ActiveRecord::Schema.define(version: 2018_11_28_104038) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -46,9 +46,13 @@ ActiveRecord::Schema.define(version: 2018_11_27_041312) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "admin_id"
+    t.integer "mentor_id"
+    t.integer "program_id"
     t.index ["activity_id"], name: "index_activity_responses_on_activity_id"
     t.index ["checklist_id"], name: "index_activity_responses_on_checklist_id"
     t.index ["framework_id"], name: "index_activity_responses_on_framework_id"
+    t.index ["program_id"], name: "index_activity_responses_on_program_id"
     t.index ["startup_profile_id"], name: "index_activity_responses_on_startup_profile_id"
   end
 
@@ -223,6 +227,44 @@ ActiveRecord::Schema.define(version: 2018_11_27_041312) do
     t.index ["ProgramLocation_id"], name: "index_programs_on_ProgramLocation_id"
     t.index ["framework_id"], name: "index_programs_on_framework_id"
     t.index ["program_type_id"], name: "index_programs_on_program_type_id"
+  end
+
+  create_table "resources", force: :cascade do |t|
+    t.string "resource_type"
+    t.string "no_of_resource"
+    t.string "hours_needed"
+    t.datetime "date_needed"
+    t.string "payment_mode"
+    t.integer "road_map_id"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "startup_profile_id"
+    t.index ["road_map_id"], name: "index_resources_on_road_map_id"
+    t.index ["startup_profile_id"], name: "index_resources_on_startup_profile_id"
+  end
+
+  create_table "road_maps", force: :cascade do |t|
+    t.string "goal"
+    t.text "strategy"
+    t.text "description"
+    t.datetime "from_date"
+    t.datetime "to_date"
+    t.integer "reviewed_by"
+    t.text "reviewer_feedback"
+    t.integer "program_id"
+    t.integer "startup_profile_id"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_road_maps_on_program_id"
+    t.index ["startup_profile_id"], name: "index_road_maps_on_startup_profile_id"
   end
 
   create_table "role_permissions", force: :cascade do |t|

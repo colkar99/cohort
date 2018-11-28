@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  resource_type: MyString
+  no_of_resource: MyString
+  hours_needed: MyString
+  date_needed: 2018-11-28 14:49:26
+  payment_mode: MyString
+  road_map: one
+
+two:
+  resource_type: MyString
+  no_of_resource: MyString
+  hours_needed: MyString
+  date_needed: 2018-11-28 14:49:26
+  payment_mode: MyString
+  road_map: two
