@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: 
+  startup_profile: 
+  title: MyString
+  isActive: false
+  created_by: 1
+  deleted_by: 1
+  deleted_at: 2018-11-29 14:33:00
+  isDelete: false
+
+two:
+  user: 
+  startup_profile: 
+  title: MyString
+  isActive: false
+  created_by: 1
+  deleted_by: 1
+  deleted_at: 2018-11-29 14:33:00
+  isDelete: false

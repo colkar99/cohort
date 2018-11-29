@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  startup_name: MyString
+  founded_date: MyString
+  website_url: MyString
+  entity_type: MyString
+  program: one
+  startup_profile: one
+  program_status: one
+
+two:
+  startup_name: MyString
+  founded_date: MyString
+  website_url: MyString
+  entity_type: MyString
+  program: two
+  startup_profile: two
+  program_status: two

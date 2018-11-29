@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  role: one
+  module_type: one
+  create_rule: false
+  update_rule: false
+  delete_rule: false
+
+two:
+  user: two
+  role: two
+  module_type: two
+  create_rule: false
+  update_rule: false
+  delete_rule: false

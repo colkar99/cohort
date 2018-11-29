@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  program_type: one
+  title: MyString
+  description: MyText
+  start_date: MyString
+  end_date: MyString
+  program_admin_id: 1
+  seat_size: 1
+  location: one
+  industry: MyString
+  main_image: MyString
+  logo_image: MyString
+  duration: MyString
+  application_start_date: MyString
+  application_end_date: MyString
+  created_by: 1
+  isDelete: false
+  deleted_by: 1
+  deleted_date: MyString
+
+two:
+  program_type: two
+  title: MyString
+  description: MyText
+  start_date: MyString
+  end_date: MyString
+  program_admin_id: 1
+  seat_size: 1
+  location: two
+  industry: MyString
+  main_image: MyString
+  logo_image: MyString
+  duration: MyString
+  application_start_date: MyString
+  application_end_date: MyString
+  created_by: 1
+  isDelete: false
+  deleted_by: 1
+  deleted_date: MyString

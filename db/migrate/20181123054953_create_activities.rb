@@ -1,0 +1,19 @@
+class CreateActivities < ActiveRecord::Migration[5.2]
+  def change
+    create_table :activities do |t|
+      t.string :name
+      t.text :description
+      t.text :placeholder
+      t.integer :order
+      t.references :framework, foreign_key: true
+      t.references :checklist, foreign_key: true
+      t.integer :created_by
+      t.boolean :isActive, default: true
+      t.boolean :isDelete, default: false
+      t.integer :deleted_by
+      t.datetime :deleted_at
+
+      t.timestamps
+    end
+  end
+end

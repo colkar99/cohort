@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  placeholder: MyText
+  order: 1
+  framework: one
+  checklist: one
+
+two:
+  name: MyString
+  description: MyText
+  placeholder: MyText
+  order: 1
+  framework: two
+  checklist: two

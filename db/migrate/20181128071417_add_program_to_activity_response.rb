@@ -1,0 +1,5 @@
+class AddProgramToActivityResponse < ActiveRecord::Migration[5.2]
+  def change
+    add_reference :activity_responses, :program, foreign_key: true
+  end
+end

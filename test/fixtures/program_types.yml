@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  program_type_title: MyString
+  program_type_description: MyText
+  program_type_duration: MyString
+  program_type_logo: MyString
+  program_type_main_image: MyString
+
+two:
+  program_type_title: MyString
+  program_type_description: MyText
+  program_type_duration: MyString
+  program_type_logo: MyString
+  program_type_main_image: MyString
