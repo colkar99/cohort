@@ -8,7 +8,7 @@ module V1
 	      binding.pry
 	       if module_access_grands
 	       	 @user.created_by = current_user.id
-	       		if @user.save
+	       		if @user.save!
 	      			command = AuthenticateUser.call(@user.email, @user.password)
 	      			if command.success?
 		    	  		render json: {auth_token: command.result, user: return_user(@user)} 
@@ -18,8 +18,7 @@ module V1
 		    	  		render json: { error: command.errors }, status: :unauthorized
 		    		end
 				else
-	      			render json: @user, status: :unprocessable_entity,
-	                       serializer: ActiveModel::Serializer::ErrorSerializer
+	      			render json: @user, status: :unprocessable_entity
 				end 
 
 	       else
@@ -49,7 +48,7 @@ module V1
 	    	 @user = User.new(user_params)
 	      binding.pry
 	       	 # @user.created_by = current_user.id
-       		if @user.save
+       		if @user.save!
       			command = AuthenticateUser.call(@user.email, @user.password)
       			if command.success?
 	    	  		render json: {auth_token: command.result, user: return_user(@user)} 
@@ -60,8 +59,7 @@ module V1
 	    	  		render json: { error: command.errors }, status: :unauthorized
 	    		end
 			else
-      			render json: @user, status: :unprocessable_entity,
-                       serializer: ActiveModel::Serializer::ErrorSerializer
+      			render json: @user.errors, status: :unprocessable_entity
 			end 
 
 	       
@@ -70,7 +68,7 @@ module V1
 
 	    def startup_user
 	    	user = User.new(user_params)
-	    	if user.save
+	    	if user.save!
       			command = AuthenticateUser.call(user.email, user.password)
       			if command.success?
 	    	  		render json: {auth_token: command.result, user: return_user(user)} 
@@ -82,8 +80,7 @@ module V1
 	    	  		render json: { error: command.errors }, status: :unauthorized
 	    		end
 			else
-      			render json: @user, status: :unprocessable_entity,
-                       serializer: ActiveModel::Serializer::ErrorSerializer
+      			render json: @user.errors, status: :unprocessable_entity
 			end 
 	    	
 	    end
@@ -129,13 +126,14 @@ module V1
 	    def user_params
 	    	params.require(:user).permit(:first_name,:full_name,:last_name, :email, :phone_number,
 	    								:password, :password_confirmation,:user_main_image,
-	   									:credentials,:commitment,:isDelete,:deleted_by,:deleted_date,:created_by,:id)
+	   									:credentials,:commitment,:isDelete,:deleted_by,:deleted_date,:created_by,:id,:user_type)
 	    end
 	    def return_user(user)
 	    	user = {"first_name": user.first_name,
 	    				"last_name": user.last_name,
 	    				"phone_number": user.phone_number,
-	    				"email": user.email}
+	    				"email": user.email,
+	    				"user_type": user.user_type}
 	    	user			
 	    end
 	 end
