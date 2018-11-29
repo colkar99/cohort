@@ -11,12 +11,17 @@ module V1
 	   		render json: { auth_token: command.result,
 	   					 user_type: @user.user_type,
 	   					 user_id: @user.id }
-	   	else @user.user_type == "startup"
+	   	elsif @user.user_type == "startup"
 	   		startup_user = StartupUser.find_by_user_id(@user.id)
 	   		render json: { auth_token: command.result,
 	   						 user_type: @user.user_type,
 	   						 user_id: @user.id,
 	   						 startup_profile_id: startup_user.startup_profile_id }
+	   	elsif @user.user_type == "mentor"
+	   		mentor_user = MentorUser.find_by_user_id(@user.id)
+	   		render json: { auth_token: command.result,
+	   						 user_type: @user.user_type,
+	   						 user_id: @user.id}					 
 	   	end
 	   		@user.access_token = command.result
 	     	@user.save!

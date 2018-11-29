@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_055201) do
+ActiveRecord::Schema.define(version: 2018_11_29_090300) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -117,6 +117,35 @@ ActiveRecord::Schema.define(version: 2018_11_29_055201) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "mentor_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "type_name"
+    t.text "title"
+    t.text "company"
+    t.string "linked_in_url"
+    t.string "facebook_url"
+    t.text "primary_expertise"
+    t.text "why_mentor"
+    t.text "startup_experience"
+    t.text "startup_experience_level"
+    t.text "expertise_expanded"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.text "commitment"
+    t.string "mentorship_type"
+    t.text "looking_for"
+    t.string "visibility"
+    t.text "area_of_expertise"
+    t.integer "created_by"
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.index ["user_id"], name: "index_mentor_users_on_user_id"
   end
 
   create_table "module_types", force: :cascade do |t|
@@ -285,6 +314,21 @@ ActiveRecord::Schema.define(version: 2018_11_29_055201) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "selected_mentors", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "startup_profile_id"
+    t.string "title"
+    t.boolean "isActive", default: true
+    t.integer "created_by"
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.boolean "isDelete", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["startup_profile_id"], name: "index_selected_mentors_on_startup_profile_id"
+    t.index ["user_id"], name: "index_selected_mentors_on_user_id"
   end
 
   create_table "social_media", force: :cascade do |t|

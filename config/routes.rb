@@ -16,7 +16,9 @@ Rails.application.routes.draw do
 		###################
 		#######startup user registration#########
 		post 'v1/user/startup/registration' ,to: 'users#startup_user'
-		# post 'v1/user/startup/login', to: 'startup_users#authenticate'
+		#########################################
+		#######mentor user registration#########
+		post 'v1/user/mentor/registration' ,to: 'users#mentor_user'
 		#########################################
 
 		####Program Location######

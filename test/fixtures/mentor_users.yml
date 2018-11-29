@@ -1,0 +1,51 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  type: 
+  title: MyText
+  company: MyText
+  linked_in_url: MyString
+  facebook_url: MyString
+  primary_expertise: MyText
+  why_mentor: MyText
+  startup_experience: MyText
+  startup_experience_level: MyText
+  expertise_expanded: MyText
+  start_date: 2018-11-29 12:50:19
+  end_date: 2018-11-29 12:50:19
+  commitment: MyText
+  mentorship_type: MyString
+  looking_for: MyText
+  visibility: MyString
+  area_of_expertise: MyText
+  isActive: false
+  isDelete: false
+  created_by: 1
+  deleted_by: 1
+  deleted_at: 2018-11-29 12:50:19
+
+two:
+  user: two
+  type: 
+  title: MyText
+  company: MyText
+  linked_in_url: MyString
+  facebook_url: MyString
+  primary_expertise: MyText
+  why_mentor: MyText
+  startup_experience: MyText
+  startup_experience_level: MyText
+  expertise_expanded: MyText
+  start_date: 2018-11-29 12:50:19
+  end_date: 2018-11-29 12:50:19
+  commitment: MyText
+  mentorship_type: MyString
+  looking_for: MyText
+  visibility: MyString
+  area_of_expertise: MyText
+  isActive: false
+  isDelete: false
+  created_by: 1
+  deleted_by: 1
+  deleted_at: 2018-11-29 12:50:19
