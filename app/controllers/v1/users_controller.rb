@@ -1,6 +1,6 @@
 module V1
 	 class UsersController < ApplicationController
-	 	skip_before_action :authenticate_request, only: :direct_registration
+	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_user]
 	 	before_action  :current_user, :get_module
  	    def create
 	      @user = User.new(user_params)
@@ -66,6 +66,26 @@ module V1
 
 	       
 	       	
+	    end
+
+	    def startup_user
+	    	user = User.new(user_params)
+	    	if user.save
+      			command = AuthenticateUser.call(user.email, user.password)
+      			if command.success?
+	    	  		render json: {auth_token: command.result, user: return_user(user)} 
+	    	 		 user.access_token = command.result
+	    	 		 user.created_by = user.id
+	    	  		user.save!
+	    	  		StartupUsersController.create(user.id,params)
+	    		else
+	    	  		render json: { error: command.errors }, status: :unauthorized
+	    		end
+			else
+      			render json: @user, status: :unprocessable_entity,
+                       serializer: ActiveModel::Serializer::ErrorSerializer
+			end 
+	    	
 	    end
 
 	    def get_module

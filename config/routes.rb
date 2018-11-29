@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 		put 'v1/edit-program-type', to: 'program_types#edit'
 		get 'v1/show-program-types', to: 'program_types#show'
 		post 'v1/delete-program-type', to: 'program_types#delete'
+		###################
+		#######startup user registration#########
+		post 'v1/user/startup/registration' ,to: 'users#startup_user'
+		#########################################
 
 		####Program Location######
 		post 'v1/create-program-location', to: 'program_locations#create'

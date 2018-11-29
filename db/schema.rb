@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_104038) do
+ActiveRecord::Schema.define(version: 2018_11_29_053434) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -385,6 +385,15 @@ ActiveRecord::Schema.define(version: 2018_11_28_104038) do
     t.index ["startup_profile_id"], name: "index_startup_registrations_on_startup_profile_id"
   end
 
+  create_table "startup_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "startup_profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["startup_profile_id"], name: "index_startup_users_on_startup_profile_id"
+    t.index ["user_id"], name: "index_startup_users_on_user_id"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
@@ -400,6 +409,13 @@ ActiveRecord::Schema.define(version: 2018_11_28_104038) do
     t.index ["module_type_id"], name: "index_user_roles_on_module_type_id"
     t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
+  end
+
+  create_table "user_types", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
