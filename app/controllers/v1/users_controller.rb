@@ -5,7 +5,7 @@ module V1
  	    def create
 	      @user = User.new(user_params)
 	      module_access_grands = user_validate('update')
-	      binding.pry
+	      # binding.pry
 	       if module_access_grands
 	       	 @user.created_by = current_user.id
 	       		if @user.save!
@@ -46,7 +46,7 @@ module V1
 
 	    def direct_registration
 	    	 @user = User.new(user_params)
-	      binding.pry
+	      # binding.pry
 	       	 # @user.created_by = current_user.id
        		if @user.save!
       			command = AuthenticateUser.call(@user.email, @user.password)
@@ -110,27 +110,27 @@ module V1
 	    def user_validate(data)
 	    	if data == "create"
 	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
+	    		# binding.pry
 	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
+	    			# binding.pry
 	    				return true if user_role.create_rule == true
 	    			end
 	    		end
 	    	return false
 	    	elsif data == "update"
 	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
+	    		# binding.pry
 	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
+	    			# binding.pry
 	    				return true if user_role.update_rule == true
 	    			end
 	    		end
 	    	return false
 	    	elsif data == "delete"
 	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
+	    		# binding.pry
 	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
+	    			# binding.pry
 	    				return true if user_role.delete_rule == true
 	    			end
 	    		end

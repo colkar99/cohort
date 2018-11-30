@@ -5,7 +5,7 @@ module V1
 	 	# before_action  :current_user, :get_module
 		
 		def create
-			binding.pry
+			# binding.pry
 			module_grand_access = permission_control("checklist","create")
 			if module_grand_access
 				checklist = Checklist.new(checklist_params)

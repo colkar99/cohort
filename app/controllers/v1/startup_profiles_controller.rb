@@ -4,7 +4,7 @@ module V1
 	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		def direct_registration
-	 		binding.pry
+	 		# binding.pry
 	 		@startup_profile = StartupProfile.new(startup_profile_params)
 
 	 		if @startup_profile.save
@@ -26,7 +26,7 @@ module V1
  	    def show
  	    	check_valid_startup = check_auth
  	    	if check_valid_startup
- 	    	binding.pry
+ 	    	# binding.pry
 	 	    	startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
 	 	    	if startup_profile
 	 	    		render json: startup_profile,status: :ok

@@ -5,7 +5,7 @@ class JsonWebToken
   #(payload, exp = 90.days.from_now)
    def encode(payload)
      # payload[:exp] = exp.to_i
-     byebug
+     # byebug
      JWT.encode(payload, secret_key)
    end
 
