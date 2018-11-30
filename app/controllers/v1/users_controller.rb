@@ -18,7 +18,7 @@ module V1
 		    	  		render json: { error: command.errors }, status: :unauthorized
 		    		end
 				else
-	      			render json: @user, status: :unprocessable_entity
+	      			render json: @user.errors, status: :unprocessable_entity
 				end 
 
 	       else
