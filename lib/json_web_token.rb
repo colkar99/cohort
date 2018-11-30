@@ -20,6 +20,7 @@ class JsonWebToken
  private
 
  def self.secret_key
-   ENV["APP_SECRET_KEY"]
+   # ENV["APP_SECRET_KEY"]
+   "150ae0047fa32b35e74ba52cda37a61df05f0e56b29040ce96978be9e4fce2f4dc05738f17dcfd90469e8ca1bb74fe00f2f04693f020c7a068b9c7a771e38528"
  end
 end

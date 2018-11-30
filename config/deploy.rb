@@ -10,7 +10,7 @@ set :deploy_to, '/home/ubuntu/cohort'
 set :branch, ENV['BRANCH'] if ENV['BRANCH']
 
 
-append :linked_files, "config/database.yml", "config/secrets.yml"
+append :linked_files, "config/database.yml", "config/secrets.yml" , "config/application.yml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads"
 # load 'deploy/assets'
 # Default branch is :master
