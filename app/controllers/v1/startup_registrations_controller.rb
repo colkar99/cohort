@@ -5,7 +5,7 @@ module V1
 	 	# before_action  :current_user, :get_module
 		
 		def create
-			binding.pry
+			# binding.pry
 			startup_registration = StartupRegistration.new(startup_registration_params)
 			startup_registration.program_status_id = 1
 			if startup_registration.save!

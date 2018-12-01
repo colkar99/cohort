@@ -37,7 +37,7 @@ module V1
 	 end
 
 	 def edit
-	 	binding.pry
+	 	# binding.pry
 	 	module_grand_access = user_validate("update")
 	 	if module_grand_access
 		 	@user_role = UserRole.find(params[:user_role][:id])
@@ -53,7 +53,7 @@ module V1
 	 end
 
 	 def delete
-	 	binding.pry
+	 	# binding.pry
 	 	module_grand_access = user_validate("delete")
 	 	if module_grand_access
 		 	@user_role = UserRole.find(params[:user_role][:id])
@@ -73,27 +73,27 @@ module V1
  	    def user_validate(data)
 	    	if data == "create"
 	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
+	    		# binding.pry
 	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
+	    			# binding.pry
 	    				return true if user_role.create_rule == true
 	    			end
 	    		end
 	    	return false
 	    	elsif data == "update"
 	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
+	    		# binding.pry
 	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
+	    			# binding.pry
 	    				return true if user_role.update_rule == true
 	    			end
 	    		end
 	    	return false
 	    	elsif data == "delete"
 	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
+	    		# binding.pry
 	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
+	    			# binding.pry
 	    				return true if user_role.delete_rule == true
 	    			end
 	    		end

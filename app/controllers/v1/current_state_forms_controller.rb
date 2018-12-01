@@ -7,7 +7,7 @@ module V1
 		def create
 			check_valid_auth = check_auth
 			if check_valid_auth
-			binding.pry
+			# binding.pry
 				current_state_form = CurrentStateForm.new(current_state_form_params)
 				
 				if current_state_form.save!
@@ -26,9 +26,9 @@ module V1
 		def show
 			check_valid_auth = check_auth
 			if check_valid_auth
-				binding.pry
+				# binding.pry
 				current_state_form = CurrentStateForm.where(program_id: params[:current_state_form][:program_id]).first
-				binding.pry
+				# binding.pry
 				render json: current_state_form ,status: :ok
 
 			else
@@ -39,7 +39,7 @@ module V1
 		end
 
 		def admin_show
-			binding.pry
+			# binding.pry
 			current_state_form =  CurrentStateForm.where(program_id: params[:current_state_form][:program_id], startup_profile_id: params[:current_state_form][:startup_profile_id]).first
 			if current_state_form.present?
 				render json: current_state_form ,status: :ok
@@ -51,7 +51,7 @@ module V1
 		def edit
 			check_valid_auth = check_auth
 			current_state_form =  CurrentStateForm.find(params[:current_state_form][:id])
-			binding.pry
+			# binding.pry
 			if check_valid_auth && current_state_form
 				if current_state_form.update!(current_state_form_params)
 					render json: current_state_form, status: :ok
@@ -67,7 +67,7 @@ module V1
 		end 
 
 		def admin_edit
-			binding.pry
+			# binding.pry
 			module_grand_access = permission_control("current_state_form","update")
 			current_state_form =  CurrentStateForm.find(params[:current_state_form][:id])
 						binding.pry
