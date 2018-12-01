@@ -22,6 +22,16 @@ Rails.application.routes.draw do
 		#######mentor user registration#########
 		post 'v1/user/mentor/registration' ,to: 'users#mentor_user'
 		#########################################
+		#######Grant permission#########
+		post 'v1/user/admin-permissions' , to: 'user_roles#grant_access'
+		################################
+		#########role ##############
+		post 'v1/create-role', to: 'roles#create'
+		get 'v1/role/show-all', to: 'roles#show_all'
+		put 'v1/role/edit', to: 'roles#edit'
+		put 'v1/role/delete', to: 'roles#delete'
+
+		############################
 
 		####Program Location######
 		post 'v1/create-program-location', to: 'program_locations#create'

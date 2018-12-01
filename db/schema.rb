@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_080806) do
+ActiveRecord::Schema.define(version: 2018_12_01_125304) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -314,6 +314,11 @@ ActiveRecord::Schema.define(version: 2018_12_01_080806) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "created_by"
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
   end
 
   create_table "selected_mentors", force: :cascade do |t|
