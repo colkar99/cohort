@@ -5,7 +5,8 @@ class ApplicationController < ActionController::API
 
 	def permission_control(module_name,action)
 		@module = ModuleType.find_by_name(module_name)
-		@current_user = current_user
+		if @module
+			@current_user = current_user
 			if action == "create"
 	    		@current_user.user_roles.each do |user_role|
 	    			if @module.name == user_role.module_type.name
@@ -20,6 +21,13 @@ class ApplicationController < ActionController::API
 	    			end
 	    		end
 	    	return false
+	    	elsif action == "show"
+	    		@current_user.user_roles.each do |user_role|
+	    			if @module.name == user_role.module_type.name
+	    				return true if user_role.show_rule == true
+	    			end
+	    		end
+	    	return false
 	    	elsif action == "delete"
 	    		@current_user.user_roles.each do |user_role|
 	    			if @module.name == user_role.module_type.name
@@ -28,6 +36,12 @@ class ApplicationController < ActionController::API
 	    		end
 	    		return false
 	    	end	
+		else
+			false  
+		end
+
+
+
 
 	end
 

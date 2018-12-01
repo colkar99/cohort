@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_090300) do
+ActiveRecord::Schema.define(version: 2018_12_01_080806) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -450,6 +450,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_090300) do
     t.boolean "isDelete", default: false
     t.integer "created_by"
     t.integer "deleted_by"
+    t.boolean "show_rule", default: false
     t.index ["module_type_id"], name: "index_user_roles_on_module_type_id"
     t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
