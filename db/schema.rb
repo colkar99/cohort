@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_125304) do
+ActiveRecord::Schema.define(version: 2018_12_01_141953) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -429,6 +429,20 @@ ActiveRecord::Schema.define(version: 2018_12_01_125304) do
     t.boolean "isActive", default: true
     t.datetime "deleted_at"
     t.string "deleted_by"
+    t.string "founder_name"
+    t.string "founder_email"
+    t.string "founder_phone_number"
+    t.text "founder_skills"
+    t.text "founder_credentials"
+    t.text "founder_experience"
+    t.text "founder_commitment"
+    t.string "startup_address_line_1"
+    t.string "startup_address_line_2"
+    t.string "startup_city"
+    t.string "startup_state_province_region"
+    t.string "startup_zip_pincode_postalcode"
+    t.string "startup_country"
+    t.string "startup_geo_location"
     t.index ["program_id"], name: "index_startup_registrations_on_program_id"
     t.index ["program_status_id"], name: "index_startup_registrations_on_program_status_id"
     t.index ["startup_profile_id"], name: "index_startup_registrations_on_startup_profile_id"

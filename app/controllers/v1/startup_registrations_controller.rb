@@ -38,8 +38,22 @@ module V1
 		    									:founded_date,
 		    									:website_url,
 		    									:entity_type,
+		    									:founder_name,
+		    									:founder_email,
+		    									:founder_skills,
+		    									:founder_phone_number,
+		    									:founder_credentials,
+		    									:founder_experience,
+		    									:founder_commitment,
+		    									:startup_address_line_1,
+		    									:startup_address_line_2,
+		    									:startup_city,
+		    									:startup_state_province_region,
+		    									:startup_zip_pincode_postalcode,
+		    									:startup_country,
+		    									:startup_geo_location,
 		    									:program_id,
-		    									:startup_profile_id,
+		    									# :startup_profile_id,
 		    									:program_status_id,
 		    									:created_by,
 		    									:isActive 
@@ -59,6 +73,20 @@ end
 # t.integer "program_id"
 # t.integer "startup_profile_id"
 # t.integer "program_status_id"
+# t.string "founder_name"
+# t.string "founder_email"
+# t.string "founder_phone_number"
+# t.text "founder_skills"
+# t.text "founder_credentials"
+# t.text "founder_experience"
+# t.text "founder_commitment"
+# t.string "startup_address_line_1"
+# t.string "startup_address_line_2"
+# t.string "startup_city"
+# t.string "startup_state_province_region"
+# t.string "startup_zip_pincode_postalcode"
+# t.string "startup_country"
+# t.string "startup_geo_location"
 # t.datetime "created_at", null: false
 # t.datetime "updated_at", null: false
 # t.string "created_by"

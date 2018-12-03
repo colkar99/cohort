@@ -57,6 +57,9 @@ Rails.application.routes.draw do
 		get 'v1/show-startup-profile-questions', to: 'startup_profile_questions#show'
 		post 'v1/delete-startup-profile-question', to: 'startup_profile_questions#delete'
 		###############
+		###############Startup_registration - program-registration#######
+		post 'v1/program/startup-registration', to: 'startup_registrations#create'
+		#################################################################
 
 		######startup profile ###########
 		post 'v1/startup/direct-registration', to: 'startup_profiles#direct_registration'
@@ -77,7 +80,7 @@ Rails.application.routes.draw do
 		######################################
 
 		################startup registration########
-		post 'v1/program/registration', to: 'startup_registrations#create'
+		# post 'v1/program/registration', to: 'startup_registrations#create'
 		# get 'v1/show-statuses', to: 'program_statuses#show'
 		# put 'v1/edit-status', to: 'program_statuses#edit'
 		# post 'v1/delete-status', to: 'program_statuses#delete'
