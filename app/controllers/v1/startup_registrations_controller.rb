@@ -6,6 +6,9 @@ module V1
 		
 		def create
 			# binding.pry
+			# md_access = permission_control("startup_application","create")
+			# binding.pry
+			# return 
 			startup_registration = StartupRegistration.new(startup_registration_params)
 			startup_registration.program_status_id = 1
 			if startup_registration.save!
@@ -17,8 +20,14 @@ module V1
 
 		end
 
-		def show
+		def show_all_details
+			binding.pry
+			startup_app = StartupRegistration.find(params[:startup_application_id])
+			program = startup_app.program
+			program_location = program.ProgramLocation
+			program_reg_ques = program.program_registration_questions
 			
+			binding.pry
 		end
 
 		def edit

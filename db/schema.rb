@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_03_073637) do
+ActiveRecord::Schema.define(version: 2018_12_03_083634) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -54,6 +54,37 @@ ActiveRecord::Schema.define(version: 2018_12_03_073637) do
     t.index ["framework_id"], name: "index_activity_responses_on_framework_id"
     t.index ["program_id"], name: "index_activity_responses_on_program_id"
     t.index ["startup_profile_id"], name: "index_activity_responses_on_startup_profile_id"
+  end
+
+  create_table "app_ques_responses", force: :cascade do |t|
+    t.integer "application_question_id"
+    t.text "response"
+    t.integer "startup_application_id"
+    t.integer "reviewer_rating"
+    t.text "reviewer_feedback"
+    t.integer "program_location_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_question_id"], name: "index_app_ques_responses_on_application_question_id"
+    t.index ["program_location_id"], name: "index_app_ques_responses_on_program_location_id"
+  end
+
+  create_table "application_questions", force: :cascade do |t|
+    t.string "title"
+    t.text "question"
+    t.text "description"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.integer "created_by"
+    t.string "deleted_date"
+    t.text "placeholder"
+    t.integer "program_id"
+    t.integer "program_location_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_application_questions_on_program_id"
+    t.index ["program_location_id"], name: "index_application_questions_on_program_location_id"
   end
 
   create_table "checklists", force: :cascade do |t|
@@ -155,19 +186,6 @@ ActiveRecord::Schema.define(version: 2018_12_03_073637) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "program_coordinators", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "program_id"
-    t.integer "role_id"
-    t.integer "user_role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["program_id"], name: "index_program_coordinators_on_program_id"
-    t.index ["role_id"], name: "index_program_coordinators_on_role_id"
-    t.index ["user_id"], name: "index_program_coordinators_on_user_id"
-    t.index ["user_role_id"], name: "index_program_coordinators_on_user_role_id"
-  end
-
   create_table "program_locations", force: :cascade do |t|
     t.string "address_line_1"
     t.string "address_line_2"
@@ -182,39 +200,6 @@ ActiveRecord::Schema.define(version: 2018_12_03_073637) do
     t.string "delete_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "program_reg_ques_responses", force: :cascade do |t|
-    t.integer "program_reg_question_id"
-    t.integer "startup_profile_id"
-    t.text "response"
-    t.integer "response_id"
-    t.integer "reviewer_rating"
-    t.text "reviewer_feedback"
-    t.integer "program_location_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["program_location_id"], name: "index_program_reg_ques_responses_on_program_location_id"
-    t.index ["program_reg_question_id"], name: "index_program_reg_ques_responses_on_program_reg_question_id"
-    t.index ["startup_profile_id"], name: "index_program_reg_ques_responses_on_startup_profile_id"
-  end
-
-  create_table "program_registration_questions", force: :cascade do |t|
-    t.string "title"
-    t.text "question"
-    t.text "description"
-    t.boolean "isActive", default: true
-    t.boolean "isDelete", default: false
-    t.integer "deleted_by"
-    t.integer "created_by"
-    t.string "deleted_date"
-    t.text "placeholder"
-    t.integer "program_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "program_location_id"
-    t.index ["program_id"], name: "index_program_registration_questions_on_program_id"
-    t.index ["program_location_id"], name: "index_program_registration_questions_on_program_location_id"
   end
 
   create_table "program_statuses", force: :cascade do |t|
@@ -325,6 +310,20 @@ ActiveRecord::Schema.define(version: 2018_12_03_073637) do
     t.datetime "updated_at", null: false
     t.index ["module_type_id"], name: "index_role_permissions_on_module_type_id"
     t.index ["role_id"], name: "index_role_permissions_on_role_id"
+  end
+
+  create_table "role_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+    t.integer "created_by"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_role_users_on_role_id"
+    t.index ["user_id"], name: "index_role_users_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -491,13 +490,6 @@ ActiveRecord::Schema.define(version: 2018_12_03_073637) do
     t.index ["module_type_id"], name: "index_user_roles_on_module_type_id"
     t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
-  end
-
-  create_table "user_types", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

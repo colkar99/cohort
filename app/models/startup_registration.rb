@@ -9,7 +9,7 @@ class StartupRegistration < ApplicationRecord
   	binding.pry
   	program = self.program
     ###########send mail notification to user##############
-    director = User.find(program[:program_director])
+    #director = User.find(program[:program_director])
   	######################################################
   	binding.pry
   end

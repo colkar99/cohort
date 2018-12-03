@@ -1,6 +1,6 @@
-class CreateProgramRegQuestions < ActiveRecord::Migration[5.2]
+class CreateApplicationQuestions < ActiveRecord::Migration[5.2]
   def change
-    create_table :program_reg_questions do |t|
+    create_table :application_questions do |t|
       t.string :title
       t.text :question
       t.text :description
@@ -11,7 +11,8 @@ class CreateProgramRegQuestions < ActiveRecord::Migration[5.2]
       t.string :deleted_date
       t.text :placeholder
       t.references :program, foreign_key: true
-
+      t.references :program_location,  foreign_key: true
+      
       t.timestamps
     end
   end

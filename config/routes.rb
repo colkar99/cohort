@@ -46,10 +46,10 @@ Rails.application.routes.draw do
 		post 'v1/delete-program', to: 'programs#delete'
 
 		####Program Registration Questions######
-		post 'v1/create-program-registration-question', to: 'program_registration_questions#create'
-		put 'v1/edit-program-registration-question', to: 'program_registration_questions#edit'
-		get 'v1/show-program-registration-questions', to: 'program_registration_questions#show'
-		post 'v1/delete-program-registration-question', to: 'program_registration_questions#delete'
+		post 'v1/create-application-question', to: 'application_questions#create'
+		put 'v1/edit-application-question', to: 'application_questions#edit'
+		get 'v1/show-application-questions', to: 'application_questions#show'
+		post 'v1/delete-application-question', to: 'application_questions#delete'
 		###############
 		####startup Registration Questions######
 		post 'v1/create-startup-profile-question', to: 'startup_profile_questions#create'
@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 		###############
 		###############Startup_registration - program-registration#######
 		post 'v1/program/startup-registration', to: 'startup_registrations#create'
+		post 'v1/program/startup-application-details', to: 'startup_registrations#show_all_details'
 		#################################################################
 
 		######startup profile ###########
