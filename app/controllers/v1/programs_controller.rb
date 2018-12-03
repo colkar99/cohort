@@ -80,7 +80,12 @@ module V1
 		    									 :duration,
 		    									 :application_start_date,
 		    									 :application_end_date,
-		    									 :framework_id
+		    									 :framework_id,
+		    									 :site_admin,
+		    									 :program_admin,
+		    									 :program_director,
+		    									 :application_manager,
+		    									 :contract_manager
 		    									 )
 		end
 
@@ -111,3 +116,8 @@ end
 #updated_at, null: false
 #isActive. default: true
 #t.integer "framework_id"
+# t.integer "site_admin"
+# t.integer "program_admin"
+# t.integer "program_director"
+# t.integer "application_manager"
+# t.integer "contract_manager"

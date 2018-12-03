@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_141953) do
+ActiveRecord::Schema.define(version: 2018_12_03_073637) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -155,6 +155,19 @@ ActiveRecord::Schema.define(version: 2018_12_01_141953) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "program_coordinators", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "program_id"
+    t.integer "role_id"
+    t.integer "user_role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_program_coordinators_on_program_id"
+    t.index ["role_id"], name: "index_program_coordinators_on_role_id"
+    t.index ["user_id"], name: "index_program_coordinators_on_user_id"
+    t.index ["user_role_id"], name: "index_program_coordinators_on_user_role_id"
+  end
+
   create_table "program_locations", force: :cascade do |t|
     t.string "address_line_1"
     t.string "address_line_2"
@@ -253,6 +266,11 @@ ActiveRecord::Schema.define(version: 2018_12_01_141953) do
     t.integer "ProgramLocation_id"
     t.boolean "isActive", default: true
     t.integer "framework_id"
+    t.integer "site_admin"
+    t.integer "program_admin"
+    t.integer "program_director"
+    t.integer "application_manager"
+    t.integer "contract_manager"
     t.index ["ProgramLocation_id"], name: "index_programs_on_ProgramLocation_id"
     t.index ["framework_id"], name: "index_programs_on_framework_id"
     t.index ["program_type_id"], name: "index_programs_on_program_type_id"

@@ -7,5 +7,6 @@ class Program < ApplicationRecord
   has_many :startup_profiles ,through: :startup_registrations
   belongs_to :framework
   has_many :activity_responses
+
   
 end
