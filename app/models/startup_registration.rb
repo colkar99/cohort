@@ -2,6 +2,7 @@ class StartupRegistration < ApplicationRecord
   belongs_to :program 
   # belongs_to :startup_profile
   belongs_to :program_status
+  has_many :app_ques_responses
 
   after_commit :reg_mail_to_admin, on: :create
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_03_083634) do
+ActiveRecord::Schema.define(version: 2018_12_04_060211) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -59,14 +59,18 @@ ActiveRecord::Schema.define(version: 2018_12_03_083634) do
   create_table "app_ques_responses", force: :cascade do |t|
     t.integer "application_question_id"
     t.text "response"
-    t.integer "startup_application_id"
     t.integer "reviewer_rating"
     t.text "reviewer_feedback"
     t.integer "program_location_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "startup_registration_id"
+    t.boolean "startup_response", default: false
+    t.boolean "admin_response", default: false
+    t.integer "reviewed_by"
     t.index ["application_question_id"], name: "index_app_ques_responses_on_application_question_id"
     t.index ["program_location_id"], name: "index_app_ques_responses_on_program_location_id"
+    t.index ["startup_registration_id"], name: "index_app_ques_responses_on_startup_registration_id"
   end
 
   create_table "application_questions", force: :cascade do |t|
@@ -460,6 +464,8 @@ ActiveRecord::Schema.define(version: 2018_12_03_083634) do
     t.string "startup_zip_pincode_postalcode"
     t.string "startup_country"
     t.string "startup_geo_location"
+    t.string "application_status"
+    t.string "app_status_description"
     t.index ["program_id"], name: "index_startup_registrations_on_program_id"
     t.index ["program_status_id"], name: "index_startup_registrations_on_program_status_id"
     t.index ["startup_profile_id"], name: "index_startup_registrations_on_startup_profile_id"

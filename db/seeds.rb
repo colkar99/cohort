@@ -41,4 +41,6 @@ end
 puts "user role created"
 
 ProgramStatus.create!(status:"PR",description: "program registered")
+ProgramStatus.create!(status:"AA",description: "Application accepted")
+ProgramStatus.create!(status:"AR",description: "Application Rrejected")
 puts "program_status created"

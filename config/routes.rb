@@ -60,6 +60,9 @@ Rails.application.routes.draw do
 		###############Startup_registration - program-registration#######
 		post 'v1/program/startup-registration', to: 'startup_registrations#create'
 		post 'v1/program/startup-application-details', to: 'startup_registrations#show_all_details'
+		post 'v1/program/startup-app-response', to: 'startup_registrations#app_ques_res'
+		post 'v1/program/admin/startup-app-response', to: 'startup_registrations#app_ques_res_admin'
+		post 'v1/program/admin/startup-application-status-change' ,to: 'startup_registrations#set_app_status'
 		#################################################################
 
 		######startup profile ###########
