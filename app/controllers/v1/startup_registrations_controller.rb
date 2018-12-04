@@ -42,6 +42,11 @@ module V1
 			binding.pry
 		end
 
+		def show_accept_startup
+			startup_app = StartupRegistration.where("application_status": "AA")
+			render json: startup_app , status: :ok
+		end
+
 		def app_ques_res
 			app_ques_res = AppQuesResponse.new(app_ques_response_params)
 			app_ques_res.startup_response = true

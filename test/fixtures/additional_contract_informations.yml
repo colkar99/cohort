@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  purpose_of_contract: MyText
+  contract_termination: MyText
+  contract_terms_condition: MyText
+  authorization: MyText
+
+two:
+  purpose_of_contract: MyText
+  contract_termination: MyText
+  contract_terms_condition: MyText
+  authorization: MyText

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_04_060211) do
+ActiveRecord::Schema.define(version: 2018_12_04_112906) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -54,6 +54,15 @@ ActiveRecord::Schema.define(version: 2018_12_04_060211) do
     t.index ["framework_id"], name: "index_activity_responses_on_framework_id"
     t.index ["program_id"], name: "index_activity_responses_on_program_id"
     t.index ["startup_profile_id"], name: "index_activity_responses_on_startup_profile_id"
+  end
+
+  create_table "additional_contract_informations", force: :cascade do |t|
+    t.text "purpose_of_contract"
+    t.text "contract_termination"
+    t.text "contract_terms_condition"
+    t.text "authorization"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "app_ques_responses", force: :cascade do |t|
@@ -105,6 +114,38 @@ ActiveRecord::Schema.define(version: 2018_12_04_060211) do
     t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_checklists_on_activity_id"
     t.index ["framework_id"], name: "index_checklists_on_framework_id"
+  end
+
+  create_table "contract_forms", force: :cascade do |t|
+    t.integer "contract_manager_id"
+    t.integer "startup_registration_id"
+    t.integer "program_id"
+    t.integer "additional_contract_information_id"
+    t.datetime "from_date"
+    t.datetime "to_date"
+    t.string "duration"
+    t.string "p_1_name"
+    t.text "p_1_address"
+    t.string "p_1_phone_number"
+    t.string "p_1_email"
+    t.string "p_2_name"
+    t.text "p_2_address"
+    t.string "p_2_phone_number"
+    t.string "p_2_email"
+    t.integer "contract_id"
+    t.boolean "accept_terms_condition", default: false
+    t.boolean "contract_signed", default: false
+    t.datetime "signed_date"
+    t.boolean "isActive", default: true
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_date"
+    t.datetime "contract_send_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["additional_contract_information_id"], name: "index_contract_forms_on_additional_contract_information_id"
+    t.index ["program_id"], name: "index_contract_forms_on_program_id"
+    t.index ["startup_registration_id"], name: "index_contract_forms_on_startup_registration_id"
   end
 
   create_table "current_state_forms", force: :cascade do |t|
@@ -466,6 +507,9 @@ ActiveRecord::Schema.define(version: 2018_12_04_060211) do
     t.string "startup_geo_location"
     t.string "application_status"
     t.string "app_status_description"
+    t.boolean "contract_signed"
+    t.datetime "contract_signed_date"
+    t.datetime "contract_received_date"
     t.index ["program_id"], name: "index_startup_registrations_on_program_id"
     t.index ["program_status_id"], name: "index_startup_registrations_on_program_status_id"
     t.index ["startup_profile_id"], name: "index_startup_registrations_on_startup_profile_id"

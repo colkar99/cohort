@@ -16,6 +16,7 @@ ModuleType.create!(name: "roadmap", description: "This module used to give permi
 ModuleType.create!(name: "startup_application", description: "this module used to startup registration")
 ModuleType.create!(name: "application_question",description: "this module used to program reg questions")
 ModuleType.create!(name: "app_ques_response",description: "this module used to program reg questions")
+ModuleType.create!(name: "contract_form",description: "this module used to controll contract form")
 
 puts  "Modules created"
 

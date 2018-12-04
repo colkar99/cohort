@@ -63,7 +63,12 @@ Rails.application.routes.draw do
 		post 'v1/program/startup-app-response', to: 'startup_registrations#app_ques_res'
 		post 'v1/program/admin/startup-app-response', to: 'startup_registrations#app_ques_res_admin'
 		post 'v1/program/admin/startup-application-status-change' ,to: 'startup_registrations#set_app_status'
+		get 'v1/program/admin/startup-application-accept-list' ,to: 'startup_registrations#show_accept_startup'
 		#################################################################
+
+		####################Contract form creation#######################
+		post 'v1/program/startup/create-contract', to: 'contract_forms#create'
+		##################################################################
 
 		######startup profile ###########
 		post 'v1/startup/direct-registration', to: 'startup_profiles#direct_registration'
