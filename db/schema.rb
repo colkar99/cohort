@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_105202) do
+ActiveRecord::Schema.define(version: 2018_12_05_124333) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -438,7 +438,6 @@ ActiveRecord::Schema.define(version: 2018_12_05_105202) do
 
   create_table "startup_profiles", force: :cascade do |t|
     t.string "startup_name"
-    t.string "password_digest"
     t.string "email"
     t.string "main_image"
     t.string "thumb_image"
@@ -461,6 +460,8 @@ ActiveRecord::Schema.define(version: 2018_12_05_105202) do
     t.string "current_stage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "startup_registration_id"
+    t.index ["startup_registration_id"], name: "index_startup_profiles_on_startup_registration_id"
   end
 
   create_table "startup_question_responses", force: :cascade do |t|
@@ -485,7 +486,6 @@ ActiveRecord::Schema.define(version: 2018_12_05_105202) do
     t.string "website_url"
     t.string "entity_type"
     t.integer "program_id"
-    t.integer "startup_profile_id"
     t.integer "program_status_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -515,7 +515,6 @@ ActiveRecord::Schema.define(version: 2018_12_05_105202) do
     t.datetime "contract_received_date"
     t.index ["program_id"], name: "index_startup_registrations_on_program_id"
     t.index ["program_status_id"], name: "index_startup_registrations_on_program_status_id"
-    t.index ["startup_profile_id"], name: "index_startup_registrations_on_startup_profile_id"
   end
 
   create_table "startup_users", force: :cascade do |t|

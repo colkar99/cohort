@@ -17,7 +17,11 @@ module V1
 			elsif startup.application_status == "CSWFP"
 				binding.pry			
 				###########send mail to contract_manager to verify contract##########			
-				###########send mail to program_director they signed contract success##########			
+				###########send mail to program_director they signed contract success##########
+			elsif startup.application_status == "CFA"
+				binding.pry			
+				###########send mail to startup that contract appsroved go and reset password##########			
+				###########send mail to program_director they signed contract success##########					
 			end  
 			
 		end

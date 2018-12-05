@@ -93,7 +93,6 @@ module V1
 				contract_form = ContractForm.find(params[:contract_form_id])
 				startup_application = StartupRegistration.find(contract_form.startup_registration_id)
 				program_status = ProgramStatus.find_by_status("CFA")
-				binding.pry
 				if contract_form && startup_application
 					contract_form.manager_approval = true
 					contract_form.manager_approved_date = Time.now
@@ -101,6 +100,8 @@ module V1
 					startup_application.application_status = program_status.status
 					startup_application.app_status_description = program_status.description
 					if startup_application.save! && contract_form.save!
+						MailersController.program_startup_status(startup_application)
+						StartupProfilesController.auto_populate(startup_application,contract_form)
 						render json: {startup_application: startup_application,contract_form: contract_form},status: :ok
 					else
 						render json: {errors:{err_1: startup_application.errors, err_2: contract_form.errors}},status: :unprocessable_entity

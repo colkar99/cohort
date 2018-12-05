@@ -112,13 +112,36 @@ module V1
  	    		end
  	    end
 
+ 	    def self.auto_populate(startup_app,contract_form)
+ 	    	startup_app = startup_app
+ 	    	contract_form = contract_form
+ 	    	startup_profile = StartupProfile.new
+ 	    	startup_profile.startup_name = startup_app.startup_name
+ 	    	startup_profile.startup_registration_id = startup_app.id
+ 	    	startup_profile.founded_date = startup_app.founded_date
+ 	    	startup_profile.address_line_1 = startup_app.startup_address_line_1
+ 	    	startup_profile.address_line_2 = startup_app.startup_address_line_2
+ 	    	startup_profile.city = startup_app.startup_city
+ 	    	startup_profile.state_province_region = startup_app.startup_state_province_region
+ 	    	startup_profile.zip_pincode_postalcode = startup_app.startup_zip_pincode_postalcode
+ 	    	startup_profile.country = startup_app.startup_country
+ 	    	startup_profile.geo_location = startup_app.startup_geo_location
+ 	    	###########################################
+ 	    	user = User.new
+ 	    	user.full_name = startup_app.founder_name
+ 	    	user.email = startup_app.founder_email
+ 	    	user.phone_number = startup_app.founder_phone_number
+ 	    	user.credentials = startup_app.founder_credentials
+ 	    	user.credentials = startup_app.founder_experience
+
+ 	    end
+
 
  	    private
  	    def startup_profile_params
 		    params.require(:startup_profile).permit(:id,
+		    									:startup_registration_id,
 		    									:startup_name,
-		    									:password,
-		    									:password_confirmation,
 		    									:email,
 		    									:main_image,
 		    									:thumb_image,
@@ -126,10 +149,15 @@ module V1
 		    									:founded_date,
 		    									:description,
 		    									:incorporated,
-		    									:address_line_1,:address_line_2,
-		    									:city,:state_province_region,
-		    									:zip_pincode_postalcode,:country,
-		    									:geo_location,:team_size,:current_stage
+		    									:address_line_1,
+		    									:address_line_2,
+		    									:city,
+		    									:state_province_region,
+		    									:zip_pincode_postalcode,
+		    									:country,
+		    									:geo_location,
+		    									:team_size,
+		    									:current_stage
 		    									 )
  	    end
 
@@ -138,7 +166,7 @@ end
 
 
 ######Startup Profile params########
-
+    # t.integer "startup_registration_id"
 #    t.string "startup_name"
 #    t.string "password_digest"
 #    t.string "email"
@@ -163,3 +191,55 @@ end
 #    t.string "current_stage"
 #    t.datetime "created_at", null: false
 #    t.datetime "updated_at", null: false
+
+:startup_name,
+		    									:founded_date,
+		    									:website_url,
+		    									:entity_type,
+		    									:founder_name,
+		    									:founder_email,
+		    									:founder_skills,
+		    									:founder_phone_number,
+		    									:founder_credentials,
+		    									:founder_experience,
+		    									:founder_commitment,
+		    									:startup_address_line_1,
+		    									:startup_address_line_2,
+		    									:startup_city,
+		    									:startup_state_province_region,
+		    									:startup_zip_pincode_postalcode,
+		    									:startup_country,
+		    									:startup_geo_location,
+		    									:program_id,
+		    									# :startup_profile_id,
+		    									:program_status_id,
+		    									:created_by,
+		    									:isActive,
+		    									:application_status,
+		    									:app_status_description 
+
+
+		    									t.string "first_name"
+    t.string "last_name"
+    t.string "full_name"
+    t.string "email"
+    t.string "password_digest"
+    t.string "access_token"
+    t.string "user_main_image"
+    t.string "credentials"
+    t.string "commitment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "phone_number"
+    t.boolean "isDelete", default: false
+    t.integer "deleted_by"
+    t.datetime "deleted_date"
+    t.integer "created_by"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state_province_region"
+    t.string "zip_pincode_postalcode"
+    t.string "country"
+    t.string "geo_location"
+    t.string "user_type"
