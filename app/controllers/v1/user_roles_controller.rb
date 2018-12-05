@@ -11,7 +11,7 @@ module V1
 	 		user_role.created_by = current_user.id
 	 		if user_role.save!
 	 			render json: @user_role ,status: :created 
-
+	 			# set_roles_to_users
 	 		else
 	 			render json: user.errors, status: :unprocessable_entity
 	 		end
@@ -63,6 +63,7 @@ module V1
 		 	@user_role.isDelete = true
 		 	if @user_role.update(user_role_params)
 		 		render json: @user_role ,status: :ok 
+		 		delete_role_user
 		 	else
 		 		render json: @user_role, status: :unprocessable_entity
 		 	end
@@ -92,6 +93,26 @@ module V1
 	 	render json: user_roles, status: :ok 
 	 end
 
+	 def set_roles_to_users
+	 	role_user = RoleUser.where("user_id": params[:user_role][:user_id],"role_id": params[:user_role][:role_id])
+	 	if role_user.present?
+	 		true
+	 	else
+	 		role_user = RoleUser.new("user_id": params[:user_role][:user_id],
+	 									"role_id": params[:user_role][:role_id])
+	 		role_user.save!
+	 		true
+	 	end
+
+	 end
+
+	 def delete_role_user
+	 	role_user = RoleUser.where("user_id": params[:user_role][:user_id],"role_id": params[:user_role][:role_id])
+	 	if role_user.present?
+	 		role_user.delete_all
+	 	end
+	 	true
+	 end
 	 private
 
 	 def user_role_params

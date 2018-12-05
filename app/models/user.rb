@@ -10,6 +10,8 @@ class User < ApplicationRecord
 	has_many :startup_users
 	has_many :startup_profiles, through: :startup_users
 	# has_many :startup_profiles ,through: :selected_mentors,:dependent => :delete_all
+	has_many :role_users
+	has_many :roles, through: :role_users
 
 	before_save  :set_create_attr
 	before_validation :downcase_email
@@ -17,7 +19,9 @@ class User < ApplicationRecord
 
 	
 	def set_create_attr
-		self.full_name = self.first_name + " " + self.last_name
+		if self.first_name && self.last_name
+			self.full_name = self.first_name + " " + self.last_name
+		end	
 	end
 
 	private

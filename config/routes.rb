@@ -46,10 +46,10 @@ Rails.application.routes.draw do
 		post 'v1/delete-program', to: 'programs#delete'
 
 		####Program Registration Questions######
-		post 'v1/create-program-registration-question', to: 'program_registration_questions#create'
-		put 'v1/edit-program-registration-question', to: 'program_registration_questions#edit'
-		get 'v1/show-program-registration-questions', to: 'program_registration_questions#show'
-		post 'v1/delete-program-registration-question', to: 'program_registration_questions#delete'
+		post 'v1/create-application-question', to: 'application_questions#create'
+		put 'v1/edit-application-question', to: 'application_questions#edit'
+		get 'v1/show-application-questions', to: 'application_questions#show'
+		post 'v1/delete-application-question', to: 'application_questions#delete'
 		###############
 		####startup Registration Questions######
 		post 'v1/create-startup-profile-question', to: 'startup_profile_questions#create'
@@ -57,6 +57,23 @@ Rails.application.routes.draw do
 		get 'v1/show-startup-profile-questions', to: 'startup_profile_questions#show'
 		post 'v1/delete-startup-profile-question', to: 'startup_profile_questions#delete'
 		###############
+		###############Startup_registration - program-registration#######
+		post 'v1/program/startup-registration', to: 'startup_registrations#create'
+		post 'v1/program/startup-app-response', to: 'startup_registrations#app_ques_res'
+		post 'v1/program/show-startup-program-wise', to: 'startup_registrations#show_registered_startup'
+		post 'v1/program/startup-application-details', to: 'startup_registrations#show_all_details'
+		post 'v1/program/admin/startup-app-response', to: 'startup_registrations#app_ques_res_admin'
+		post 'v1/program/admin/startup-application-status-change' ,to: 'startup_registrations#set_app_status'
+		# get 'v1/program/admin/startup-application-accept-list' ,to: 'startup_registrations#show_accept_startup'
+		#################################################################
+
+		####################Contract form creation#######################
+		# post 'v1/program/startup/create-contract', to: 'contract_forms#create'
+		post 'v1/program/startup/get-contract-form-for-user', to: 'contract_forms#send_contract_details'
+		post 'v1/program/startup/contract-form-response', to: 'contract_forms#contract_form_response'
+		post 'v1/program/admin/get-approval-contract-form', to: 'contract_forms#get_contract_form_by_approval'
+		post 'v1/program/admin/approved-contract-form', to: 'contract_forms#approved_by_admin'
+		##################################################################
 
 		######startup profile ###########
 		post 'v1/startup/direct-registration', to: 'startup_profiles#direct_registration'
@@ -77,7 +94,7 @@ Rails.application.routes.draw do
 		######################################
 
 		################startup registration########
-		post 'v1/program/registration', to: 'startup_registrations#create'
+		# post 'v1/program/registration', to: 'startup_registrations#create'
 		# get 'v1/show-statuses', to: 'program_statuses#show'
 		# put 'v1/edit-status', to: 'program_statuses#edit'
 		# post 'v1/delete-status', to: 'program_statuses#delete'

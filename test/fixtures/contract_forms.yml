@@ -1,0 +1,53 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contract_manager_id: 1
+  startup_registration: one
+  program: one
+  additional_contract_information: one
+  from_date: 2018-12-04 16:21:27
+  to_date: 2018-12-04 16:21:27
+  duration: MyString
+  p_1_name: MyString
+  p_1_address: MyText
+  p_1_phone_number: MyString
+  p_1_email: MyString
+  p_2_name: MyString
+  p_2_address: MyText
+  p_2_phone_number: MyString
+  p_2_email: MyString
+  contract_id: 1
+  accept_terms_condition: false
+  contract_signed: false
+  signed_date: 2018-12-04 16:21:27
+  isActive: false
+  isDelete: false
+  deleted_by: 1
+  deleted_date: 2018-12-04 16:21:27
+  contract_send_date: 2018-12-04 16:21:27
+
+two:
+  contract_manager_id: 1
+  startup_registration: two
+  program: two
+  additional_contract_information: two
+  from_date: 2018-12-04 16:21:27
+  to_date: 2018-12-04 16:21:27
+  duration: MyString
+  p_1_name: MyString
+  p_1_address: MyText
+  p_1_phone_number: MyString
+  p_1_email: MyString
+  p_2_name: MyString
+  p_2_address: MyText
+  p_2_phone_number: MyString
+  p_2_email: MyString
+  contract_id: 1
+  accept_terms_condition: false
+  contract_signed: false
+  signed_date: 2018-12-04 16:21:27
+  isActive: false
+  isDelete: false
+  deleted_by: 1
+  deleted_date: 2018-12-04 16:21:27
+  contract_send_date: 2018-12-04 16:21:27
