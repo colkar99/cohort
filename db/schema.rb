@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_041557) do
+ActiveRecord::Schema.define(version: 2018_12_05_105202) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 2018_12_05_041557) do
     t.datetime "contract_send_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "manager_approval", default: false
+    t.datetime "manager_approved_date"
     t.index ["additional_contract_information_id"], name: "index_contract_forms_on_additional_contract_information_id"
     t.index ["program_id"], name: "index_contract_forms_on_program_id"
     t.index ["startup_registration_id"], name: "index_contract_forms_on_startup_registration_id"
@@ -257,6 +259,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_041557) do
     t.boolean "isActive", default: true
     t.datetime "deleted_at"
     t.string "deleted_by"
+    t.string "stage"
   end
 
   create_table "program_types", force: :cascade do |t|

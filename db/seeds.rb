@@ -41,11 +41,12 @@ end
 
 puts "user role created"
 
-ProgramStatus.create!(status:"PR",description: "program registered")
-ProgramStatus.create!(status:"AA",description: "Application accepted")
-ProgramStatus.create!(status:"AR",description: "Application Rrejected")
-ProgramStatus.create!(status:"CFR",description: "Contract form received")
-ProgramStatus.create!(status:"CS",description: "Contract form Signed by startup")
+ProgramStatus.create!(status:"PR",description: "Application registered" ,stage: "auto")
+ProgramStatus.create!(status:"AA",description: "Accepted", stage: "initial")
+ProgramStatus.create!(status:"AR",description: "Rejected", stage: "initial")
+ProgramStatus.create!(status:"CFR",description: "Contract form received", stage: "contract")
+ProgramStatus.create!(status:"CSWFP",description: "Contract form Signed waiting for approval", stage: "contract")
+ProgramStatus.create!(status:"CFA",description: "Contract form approved by C_manager", stage: "contract")
 puts "program_status created"
 
 

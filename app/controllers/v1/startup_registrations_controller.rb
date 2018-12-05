@@ -10,12 +10,13 @@ module V1
 			# binding.pry
 			# return 
 			startup_registration = StartupRegistration.new(startup_registration_params)
-			app_status = ProgramStatus.first
+			app_status = ProgramStatus.find_by_status("PR")
 			startup_registration.program_status_id = app_status.id
 			 startup_registration.application_status = app_status.status
 			 startup_registration.app_status_description = app_status.description
 			if startup_registration.save!
 				render json: startup_registration ,status: :created
+				MailersController.program_startup_status(startup_registration)
 			else
 				render json: startup_registration.errors, status: :unprocessable_entity
 	                       
@@ -23,29 +24,40 @@ module V1
 
 		end
 
-		def show_all_details
-			binding.pry
-			startup_app = StartupRegistration.find(params[:startup_application_id])
-			startup_app_status = startup_app.program_status
-			program = startup_app.program
-			program_location = program.ProgramLocation
-			program_reg_ques = program.application_questions
-			startup_app_ques_res = startup_app.app_ques_responses
+		def show_registered_startup #######show startups based on programs##########
+			module_grant_access = permission_control("startup_application","show")
+			if module_grant_access
+				startup_apps = StartupRegistration.where("program_id": params[:program_id])
+				render json: startup_apps ,status: :ok
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
+		end
 
-			render json: {startup_application: startup_app,
-							startup_application_status: startup_app_status,
-							program: program,
-							program_location: program_location,
-							application_question: program_reg_ques,
-							startup_responses: startup_app_ques_res}
+		def show_all_details #########show startups detailed information############
+			module_grant_access = permission_control("startup_application","show")
+			if module_grant_access
+				startup_app = StartupRegistration.find(params[:startup_application_id])
+				startup_app_status = startup_app.program_status
+				program = startup_app.program
+				program_location = program.ProgramLocation
+				program_reg_ques = program.application_questions
+				startup_app_ques_res = startup_app.app_ques_responses
+				program_status = ProgramStatus.where("stage": "initial")
+				render json: {startup_application: startup_app,
+								startup_application_status: startup_app_status,
+								program: program,
+								program_location: program_location,
+								application_question: program_reg_ques,
+								startup_responses: startup_app_ques_res,
+								program_status: program_status}
 			
-			binding.pry
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
+
 		end
 
-		def show_accept_startup
-			startup_app = StartupRegistration.where("application_status": "AA")
-			render json: startup_app , status: :ok
-		end
 
 		def app_ques_res
 			app_ques_res = AppQuesResponse.new(app_ques_response_params)
@@ -86,7 +98,12 @@ module V1
 				startup_app.application_status = program_status.status
 				startup_app.app_status_description = program_status.description
 				if startup_app.update!(startup_registration_params)
+					MailersController.program_startup_status(startup_app)
+					if startup_app.program_status.status == "AA"
+						ContractFormsController.create(startup_app)
+					end
 					render json: startup_app ,status: :ok
+
 				else
 					render json: startup_app.errors , status: :unprocessable_entity
 
