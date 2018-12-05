@@ -68,6 +68,8 @@ Rails.application.routes.draw do
 
 		####################Contract form creation#######################
 		post 'v1/program/startup/create-contract', to: 'contract_forms#create'
+		post 'v1/program/startup/contract-form-page', to: 'contract_forms#send_contract_details'
+		post 'v1/program/startup/contract-form-response', to: 'contract_forms#contract_form_response'
 		##################################################################
 
 		######startup profile ###########

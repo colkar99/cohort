@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_04_112906) do
+ActiveRecord::Schema.define(version: 2018_12_05_041557) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(version: 2018_12_04_112906) do
     t.text "p_2_address"
     t.string "p_2_phone_number"
     t.string "p_2_email"
-    t.integer "contract_id"
+    t.string "contract_id"
     t.boolean "accept_terms_condition", default: false
     t.boolean "contract_signed", default: false
     t.datetime "signed_date"

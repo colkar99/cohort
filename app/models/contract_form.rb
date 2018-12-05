@@ -6,7 +6,7 @@ class ContractForm < ApplicationRecord
   after_commit :set_contract_id, on: :create
 
   def set_contract_id
-  	self.contract_id = Time.now.strftime('%s') + "" +self.id
+  	self.contract_id = "#{Time.now.strftime('%s')}" + "" +"#{self.id}"
   	self.save!
   end
 

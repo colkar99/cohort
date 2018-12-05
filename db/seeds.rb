@@ -44,4 +44,9 @@ puts "user role created"
 ProgramStatus.create!(status:"PR",description: "program registered")
 ProgramStatus.create!(status:"AA",description: "Application accepted")
 ProgramStatus.create!(status:"AR",description: "Application Rrejected")
+ProgramStatus.create!(status:"CFR",description: "Contract form received")
+ProgramStatus.create!(status:"CS",description: "Contract form Signed by startup")
 puts "program_status created"
+
+
+# UserRole.create!(user_id: 1,role_id: 1, module_type_id: 12,create_rule: true,update_rule: true, delete_rule: true, show_rule: true)
