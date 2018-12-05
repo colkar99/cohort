@@ -132,7 +132,10 @@ module V1
  	    	user.email = startup_app.founder_email
  	    	user.phone_number = startup_app.founder_phone_number
  	    	user.credentials = startup_app.founder_credentials
- 	    	user.credentials = startup_app.founder_experience
+ 	    	# user.credentials = startup_app.founder_experience
+ 	    	user.commitment = startup_app.founder_commitment
+ 	    	user.user_type = "startup"
+ 	    	###########################################
 
  	    end
 

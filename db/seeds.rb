@@ -20,11 +20,12 @@ ModuleType.create!(name: "contract_form",description: "this module used to contr
 
 puts  "Modules created"
 
-Role.create!(name: "site_admin")
-Role.create!(name: "program_admin")
-Role.create!(name: "program_director")
-Role.create!(name: "application_manager")
-Role.create!(name: "contract_manager")
+Role.create!(name: "site_admin" ,user_role_type: "site")
+Role.create!(name: "program_admin", user_role_type: "site")
+Role.create!(name: "program_director",user_role_type: "site")
+Role.create!(name: "application_manager",user_role_type: "site")
+Role.create!(name: "contract_manager",user_role_type: "site")
+Role.create!(name: "startup_admin",user_role_type: "startup")
 
 puts  "Roles created"
 
@@ -36,7 +37,7 @@ User.create!(first_name: "program",last_name: "director",email: "director@gmail.
 puts  " users created"
 
 ModuleType.all.each do |mo_type|
-	UserRole.create!(user_id: 1,role_id: 1, module_type_id: mo_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true)
+	UserRole.create!(user_id: 1,role_id: 1, module_type_id: mo_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")
 end
 
 puts "user role created"
