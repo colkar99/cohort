@@ -2,15 +2,14 @@ module V1
 	class ProgramsController < ApplicationController
 	 	
 	 	def create
-		 	module_grand_access = user_validate("create")
-		 	@program = Program.new(program_params)
-		 	@program.created_by = current_user.id
+		 	module_grand_access = permission_control("program","create")
 		 	if module_grand_access
+		 		@program = Program.new(program_params)
+		 		@program.created_by = current_user.id
 		 			if @program.save
 			    	  	render json: @program ,status: :created 
 					else
-		      			render json: @program, status: :unprocessable_entity,
-		                       serializer: ActiveModel::Serializer::ErrorSerializer
+		      			render json: @program.errors, status: :unprocessable_entity
 					end 
 		 	else
 		 		render json: { error: "You dont have access to create program types,Please contact Site admin" }, status: :unauthorized
@@ -19,14 +18,14 @@ module V1
 		end
 ######
 	 	def edit
-		 	binding.pry
-		 	module_grand_access = user_validate("update")
+		 	# binding.pry
+		 	module_grand_access = permission_control("program","update")
 		 	if module_grand_access
 			 	@program = Program.find(params[:program][:id])
 			 	if @program.update(program_params)
-			 		render json: @program ,status: :created 
+			 		render json: @program ,status: :ok 
 			 	else
-			 		render json: @program, status: :unprocessable_entity
+			 		render json: @program.errors, status: :unprocessable_entity
 			 	end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
@@ -35,65 +34,34 @@ module V1
 	 	end
 ########
 		def show
-			@programs = Program.all
-			render json: @programs ,status: :created
+			module_grand_access = permission_control("program","show")
+			if module_grand_access
+				@programs = Program.all
+				render json: @programs ,status: :ok
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
 		end
 		########
 		def delete
-			binding.pry
-		 	module_grand_access = user_validate("delete")
+			# binding.pry
+		 	module_grand_access = permission_control("program","delete")
 		 	if module_grand_access
 			 	@program = Program.find(params[:program][:id])
 			 	@program.isDelete = true
 			 	@program.deleted_date = Time.now
 			 	@program.deleted_by = current_user.id
 			 	if @program.update(program_params)
-			 		render json: @program ,status: :created 
+			 		render json: @program ,status: :ok 
 			 	else
-			 		render json: @program, status: :unprocessable_entity
+			 		render json: @program.errors, status: :unprocessable_entity
 			 	end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 
 			end 	
 		end
-	#######This module used to get module type to give permission to specific module
-	 	def get_module
-		    	ModuleType.find_by_name("program")
-		end
-	#################	
-	###########This method is used to validate user access
-		def user_validate(data)
-	    	if data == "create"
-	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
-	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
-	    				return true if user_role.create_rule == true
-	    			end
-	    		end
-	    	return false
-	    	elsif data == "update"
-	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
-	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
-	    				return true if user_role.update_rule == true
-	    			end
-	    		end
-	    	return false
-	    	elsif data == "delete"
-	    		current_user.user_roles.each do |user_role|
-	    		binding.pry
-	    			if get_module.name == user_role.module_type.name
-	    			binding.pry
-	    				return true if user_role.delete_rule == true
-	    			end
-	    		end
-	    		return false
-	    	end	
-	    end
-	###########################
 		private
 
 		def program_params
@@ -111,7 +79,13 @@ module V1
 		    									 :logo_image,
 		    									 :duration,
 		    									 :application_start_date,
-		    									 :application_end_date
+		    									 :application_end_date,
+		    									 :framework_id,
+		    									 :site_admin,
+		    									 :program_admin,
+		    									 :program_director,
+		    									 :application_manager,
+		    									 :contract_manager
 		    									 )
 		end
 
@@ -141,3 +115,9 @@ end
 #created_at, null: false
 #updated_at, null: false
 #isActive. default: true
+#t.integer "framework_id"
+# t.integer "site_admin"
+# t.integer "program_admin"
+# t.integer "program_director"
+# t.integer "application_manager"
+# t.integer "contract_manager"

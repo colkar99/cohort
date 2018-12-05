@@ -5,7 +5,7 @@ module V1
 	 	# before_action  :current_user, :get_module
 		
 		def create
-			binding.pry
+			# binding.pry
 			check_valid_auth = check_auth
 			if check_valid_auth
 				resource = Resource.new(resource_params)
@@ -30,7 +30,7 @@ module V1
 		end
 
 		def startup_edit
-			binding.pry
+			# binding.pry
 			check_valid_auth = check_auth
 			if check_valid_auth
 				road_map = RoadMap.find(params[:road_map][:id])

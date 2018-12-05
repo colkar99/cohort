@@ -19,7 +19,7 @@ module V1
 		end
 ######
 	 	def edit
-		 	binding.pry
+		 	# binding.pry
 		 	module_grand_access = permission_control("startup_profile_question","update")
 		 	if module_grand_access
 			 	@startup_profile_question = StartupProfileQuestion.find(params[:startup_profile_question][:id])
@@ -40,7 +40,7 @@ module V1
 		end
 		########
 		def delete
-			binding.pry
+			# binding.pry
 		 	module_grand_access = permission_control("startup_profile_question","delete")
 		 	if module_grand_access
 			 	@startup_profile_question = ProgramRegistrationQuestion.find(params[:startup_profile_question][:id])

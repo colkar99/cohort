@@ -5,7 +5,7 @@ module V1
 	 	# before_action  :current_user, :get_module
 		
 		def create
-			binding.pry
+			# binding.pry
 			module_grand_access = permission_control("activity","create")
 			if module_grand_access
 				activity = Activity.new(activity_params)
