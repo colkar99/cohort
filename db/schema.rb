@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_161340) do
+ActiveRecord::Schema.define(version: 2018_12_06_102122) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -571,6 +571,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_161340) do
     t.string "country"
     t.string "geo_location"
     t.string "user_type"
+    t.string "designation"
   end
 
 end

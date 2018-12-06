@@ -17,7 +17,16 @@ ModuleType.create!(name: "startup_application", description: "this module used t
 ModuleType.create!(name: "application_question",description: "this module used to program reg questions")
 ModuleType.create!(name: "app_ques_response",description: "this module used to program reg questions")
 ModuleType.create!(name: "contract_form",description: "this module used to controll contract form")
-
+ModuleType.create!(name: "startup_profile",description: "this module used to controll startup profile")
+# user
+# role
+# user_role
+# current_state_form
+# roadmap
+# startup_application
+# app_ques_response
+# contract_form
+# startup_profile
 puts  "Modules created"
 
 Role.create!(name: "site_admin" ,user_role_type: "site")
@@ -48,6 +57,7 @@ ProgramStatus.create!(status:"AR",description: "Rejected", stage: "initial")
 ProgramStatus.create!(status:"CFR",description: "Contract form received", stage: "contract")
 ProgramStatus.create!(status:"CSWFP",description: "Contract form Signed waiting for approval", stage: "contract")
 ProgramStatus.create!(status:"CFA",description: "Contract form approved by C_manager", stage: "contract")
+ProgramStatus.create!(status:"SPC",description: "Startup profile created", stage: "profile_creation")
 puts "program_status created"
 
 

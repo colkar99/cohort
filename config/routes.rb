@@ -80,10 +80,15 @@ Rails.application.routes.draw do
 		post 'v1/startup/authentication', to: 'startup_profiles#startup_authenticate'
 		get 'v1/startup/show-profile', to: 'startup_profiles#show'
 		get 'v1/startup/show-startup-profiles', to: 'startup_profiles#show_all'
-		put 'v1/startup/edit-startup-profile', to: 'startup_profiles#edit'
 		put 'v1/user/startup/edit-startup-profile', to: 'startup_profiles#admin_edit'
 		post 'v1/startup/delete-startup-profile', to: 'startup_profiles#delete'
 		post 'v1/user/startup/delete-startup-profile', to: 'startup_profiles#user_delete'
+		post 'v1/program/startup/create-password', to: 'startup_profiles#create_password'
+		post 'v1/program/startup-profile/get-details', to: 'startup_profiles#show_all_details_for_startups'
+		put 'v1/startup/edit-startup-profile', to: 'startup_profiles#edit'
+		post 'v1/startup/create-team-member', to: 'startup_profiles#add_team_member'
+
+		# post 'v1/program/startup-profile/edit', to: 'startup_profiles#edit_startup'
 		#################################
 
 		################program status########
