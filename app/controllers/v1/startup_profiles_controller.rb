@@ -93,6 +93,7 @@ module V1
  	    	auth = check_auth_user(current_user,params[:startup_profile])
  	    	if auth
  	    		user = User.find(params[:user][:id])
+ 	    		binding.pry
  	    		if user.update!(user_params)
  	    			# startup_user_create(user,params[:startup_profile][:id])
  	    			# startup_profile = StartupProfile.find(params[:startup_profile][:id])
@@ -122,7 +123,6 @@ module V1
  	    end
 
  	    def check_auth_user(user,startup_pro)
- 	    	binding.pry
  	    	startup_profiles = current_user.startup_profiles
  	    	startup_profiles.each do |startup_profile|
  	    		return true if startup_profile.id == startup_pro[:id]

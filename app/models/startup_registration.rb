@@ -3,7 +3,7 @@ class StartupRegistration < ApplicationRecord
   has_one :startup_profile
   belongs_to :program_status
   has_many :app_ques_responses
-  has_one :current_state_form
+  # has_one :current_state_form
 
   # after_commit :reg_mail_to_admin, on: :create
 
