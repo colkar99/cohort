@@ -80,10 +80,16 @@ Rails.application.routes.draw do
 		post 'v1/startup/authentication', to: 'startup_profiles#startup_authenticate'
 		get 'v1/startup/show-profile', to: 'startup_profiles#show'
 		get 'v1/startup/show-startup-profiles', to: 'startup_profiles#show_all'
-		put 'v1/startup/edit-startup-profile', to: 'startup_profiles#edit'
 		put 'v1/user/startup/edit-startup-profile', to: 'startup_profiles#admin_edit'
 		post 'v1/startup/delete-startup-profile', to: 'startup_profiles#delete'
 		post 'v1/user/startup/delete-startup-profile', to: 'startup_profiles#user_delete'
+		post 'v1/program/startup/create-password', to: 'startup_profiles#create_password'
+		post 'v1/program/startup-profile/get-details', to: 'startup_profiles#show_all_details_for_startups'
+		put 'v1/startup/edit-startup-profile', to: 'startup_profiles#edit'
+		post 'v1/startup/create-team-member', to: 'startup_profiles#add_team_member'
+		put 'v1/startup/edit-team-member', to: 'startup_profiles#edit_team_member'
+
+		# post 'v1/program/startup-profile/edit', to: 'startup_profiles#edit_startup'
 		#################################
 
 		################program status########
@@ -104,8 +110,8 @@ Rails.application.routes.draw do
 		post 'v1/program/create-current-state-form', to: 'current_state_forms#create'
 		post 'v1/program/show-current-state-form', to: 'current_state_forms#show'
 		post 'v1/program/user/show-current-state-form', to: 'current_state_forms#admin_show'
-		put 'v1/program/edit-current-state-form', to: 'current_state_forms#edit'
-		put 'v1/program/user/edit-current-state-form', to: 'current_state_forms#admin_edit'
+		put 'v1/program/startup/edit-current-state-form', to: 'current_state_forms#edit'
+		put 'v1/program/admin/response-current-state-form', to: 'current_state_forms#admin_response'
 		# post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
 		###########road map#############

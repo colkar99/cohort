@@ -159,7 +159,7 @@ module V1
 
 	    def user_params
 	    	params.require(:user).permit(:first_name,:full_name,:last_name, :email, :phone_number,
-	    								:password, :password_confirmation,:user_main_image,
+	    								:password, :password_confirmation,:user_main_image,:designation,
 	   									:credentials,:commitment,:isDelete,:deleted_by,:deleted_date,:created_by,:id,:user_type)
 	    end
 	    def return_user(user)

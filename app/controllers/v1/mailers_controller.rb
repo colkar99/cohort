@@ -14,12 +14,22 @@ module V1
 				###########send mail to startup that they are rejected##########			
 			elsif startup.application_status == "CFR"
 				###########send mail to startup to fillup contract form##########			
-			elsif startup.application_status == "CSWFP"
-				binding.pry			
+			elsif startup.application_status == "CSWFP"		
 				###########send mail to contract_manager to verify contract##########			
-				###########send mail to program_director they signed contract success##########			
+				###########send mail to program_director they signed contract success##########
+			elsif startup.application_status == "CFA"			
+				###########send mail to startup that contract appsroved go and reset password##########			
+				###########send mail to program_director they signed contract success##########		
+			elsif startup.application_status == "SPC"
+				###########send mail to startup admin user that account has successfully created ask him to reset password##########			
+				###########send mail to program_director they signed contract success##########	
+			elsif startup.application_status == "CSFS"
+				###########Send mail to program director ,startup successfully submit current_state_form##########			
+				###########send mail to startup that they successfully submit current_state_form##########
+			elsif startup.application_status == "CSFR"
+			binding.pry			
+			###########send mail to startup that admin has reviewd and rating there current state form##########							
 			end  
-			
 		end
 
 	 end
