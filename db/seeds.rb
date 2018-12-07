@@ -17,14 +17,24 @@ ModuleType.create!(name: "startup_application", description: "this module used t
 ModuleType.create!(name: "application_question",description: "this module used to program reg questions")
 ModuleType.create!(name: "app_ques_response",description: "this module used to program reg questions")
 ModuleType.create!(name: "contract_form",description: "this module used to controll contract form")
-
+ModuleType.create!(name: "startup_profile",description: "this module used to controll startup profile")
+# user
+# role
+# user_role
+# current_state_form
+# roadmap
+# startup_application
+# app_ques_response
+# contract_form
+# startup_profile
 puts  "Modules created"
 
-Role.create!(name: "site_admin")
-Role.create!(name: "program_admin")
-Role.create!(name: "program_director")
-Role.create!(name: "application_manager")
-Role.create!(name: "contract_manager")
+Role.create!(name: "site_admin" ,user_role_type: "site")
+Role.create!(name: "program_admin", user_role_type: "site")
+Role.create!(name: "program_director",user_role_type: "site")
+Role.create!(name: "application_manager",user_role_type: "site")
+Role.create!(name: "contract_manager",user_role_type: "site")
+Role.create!(name: "startup_admin",user_role_type: "startup")
 
 puts  "Roles created"
 
@@ -36,7 +46,7 @@ User.create!(first_name: "program",last_name: "director",email: "director@gmail.
 puts  " users created"
 
 ModuleType.all.each do |mo_type|
-	UserRole.create!(user_id: 1,role_id: 1, module_type_id: mo_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true)
+	UserRole.create!(user_id: 1,role_id: 1, module_type_id: mo_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")
 end
 
 puts "user role created"
@@ -47,6 +57,9 @@ ProgramStatus.create!(status:"AR",description: "Rejected", stage: "initial")
 ProgramStatus.create!(status:"CFR",description: "Contract form received", stage: "contract")
 ProgramStatus.create!(status:"CSWFP",description: "Contract form Signed waiting for approval", stage: "contract")
 ProgramStatus.create!(status:"CFA",description: "Contract form approved by C_manager", stage: "contract")
+ProgramStatus.create!(status:"SPC",description: "Startup profile created", stage: "profile_creation")
+ProgramStatus.create!(status:"CSFS",description: "Current state form submitted", stage: "current_state_form")
+ProgramStatus.create!(status:"CSFR",description: "Current state form reviewed", stage: "current_state_form")
 puts "program_status created"
 
 

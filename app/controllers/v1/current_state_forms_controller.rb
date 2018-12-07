@@ -5,15 +5,22 @@ module V1
 	 	# before_action  :current_user, :get_module
 		
 		def create
-			check_valid_auth = check_auth
+			check_valid_auth = check_auth_user(current_user,params[:startup_profile])
 			if check_valid_auth
-			# binding.pry
+				startup_profile = StartupProfile.find(params[:startup_profile][:id])
+				startup_registration = startup_profile.startup_registration
 				current_state_form = CurrentStateForm.new(current_state_form_params)
-				
+				status = ProgramStatus.find_by_status("CSFS")
 				if current_state_form.save!
+					startup_registration.current_state_form = true
+					startup_registration.program_status_id =  status.id
+					startup_registration.application_status =  status.status
+					startup_registration.app_status_description =  status.description
+					startup_registration.save!
+					MailersController.program_startup_status(startup_registration)
 					render json: current_state_form ,status: :created
 				else
-					render json: current_state_form, status: :unprocessable_entity
+					render json: current_state_form.errors, status: :unprocessable_entity
 		                       
 				end
 			else
@@ -49,35 +56,39 @@ module V1
 		end
 
 		def edit
-			check_valid_auth = check_auth
-			current_state_form =  CurrentStateForm.find(params[:current_state_form][:id])
-			# binding.pry
-			if check_valid_auth && current_state_form
+			check_valid_auth = check_auth_user(current_user,params[:startup_profile])
+			if check_valid_auth
+				current_state_form = CurrentStateForm.find(params[:current_state_form][:id])
+				status = ProgramStatus.find_by_status("CSFS")
 				if current_state_form.update!(current_state_form_params)
-					render json: current_state_form, status: :ok
-
+					render json: current_state_form ,status: :ok
 				else
-					render json: current_state_form, status: :unprocessable_entity
-
+					render json: current_state_form.errors, status: :unprocessable_entity		                       
 				end
 			else
-				render json: {error: "Invalid Authorization or result not found"}, status: :unauthorized
-
-			end
+				render json: {error: "Invalid Authorization"}, status: :unauthorized
+			end			
 		end 
 
-		def admin_edit
-			# binding.pry
+		def admin_response
 			module_grand_access = permission_control("current_state_form","update")
 			current_state_form =  CurrentStateForm.find(params[:current_state_form][:id])
-						binding.pry
 			if current_state_form && module_grand_access
+				status = ProgramStatus.find_by_status("CSFR")
+				startup_application = current_state_form.startup_registration
+				startup_profile = startup_application.startup_profile
+				startup_application.current_state_form_reviewed = true
+				startup_application.program_status_id = status.id
+				startup_application.application_status = status.status
+				startup_application.app_status_description = status.description
+				startup_application.save!
 				current_state_form.reviewer_id = current_user.id
+				MailersController.program_startup_status(startup_application)
 				if current_state_form.update!(current_state_form_params)
 					render json: current_state_form, status: :ok
 
 				else
-					render json: current_state_form, status: :unprocessable_entity
+					render json: current_state_form.errors, status: :unprocessable_entity
 
 				end
 			else
@@ -91,18 +102,24 @@ module V1
 
 		end
 
-		def check_auth
- 	    	auth = request.headers[:Authorization]
- 	    	startup_profile = StartupProfile.find_by_password_digest(auth)
- 	    	return false if !startup_profile.present?
- 	    	true
- 	   
- 	    end
+ 	    def check_auth_user(user,startup_pro)
+ 	    	startup_profiles = current_user.startup_profiles
+ 	    	startup_profiles.each do |startup_profile|
+ 	    		return true if startup_profile.id == startup_pro[:id]
+ 	    	end
+ 	    	false
+ 	    	# binding.pry
+ 	    	# auth = request.headers[:Authorization]
+ 	    	# startup_profile = StartupProfile.find_by_password_digest(auth)
+ 	    	# return false if !startup_profile.present?
+ 	    	# true
+ 	   end
 
 
  	    private
  	    def current_state_form_params
 		    params.require(:current_state_form).permit(:id,
+		    									:startup_registration_id,
 		    									:revenue,
 		    									:traction,
 		    									:solution_readiness,
