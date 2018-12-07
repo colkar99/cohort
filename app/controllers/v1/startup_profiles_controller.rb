@@ -89,6 +89,24 @@ module V1
 
  	    end
 
+ 	    def edit_team_member
+ 	    	auth = check_auth_user(current_user,params[:startup_profile])
+ 	    	if auth
+ 	    		user = User.find(params[:user][:id])
+ 	    		if user.update!(user_params)
+ 	    			# startup_user_create(user,params[:startup_profile][:id])
+ 	    			# startup_profile = StartupProfile.find(params[:startup_profile][:id])
+ 	    			# startup_users = startup_profile.users
+ 	    			render json: {startup_user: user}, status: :ok
+ 	    		else
+ 	    			render json: user.errors,status: :unprocessable_entity
+ 	    		end
+ 	    	else
+ 	    		render json: {error: "Invalid Authorization"}, status: :unauthorized
+
+ 	    	end
+ 	    end
+
  	    def admin_edit
  	    	module_grand_access = permission_control("startup_profile","update")
  	    	if module_grand_access

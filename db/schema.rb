@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_06_102122) do
+ActiveRecord::Schema.define(version: 2018_12_06_120018) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -176,8 +176,10 @@ ActiveRecord::Schema.define(version: 2018_12_06_102122) do
     t.string "reviewer_feedback"
     t.integer "reviewer_id"
     t.integer "total_rating"
+    t.integer "startup_registration_id"
     t.index ["program_id"], name: "index_current_state_forms_on_program_id"
     t.index ["startup_profile_id"], name: "index_current_state_forms_on_startup_profile_id"
+    t.index ["startup_registration_id"], name: "index_current_state_forms_on_startup_registration_id"
   end
 
   create_table "frameworks", force: :cascade do |t|

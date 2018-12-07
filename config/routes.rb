@@ -87,6 +87,7 @@ Rails.application.routes.draw do
 		post 'v1/program/startup-profile/get-details', to: 'startup_profiles#show_all_details_for_startups'
 		put 'v1/startup/edit-startup-profile', to: 'startup_profiles#edit'
 		post 'v1/startup/create-team-member', to: 'startup_profiles#add_team_member'
+		put 'v1/startup/edit-team-member', to: 'startup_profiles#edit_team_member'
 
 		# post 'v1/program/startup-profile/edit', to: 'startup_profiles#edit_startup'
 		#################################
