@@ -1,6 +1,6 @@
 module V1
 	 class UsersController < ApplicationController
-	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_user,:mentor_user]
+	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_user,:mentor_user,:index]
 	 	# before_action  :current_user, :get_module
  	    def create
 	      @user = User.new(user_params)
@@ -153,6 +153,16 @@ module V1
 	   		 end
 
 	   	end
+	   end
+
+	   def index
+	   	@users = User.all
+	   	respond_to do |format|
+	   		format.html
+	   		format.csv {send_data @users.to_csv}
+	   		format.xls {send_data @users.to_csv(col_sep: "\t")}
+	   	end
+	   	
 	   end
 
 	    private

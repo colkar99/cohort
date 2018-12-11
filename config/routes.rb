@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   	scope module: :v1 do
+  		##############testing for xls export############
+  		get 'v1/users/get-users', to: 'users#index'
+  		#########################################
 		post 'v1/authenticate', to: 'authentication#authenticate'
 		post 'v1/user/registration', to: 'users#create'
 		post 'v1/users/show-all', to: 'users#show_user_by_type'
