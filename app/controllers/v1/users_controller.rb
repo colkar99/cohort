@@ -165,6 +165,12 @@ module V1
 	   	
 	   end
 
+	   def import
+	   	binding.pry
+		  User.import(params[:file])
+
+		  # redirect_to root_url, notice: 'Products imported.'
+		end
 	    private
 
 	    def user_params

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   	scope module: :v1 do
   		##############testing for xls export############
   		get 'v1/users/get-users', to: 'users#index'
+  		post '/v1/users/add-users', to: 'users#import'
   		#########################################
 		post 'v1/authenticate', to: 'authentication#authenticate'
 		post 'v1/user/registration', to: 'users#create'
