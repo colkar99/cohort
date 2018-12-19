@@ -29,10 +29,11 @@ module V1
 	    def get_user_detail
 	    	user = current_user
 	    	roles = current_user.roles
+	    	# binding.pry
 	    	if user.present? && roles.present?
 		    	render json: {user: user, roles: roles},status: :ok 
 	    	else
-	    		render json: {erros: user.errors}, status: :unprocessable_entity
+	    		render json: {errors: user.errors}, status: :unprocessable_entity
 
 	    	end
 	    end
