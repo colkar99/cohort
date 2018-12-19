@@ -25,6 +25,17 @@ module V1
 	       	render json: { error: "You dont have access to create users,Please contact Site admin" }, status: :unauthorized
 	       end	
 	    end
+
+	    def get_user_detail
+	    	user = current_user
+	    	roles = current_user.roles
+	    	if user.present? && roles.present?
+		    	render json: {user: user, roles: roles},status: :ok 
+	    	else
+	    		render json: {erros: user.errors}, status: :unprocessable_entity
+
+	    	end
+	    end
 	    def delete
 		    if current_user.id == params[:id]
 		   		user = User.find(params[:id])
