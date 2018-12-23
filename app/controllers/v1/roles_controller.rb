@@ -18,6 +18,18 @@ module V1
 			end
 
 		end
+
+		def get_role_by_user_type
+			module_grant_access = permission_control("role","show")
+			if module_grant_access
+				roles = Role.where(user_role_type: params[:user_role_type])
+				render json: roles, status: :ok
+			else
+	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
+		end
+
 		def show_all
 			module_grant_access = permission_control("role","show")
 			if module_grant_access
