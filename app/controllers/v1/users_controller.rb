@@ -28,16 +28,19 @@ module V1
 
 	    def create_user_by_admin
 	    	user = User.new(user_params)
-	    	role_user = RoleUser.new(role_user_params)
+	    	role_user = RoleUser.new
 	      # module_access_grands = user_validate('update')
 	      module_access_grands = permission_control("user","create")
 	       if module_access_grands
 	       	  user.created_by = current_user.id
+	       	  user.password = "demo123"
+	       	  user.password_confirmation = "demo123"
 	       		if  user.save!
 	      			role_user.user_id = user.id
-	      			role_user.role_id = params[:role][:role_id]
+	      			role_user.role_id = params[:role][:role_id].to_i
 	      			if role_user.save!
 	      				role = user.roles
+	      				###send mail to registerd user
 	      				render json: {user: user, role: role} , status: :created
 	      			else
 	      				render json: role_user.errors, status: :unprocessable_entity
@@ -62,6 +65,18 @@ module V1
 	    		render json: {errors: user.errors}, status: :unprocessable_entity
 
 	    	end
+	    end
+
+	    def get_all_users
+	    	module_access_grands = permission_control("user","create")
+	       if module_access_grands
+	       	  users = User.all
+
+	       	 render json: users, status: :ok
+	       else
+	       	render json: { error: "You dont have access to create users,Please contact Site admin" }, status: :unauthorized
+	       end		
+	    	
 	    end
 	    def delete
 		    if current_user.id == params[:id]
