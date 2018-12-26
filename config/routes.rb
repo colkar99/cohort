@@ -5,7 +5,10 @@ Rails.application.routes.draw do
 		get 'v1/get-user-details', to: 'users#get_user_detail' #using
 		post 'v1/get-roles-user-type', to: 'roles#get_role_by_user_type' #using
 		post 'v1/create-user-by-admin', to: 'users#create_user_by_admin' #using
-		get 'v1/get-all-users', to: 'users#get_all_users'
+		put 'v1/update-user-by-admin', to: 'users#update_user_by_admin' #using
+		get 'v1/get-all-users', to: 'users#get_all_users' #using
+		put 'v1/put-user-role', to: 'user_roles#put_by_admin'#using
+		post 'v1/get-user-related-data', to: 'users#get_user_related_datas'
 		post 'v1/user/registration', to: 'users#create'
 		post 'v1/users/show-all', to: 'users#show_user_by_type'
 		put 'v1/user/edit', to: 'users#edit'

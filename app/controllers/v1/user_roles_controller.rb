@@ -35,6 +35,20 @@ module V1
 	 	end
 	 	
 	 end
+	 def put_by_admin
+	 		module_grand_access = permission_control("user_role","update")
+	 		if module_grand_access
+	 			user_role = UserRole.find(params[:user_role][:id])
+	 			if user_role.update!(user_role_params)
+	 				render json: user_role , status: :ok
+	 			else
+	 				render json: user_role.errors, status: :unprocessable_entity
+	 			end
+	 		else
+	 			render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+	 		end
+
+	 end
 
 	 def edit
 	 	# binding.pry
