@@ -54,7 +54,7 @@ module V1
 	 	user_roles_permission = permission_control("user_role","create")
 	 	role_permission =  permission_control("role","create")
 	 	if user_roles_permission && role_permission
-	 		user_roles = UserRole.where("user_id": params[:user_role][:user_id],"role_id": params[:user_role][:role_id],"module_type_id": params[:user_role][:module_type_id])
+	 		user_roles = UserRole.where("user_id": params[:user_role][:user_id],"role_id": params[:user_role][:role_id],"module_type_id": params[:user_role][:module_type_id],"isDelete": false)
 	 		if user_roles.present?
 	 			render json: {warning: "This privilege is already exists ,Please check in the list!"}
 	 		else
@@ -70,6 +70,27 @@ module V1
 
 	 	else
 	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+	 	end
+	 	
+	 end
+
+	 def delete_user_role
+	 	user_roles_permission = permission_control("user_role","delete")
+	 	if user_roles_permission
+	 		user_role = UserRole.find(params[:id])
+	 		if user_role.present?
+	 			user_role.isDelete = true
+	 			user_role.deleted_by = current_user.id 
+	 			if user_role.save!
+	 				render json: user_role,status: :ok
+	 			else
+	 				render json: user_role.errors, status: :ok
+	 			end
+	 		else
+	 			render json: {warning: "This privilege does not exists"}
+	 		end 
+	 	else
+	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 		
 	 	end
 	 	
 	 end

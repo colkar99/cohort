@@ -8,7 +8,8 @@ Rails.application.routes.draw do
 		put 'v1/update-user-by-admin', to: 'users#update_user_by_admin' #using
 		get 'v1/get-all-users', to: 'users#get_all_users' #using
 		put 'v1/put-user-role', to: 'user_roles#put_by_admin'#using
-		post 'v1/create-user-role-by-admin', to: 'user_roles#create_user_role_by_admin'
+		post 'v1/create-user-role-by-admin', to: 'user_roles#create_user_role_by_admin'#using
+		put 'v1/delete-user-role', to: 'user_roles#delete_user_role'
 		post 'v1/get-user-related-data', to: 'users#get_user_related_datas'
 		post 'v1/user/registration', to: 'users#create'
 		post 'v1/users/show-all', to: 'users#show_user_by_type'
