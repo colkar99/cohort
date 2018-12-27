@@ -62,6 +62,42 @@ module V1
 
 			end 	
 		end
+		def get_data_for_program_module
+			module_grand_access = permission_control("program","show")
+			if module_grand_access
+				program_types = ProgramType.all
+				program_locations = ProgramLocation.all
+				frameworks = Framework.all
+				users = User.where("user_type": "site" )
+				program_admin = []
+				program_director = []
+				application_manager = []
+				contract_manager = []
+				users.each do |user|
+					user_roles = user.roles
+					user_roles.each do |usrRole|
+						# binding.pry
+						if usrRole.name == "program_admin"
+							program_admin.push(user)
+						elsif usrRole.name == "program_director"
+							program_director.push(user)
+						elsif usrRole.name == "application_manager"
+							application_manager.push(user)
+						elsif usrRole.name == "contract_manager"
+							contract_manager.push(user)
+						end	
+					end 
+				end
+				render json: {users:{program_admin: program_admin,program_director: program_director,
+									application_manager: application_manager,contract_manager: contract_manager
+									},
+									program_types: program_types,program_locations: program_locations, frameworks: frameworks},
+							status: :ok			
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
+		end
 		private
 
 		def program_params
