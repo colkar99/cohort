@@ -8,6 +8,7 @@
 ModuleType.create!(name: "user", description: "This module used to give permission to user_modules")
 ModuleType.create!(name: "role", description: "This module used to give permission to user_modules")
 ModuleType.create!(name: "user_role", description: "This module used to give permission to user role modules")
+ModuleType.create!(name: "role_user", description: "This module used to give permission to role_user modules")
 ModuleType.create!(name: "program_type", description: "This module used to give permission to program type modules")
 ModuleType.create!(name: "program_location", description: "This module used to give permission to program location modules")
 ModuleType.create!(name: "program", description: "This module used to give permission to program modules")
