@@ -4,12 +4,12 @@ module V1
 	 	def create
 		 	module_grand_access = permission_control("program","create")
 		 	if module_grand_access
-		 		@program = Program.new(program_params)
-		 		@program.created_by = current_user.id
-		 			if @program.save
-			    	  	render json: @program ,status: :created 
+		 		program = Program.new(program_params)
+		 		program.created_by = current_user.id
+		 			if program.save!
+			    	  	render json: program ,status: :created 
 					else
-		      			render json: @program.errors, status: :unprocessable_entity
+		      			render json: program.errors, status: :unprocessable_entity
 					end 
 		 	else
 		 		render json: { error: "You dont have access to create program types,Please contact Site admin" }, status: :unauthorized
