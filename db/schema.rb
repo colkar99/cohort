@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_07_052105) do
+ActiveRecord::Schema.define(version: 2018_12_29_081949) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -92,12 +92,8 @@ ActiveRecord::Schema.define(version: 2018_12_07_052105) do
     t.integer "created_by"
     t.string "deleted_date"
     t.text "placeholder"
-    t.integer "program_id"
-    t.integer "program_location_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["program_id"], name: "index_application_questions_on_program_id"
-    t.index ["program_location_id"], name: "index_application_questions_on_program_location_id"
   end
 
   create_table "checklists", force: :cascade do |t|
@@ -197,6 +193,17 @@ ActiveRecord::Schema.define(version: 2018_12_07_052105) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "link_of_program_questions", force: :cascade do |t|
+    t.integer "application_question_id"
+    t.integer "program_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "program_location_id"
+    t.index ["application_question_id"], name: "index_link_of_program_questions_on_application_question_id"
+    t.index ["program_id"], name: "index_link_of_program_questions_on_program_id"
+    t.index ["program_location_id"], name: "index_link_of_program_questions_on_program_location_id"
   end
 
   create_table "mentor_users", force: :cascade do |t|

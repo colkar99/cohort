@@ -7,6 +7,13 @@ module V1
 		 		program = Program.new(program_params)
 		 		program.created_by = current_user.id
 		 			if program.save!
+		 				application_questions = params[:application_questions]
+		 				application_questions.each do |app_ques|
+		 					link_of_program = LinkOfProgramQuestion.create!(
+		 						program_id: program.id, application_question_id: app_ques[:id],
+		 						program_location_id: program.ProgramLocation_id)
+		 				end
+
 			    	  	render json: program ,status: :created 
 					else
 		      			render json: program.errors, status: :unprocessable_entity
@@ -67,6 +74,7 @@ module V1
 			if module_grand_access
 				program_types = ProgramType.all
 				program_locations = ProgramLocation.all
+				application_questions = ApplicationQuestion.all
 				frameworks = Framework.all
 				users = User.where("user_type": "site" )
 				program_admin = []
@@ -91,7 +99,7 @@ module V1
 				render json: {users:{program_admin: program_admin,program_director: program_director,
 									application_manager: application_manager,contract_manager: contract_manager
 									},
-									program_types: program_types,program_locations: program_locations, frameworks: frameworks},
+									program_types: program_types,program_locations: program_locations, frameworks: frameworks,application_questions: application_questions},
 							status: :ok			
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
