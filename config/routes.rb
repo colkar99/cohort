@@ -51,9 +51,9 @@ Rails.application.routes.draw do
 		post 'v1/delete-program-location', to: 'program_locations#delete'
 		###############
 		####Program ######
-		post 'v1/create-program', to: 'programs#create'
+		post 'v1/create-program', to: 'programs#create' #using
 		put 'v1/edit-program', to: 'programs#edit'
-		get 'v1/show-programs', to: 'programs#show'
+		get 'v1/show-programs', to: 'programs#show'#using
 		post 'v1/delete-program', to: 'programs#delete'
 
 		####Program Registration Questions######

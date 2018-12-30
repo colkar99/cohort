@@ -43,8 +43,11 @@ module V1
 		def show
 			module_grand_access = permission_control("program","show")
 			if module_grand_access
-				@programs = Program.all
-				render json: @programs ,status: :ok
+				programs= Program.all
+				program_types = ProgramType.all
+				program_locations = ProgramLocation.all
+				render json: {programs: programs,program_types: program_types,
+					program_locations: program_locations} ,status: :ok
 			else
 				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
 
