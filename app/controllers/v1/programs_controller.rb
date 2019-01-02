@@ -1,6 +1,7 @@
 module V1
 	class ProgramsController < ApplicationController
-	 	
+	 	skip_before_action :authenticate_request, only: [:get_list_of_programs]
+
 	 	def create
 		 	module_grand_access = permission_control("program","create")
 		 	if module_grand_access
@@ -108,6 +109,27 @@ module V1
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 
 			end
+		end
+
+		def get_list_of_programs
+			time_today = Time.now.strftime("%F")
+			live = []
+			exp = []
+			programs = Program.all
+			if programs.present?
+				programs.each do |program|
+					if (program.application_end_date >= time_today.to_s) && (program.start_date >= time_today.to_s)
+						live.push(program)
+					else
+						exp.push(program)
+					end
+				end
+				render json: {all_programs: {live: live,exp: exp}}, status: :ok
+			else
+				render json: {errors: "Programs not available"}
+			end	
+
+			
 		end
 		private
 

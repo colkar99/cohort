@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 		post 'v1/delete-role-user-by-admin', to: 'role_users#delete_role_user_by_admin'#using
 		post 'v1/get-user-related-data', to: 'users#get_user_related_datas'#using
 		get 'v1/get-program-module', to: 'programs#get_data_for_program_module' #using
+		get 'v1/get-list-of-programs', to: 'programs#get_list_of_programs' #using
 		post 'v1/user/registration', to: 'users#create'
 		post 'v1/users/show-all', to: 'users#show_user_by_type'
 		put 'v1/user/edit', to: 'users#edit'
