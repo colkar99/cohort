@@ -1,6 +1,7 @@
 module V1
 	class ApplicationQuestionsController < ApplicationController
-	 	
+	 		 	skip_before_action :authenticate_request, only: [:show_ques_related_program,:application_question_response]
+
 	 	def create
 		 	module_grand_access = permission_control("application_question","create")
 		 	application_question = ApplicationQuestion.new(application_question_params)
@@ -15,6 +16,15 @@ module V1
 		 		render json: { error: "You dont have access to create program types,Please contact Site admin" }, status: :unauthorized
 
 		 	end
+		end
+		def show_ques_related_program
+			program = Program.find(params[:program_id])
+			program_questions = program.application_questions
+			if program_questions.present?
+				render json: program_questions, status: :ok
+			else
+				render json: {erros: "Ooops! Questions are not found for this program"} ,status: :unprocessable_entity
+			end
 		end
 ######
 	 	def edit
@@ -63,6 +73,20 @@ module V1
 
 			end 	
 		end
+
+		def application_question_response
+			program = Program.find(params[:program_id])
+			application_ques = AppQuesResponse.new(app_ques_response_params)
+			application_ques.startup_response = true
+			application_ques.program_location_id = program.ProgramLocation_id
+			application_ques.startup_registration_id = params[:startup_application_id]
+			if application_ques.save!
+				render json: application_ques , status: :created
+			else
+				render json: application_ques.errors, status: :unprocessable_entity
+			end
+
+		end
 	
 		private
 
@@ -76,6 +100,13 @@ module V1
 		    									:program_location_id,
 		    									:placeholder
 		    									 )
+		end
+		def app_ques_response_params
+			params.require(:application_ques_response).permit(:id,:application_question_id,:response,
+															  :reviewer_rating,:reviewer_feedback,
+															  :program_location_id,:startup_registration_id,
+															  :startup_response,:admin_response,:reviewed_by
+																)
 		end
 
 	end
@@ -96,3 +127,17 @@ end
 #created_at, null: false
 #updated_at, null: false
 #program_location_id
+
+
+###########application question response#########
+# t.integer "application_question_id"
+#     t.text "response"
+#     t.integer "reviewer_rating"
+#     t.text "reviewer_feedback"
+#     t.integer "program_location_id"
+#     t.datetime "created_at", null: false
+#     t.datetime "updated_at", null: false
+#     t.integer "startup_registration_id"
+#     t.boolean "startup_response", default: false
+#     t.boolean "admin_response", default: false
+#     t.integer "reviewed_by"

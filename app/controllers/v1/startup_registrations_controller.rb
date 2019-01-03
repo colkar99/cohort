@@ -1,7 +1,7 @@
 module V1
 	 class StartupRegistrationsController < ApplicationController
 	 	# skip_before_action :authenticate_request
-	 	skip_before_action :authenticate_request, only: [:create,:app_ques_res]
+	 	skip_before_action :authenticate_request, only: [:create,:app_ques_res,:create]
 	 	# before_action  :current_user, :get_module
 		
 		def create
@@ -9,6 +9,7 @@ module V1
 			# md_access = permission_control("startup_application","create")
 			# binding.pry
 			# return 
+
 			startup_registration = StartupRegistration.new(startup_registration_params)
 			app_status = ProgramStatus.find_by_status("PR")
 			startup_registration.program_status_id = app_status.id
