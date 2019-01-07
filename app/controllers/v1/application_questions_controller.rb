@@ -94,6 +94,20 @@ module V1
 			application_ques_responses = startup_application.app_ques_responses
 			render json: application_ques_responses , status: :created
 		end
+		def get_application_response_questions
+			module_grand_access = permission_control("application_question","show")
+			if module_grand_access
+				applications_res_ques = AppQuesResponse.where("startup_registration_id": params[:startup_registration_id])
+				if applications_res_ques.present?
+					render json: applications_res_ques, status: :ok
+				else
+					render json: applications_res_ques.errors, status: :not_found
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
+		end
 	
 		private
 
