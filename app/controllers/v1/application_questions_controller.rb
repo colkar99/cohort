@@ -23,7 +23,7 @@ module V1
 			if program_questions.present?
 				render json: program_questions, status: :ok
 			else
-				render json: {erros: "Ooops! Questions are not found for this program"} ,status: :unprocessable_entity
+				render json: {erros: "Ooops! Questions are not found for this program"} ,status: :not_found
 			end
 		end
 ######
@@ -76,16 +76,23 @@ module V1
 
 		def application_question_response
 			program = Program.find(params[:program_id])
-			application_ques = AppQuesResponse.new(app_ques_response_params)
-			application_ques.startup_response = true
-			application_ques.program_location_id = program.ProgramLocation_id
-			application_ques.startup_registration_id = params[:startup_application_id]
-			if application_ques.save!
-				render json: application_ques , status: :created
-			else
-				render json: application_ques.errors, status: :unprocessable_entity
+			startup_application = StartupRegistration.find(params[:startup_application_id])
+			app_questions_responses = params[:application_ques_response][:application_question]
+			app_questions_responses.each do |app_que|
+				application_ques = AppQuesResponse.new
+				application_ques.application_question_id = app_que[:application_question_id]
+				application_ques.response = app_que[:response]
+				application_ques.startup_response = true
+				application_ques.program_location_id = program.ProgramLocation_id
+				application_ques.startup_registration_id = params[:startup_application_id]
+				if application_ques.save!
+					puts "Created"
+				else
+					render application_ques.errors, status: :unprocessable_entity
+				end
 			end
-
+			application_ques_responses = startup_application.app_ques_responses
+			render json: application_ques_responses , status: :created
 		end
 	
 		private
