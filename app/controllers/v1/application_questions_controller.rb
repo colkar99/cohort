@@ -97,20 +97,77 @@ module V1
 		def get_application_response_questions
 			module_grand_access = permission_control("application_question","show")
 			if module_grand_access
+				# startup = StartupRegistration.find(params[:startup_registration_id])
 				applications_res_ques = AppQuesResponse.where("startup_registration_id": params[:startup_registration_id])
 				if applications_res_ques.present?
-					render json: applications_res_ques, status: :ok
+					render json:  applications_res_ques , status: :ok
 				else
-					render json: applications_res_ques.errors, status: :not_found
+					render json: {error: "not found"} , status: :unprocessable_entity
 				end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 
 			end
 		end
-	
-		private
+		
+		def app_ques_res_admin
+			module_grand_access = permission_control("app_ques_response","update")
+			if module_grand_access
+				startup_registration_id = 0;
+				application_question_response = params[:application_questions_response]
+				application_question_response.each do |app_que_res,value|
+					application_ques_res = AppQuesResponse.find(value[:id])
+					application_ques_res.reviewer_feedback = value[:reviewer_feedback]
+					application_ques_res.reviewer_rating = value[:reviewer_rating]
+					application_ques_res.admin_response = true
+					if application_ques_res.reviewer_feedback.present?  && application_ques_res.reviewer_rating.present?
+						if application_ques_res.save!
+							puts "Updated"
+							startup_registration_id = application_ques_res.startup_registration_id
 
+						else
+							render json: application_ques_res.errors , status: :unprocessable_entity
+						end
+					end
+
+				end
+				status = check_startups(startup_registration_id)
+				if status
+					render json: {message: "Reviews are completed"}, status: :ok
+				else
+					render json: {message: "Have pending reviews"}, status: :ok
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
+		end
+
+		private
+		def check_startups(id)
+			startup_registration = StartupRegistration.find(id)
+			app_ques_res = startup_registration.app_ques_responses
+			app_ques_res.each do |app_res|
+				if app_res[:admin_response] == false
+					program_status = ProgramStatus.find_by_status("RP")
+					startup_registration.program_status_id = program_status.id
+					startup_registration.application_status = program_status.status
+					startup_registration.app_status_description = program_status.description
+					startup_registration.score = app_ques_res.sum(:reviewer_rating)
+					if startup_registration.save!
+						return false
+					end
+				end
+			end
+			program_status = ProgramStatus.find_by_status("RC")
+			startup_registration.program_status_id = program_status.id
+			startup_registration.application_status = program_status.status
+			startup_registration.app_status_description = program_status.description
+			startup_registration.score = app_ques_res.sum(:reviewer_rating)
+			if startup_registration.save!
+				return true
+			end
+		end
 		def application_question_params
 		    params.require(:application_question).permit(:id,
 		    									:title,

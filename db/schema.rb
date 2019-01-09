@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_29_081949) do
+ActiveRecord::Schema.define(version: 2019_01_09_103330) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -525,6 +525,7 @@ ActiveRecord::Schema.define(version: 2018_12_29_081949) do
     t.datetime "contract_received_date"
     t.boolean "current_state_form", default: false
     t.boolean "current_state_form_reviewed", default: false
+    t.integer "score", default: 0
     t.index ["program_id"], name: "index_startup_registrations_on_program_id"
     t.index ["program_status_id"], name: "index_startup_registrations_on_program_status_id"
   end

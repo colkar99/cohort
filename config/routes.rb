@@ -65,6 +65,7 @@ Rails.application.routes.draw do
 		post 'v1/delete-application-question', to: 'application_questions#delete'
 		post 'v1/create-program-questions-response', to: 'application_questions#application_question_response'#using
 		post 'v1/get-program-question-response', to: 'application_questions#get_application_response_questions' #using
+		post 'v1/admin-feedback-for-startup-response', to: 'application_questions#app_ques_res_admin' #using
 		###############
 		####startup Registration Questions######
 		post 'v1/create-startup-profile-question', to: 'startup_profile_questions#create'

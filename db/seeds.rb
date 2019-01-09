@@ -53,6 +53,8 @@ end
 puts "user role created"
 
 ProgramStatus.create!(status:"PR",description: "Application registered" ,stage: "auto")
+ProgramStatus.create!(status:"RP",description: "Reviews pending by admin" ,stage: "initial")
+ProgramStatus.create!(status:"RC",description: "Reviews completed by admin" ,stage: "initial")
 ProgramStatus.create!(status:"AA",description: "Accepted", stage: "initial")
 ProgramStatus.create!(status:"AR",description: "Rejected", stage: "initial")
 ProgramStatus.create!(status:"CFR",description: "Contract form received", stage: "contract")
