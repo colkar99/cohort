@@ -28,6 +28,12 @@ Rails.application.routes.draw do
 		get 'v1/show-program-types', to: 'program_types#show'
 		post 'v1/delete-program-type', to: 'program_types#delete'
 		###################
+		##########Initial Flow controller##########
+		post 'v1/startup-accept-by-admin', to: 'initial_flows#startup_accept_by_admin' #using
+		post 'v1/startup-reject-by-admin', to: 'initial_flows#startup_reject_by_admin' #using
+		#############################################
+		###########Contract Flow controller #############3
+		post 'v1/get-contract-additional-information', to: 'contract_flows#get_additional_contract_information'#using
 		#######startup user registration#########
 		post 'v1/user/startup/registration' ,to: 'users#startup_user'
 		#########################################
@@ -55,6 +61,7 @@ Rails.application.routes.draw do
 		post 'v1/create-program', to: 'programs#create' #using
 		put 'v1/edit-program', to: 'programs#edit'
 		get 'v1/show-programs', to: 'programs#show'#using
+		get 'v1/contract-manager-programs', to: 'programs#contract_manager_programs' #using
 		post 'v1/delete-program', to: 'programs#delete'
 
 		####Program Registration Questions######
@@ -76,7 +83,8 @@ Rails.application.routes.draw do
 		###############Startup_registration - program-registration#######
 		post 'v1/program/startup-registration', to: 'startup_registrations#create' #using
 		post 'v1/program/startup-app-response', to: 'startup_registrations#app_ques_res'
-		post 'v1/program/show-startup-program-wise', to: 'startup_registrations#show_registered_startup'
+		post 'v1/program/show-startup-program-wise', to: 'startup_registrations#show_registered_startup'#using
+		post 'v1/program/show-startup-for-contract', to: 'startup_registrations#show_accetped_startup'
 		post 'v1/program/startup-application-details', to: 'startup_registrations#show_all_details'
 		post 'v1/program/admin/startup-app-response', to: 'startup_registrations#app_ques_res_admin'
 		post 'v1/program/admin/startup-application-status-change' ,to: 'startup_registrations#set_app_status'

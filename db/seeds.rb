@@ -19,6 +19,8 @@ ModuleType.create!(name: "application_question",description: "this module used t
 ModuleType.create!(name: "app_ques_response",description: "this module used to program reg questions")
 ModuleType.create!(name: "contract_form",description: "this module used to controll contract form")
 ModuleType.create!(name: "startup_profile",description: "this module used to controll startup profile")
+ModuleType.create!(name: "additional_contract_information",description: "this module used to controll additional contract informations")
+
 # user
 # role
 # user_role
@@ -65,5 +67,7 @@ ProgramStatus.create!(status:"CSFS",description: "Current state form submitted",
 ProgramStatus.create!(status:"CSFR",description: "Current state form reviewed", stage: "current_state_form")
 puts "program_status created"
 
-
+AdditionalContractInformation.create!(purpose_of_contract: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",contract_termination: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", contract_terms_condition: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",authorization: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+puts "additional contract information created"
 # UserRole.create!(user_id: 1,role_id: 1, module_type_id: 12,create_rule: true,update_rule: true, delete_rule: true, show_rule: true)
+ 

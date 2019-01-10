@@ -131,6 +131,20 @@ module V1
 
 			
 		end
+		
+		def contract_manager_programs
+			module_grand_access = permission_control("program","show")
+			if module_grand_access
+				programs = Program.where("contract_manager": current_user.id)
+				if programs
+					render json: programs, status: :ok
+				else
+					render json: {error: "Oops program not found for your id"}, status: :not_found
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+			end
+		end
 		private
 
 		def program_params

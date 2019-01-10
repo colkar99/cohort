@@ -113,15 +113,27 @@ module V1
 				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
 
 			end
-
-
 		end
 
-		def delete
-			
+		def show_accetped_startup
+			module_grant_access = permission_control("startup_application","show")
+			if module_grant_access
+				program = Program.find(params[:program_id])
+				if program
+					startups = program.startup_registrations.where("application_status": "AA")
+					if startups
+						render json: startups, status: :ok
+					else
+						render json: {errors: "Startup not found"} ,status: :not_found
+					end
+				else
+					render json: {errors: "Program not found"} ,status: :unprocessable_entity
+				end
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
 
+			end
 		end
-
 
  	    private
  	    def startup_registration_params
