@@ -71,3 +71,14 @@ AdditionalContractInformation.create!(purpose_of_contract: "Lorem Ipsum is simpl
 puts "additional contract information created"
 # UserRole.create!(user_id: 1,role_id: 1, module_type_id: 12,create_rule: true,update_rule: true, delete_rule: true, show_rule: true)
  
+ Framework.create!(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+puts "framework created"
+
+program_location.create!(address_line_1: "some address line 1", address_line_2: "some address line 2",city: "some city" )
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state_province_region"
+    t.string "zip_pincode_postalcode"
+    t.string "country"
+    t.string "geo_location"
