@@ -4,7 +4,6 @@ module V1
 	 # skip_before_action :authenticate_request
 
 	 def get_additional_contract_information
-	 	binding.pry
 	 	module_grant_access = permission_control("additional_contract_information","show")
 	 	if module_grant_access
 	 		add_con_info = AdditionalContractInformation.all

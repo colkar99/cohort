@@ -33,7 +33,7 @@ Rails.application.routes.draw do
 		post 'v1/startup-reject-by-admin', to: 'initial_flows#startup_reject_by_admin' #using
 		#############################################
 		###########Contract Flow controller #############3
-		post 'v1/get-contract-additional-information', to: 'contract_flows#get_additional_contract_information'#using
+		get 'v1/get-contract-additional-information', to: 'contract_flows#get_additional_contract_information'#using
 		#######startup user registration#########
 		post 'v1/user/startup/registration' ,to: 'users#startup_user'
 		#########################################
