@@ -86,6 +86,4 @@ ProgramType.create!(program_type_title: "demo type",program_type_description: "d
 puts "prgram type created"
 
 ApplicationQuestion.create!(title: "demo questions", question: "demo question",description: "demo description" )
-    t.string "title"
-    t.text "question"
-    t.text "description"
+  

@@ -1,7 +1,7 @@
 # app/controllers/authentication_controller.rb
 module V1
 	class InitialFlowsController < ApplicationController
-	 skip_before_action :authenticate_request, only: [:get_application_current_form_data]
+	 skip_before_action :authenticate_request, only: [:get_application_current_form_data,:current_state_form_submit]
 	 def startup_accept_by_admin
 	 	module_grand_access = permission_control("startup_application","update")
 	 	if module_grand_access
@@ -87,7 +87,32 @@ module V1
  		end
  	 end
 
+ 	 def current_state_form_submit
+ 	 	current_state_form = CurrentStateForm.new(current_state_form_params)
+ 	 	startup_registration = StartupRegistration.find(params[:current_state_form][:startup_registration_id])
+ 	 	status = status_change_for_app(startup_registration,'CSFS')
+ 	 	if status
+ 	 		if current_state_form.save!
+ 	 			render json: current_state_form, status: :ok
+ 	 		else
+ 	 			render json: current_state_form.errors, status: :unprocessable_entity
+ 	 		end
+ 	 	else
+ 	 		render json: {error: "Something happened please contact support"}, status: :unprocessable_entity
+
+ 	 	end
+ 	 end
+ 	 
 	 private
+
+    def current_state_form_params
+    params.require(:current_state_form).permit(:id,:startup_registration_id,:revenue,:traction,:solution_readiness,
+    											:investment,:team_velocity,:partners,:vendors,:vendors_costs,
+    									:experiment_testing,:customer_segment,:problem_validation,:channels,:governance,
+    									:startup_profile_id,:program_id,:responser_id,:reviewer_rating,
+    									:reviewer_feedback,:reviewer_id,:total_rating
+    									 )
+    end
 	 def check_startups_accept(app_ques_responses)
 		app_ques_res = app_ques_responses
 		app_ques_res.each do |app_res|
