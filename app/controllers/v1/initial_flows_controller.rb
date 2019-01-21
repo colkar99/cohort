@@ -1,7 +1,7 @@
 # app/controllers/authentication_controller.rb
 module V1
 	class InitialFlowsController < ApplicationController
-	 # skip_before_action :authenticate_request, only: [:show_ques_related_program,:application_question_response]
+	 skip_before_action :authenticate_request, only: [:get_application_current_form_data]
 	 def startup_accept_by_admin
 	 	module_grand_access = permission_control("startup_application","update")
 	 	if module_grand_access
@@ -76,6 +76,15 @@ module V1
  	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
 
  	 	end
+ 	 end
+
+ 	 def get_application_current_form_data
+ 		startup_registration = StartupRegistration.find(params[:startup_application_id])
+ 		if startup_registration
+ 			render json: startup_registration, status: :ok
+ 		else
+ 			render json: {error: "not found"},status: :not_found
+ 		end
  	 end
 
 	 private

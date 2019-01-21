@@ -27,7 +27,7 @@ module V1
 	   		@user.access_token = command.result
 	     	@user.save!
 	   else
-	     render json: { error: command.errors }, status: :unauthorized
+	     render json: { message: command.errors[:message][0] }, status: :unauthorized
 	   end
 	 end
 
