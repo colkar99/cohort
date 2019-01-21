@@ -58,7 +58,7 @@ ProgramStatus.create!(status:"PR",description: "Application registered" ,stage: 
 ProgramStatus.create!(status:"RP",description: "Reviews pending by admin" ,stage: "initial")
 ProgramStatus.create!(status:"RC",description: "Reviews completed by admin" ,stage: "initial")
 ProgramStatus.create!(status:"IS",description: "intial shortlist" ,stage: "initial")
-ProgramStatus.create!(status:"CSFS",description: "current state form send by program" ,stage: "initial")
+ProgramStatus.create!(status:"CSFI",description: "current state form initialized" ,stage: "initial")
 ProgramStatus.create!(status:"CSFR",description: "current state form received by startups" ,stage: "initial")
 
 ProgramStatus.create!(status:"CSFS",description: "Current state form submitted", stage: "current_state_form")
@@ -81,3 +81,11 @@ puts "framework created"
 
 ProgramLocation.create!(address_line_1: "some address line 1", address_line_2: "some address line 2",city: "some city",state_province_region: "demo state",country: "demo country" )
  puts "program location created"
+
+ProgramType.create!(program_type_title: "demo type",program_type_description: "demo type description", program_type_duration: "3 months")
+puts "prgram type created"
+
+ApplicationQuestion.create!(title: "demo questions", question: "demo question",description: "demo description" )
+    t.string "title"
+    t.text "question"
+    t.text "description"

@@ -115,7 +115,6 @@ module V1
  	    	# true
  	   end
 
-
  	    private
  	    def current_state_form_params
 		    params.require(:current_state_form).permit(:id,

@@ -29,8 +29,11 @@ Rails.application.routes.draw do
 		post 'v1/delete-program-type', to: 'program_types#delete'
 		###################
 		##########Initial Flow controller##########
+		post 'v1/program/admin/request-current-form', to: 'initial_flows#request_current_state_form' #using
+		post 'v1/gentle-reminder', to: 'initial_flows#reminder_mail_for_current_state' #using
 		post 'v1/startup-accept-by-admin', to: 'initial_flows#startup_accept_by_admin' #using
 		post 'v1/startup-reject-by-admin', to: 'initial_flows#startup_reject_by_admin' #using
+
 		#############################################
 		###########Contract Flow controller #############3
 		get 'v1/get-contract-additional-information', to: 'contract_flows#get_additional_contract_information'#using
