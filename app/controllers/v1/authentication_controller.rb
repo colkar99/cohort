@@ -10,7 +10,8 @@ module V1
 	   	if @user.user_type == "site"
 	   		render json: { auth_token: command.result,
 	   					 user_type: @user.user_type,
-	   					 user_id: @user.id }
+	   					 user_id: @user.id,
+	   					 roles: @user.roles }
 	   	elsif @user.user_type == "startup"
 	   		startup_user = StartupUser.find_by_user_id(@user.id)
 	   		render json: { auth_token: command.result,
@@ -26,7 +27,7 @@ module V1
 	   		@user.access_token = command.result
 	     	@user.save!
 	   else
-	     render json: { error: command.errors }, status: :unauthorized
+	     render json: { message: command.errors[:message][0] }, status: :unauthorized
 	   end
 	 end
 
@@ -36,7 +37,8 @@ module V1
 	    				"last_name": user.last_name,
 	    				"phone_number": user.phone_number,
 	    				"email": user.email,
-	    				"user_type": user.user_type}
+	    				"user_type": user.user_type
+	    			}
 	    	user			
 	    end
 	end

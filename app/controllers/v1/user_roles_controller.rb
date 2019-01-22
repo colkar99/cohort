@@ -35,6 +35,65 @@ module V1
 	 	end
 	 	
 	 end
+	 def put_by_admin
+	 		module_grand_access = permission_control("user_role","update")
+	 		if module_grand_access
+	 			user_role = UserRole.find(params[:user_role][:id])
+	 			if user_role.update!(user_role_params)
+	 				render json: user_role , status: :ok
+	 			else
+	 				render json: user_role.errors, status: :unprocessable_entity
+	 			end
+	 		else
+	 			render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+	 		end
+
+	 end
+
+	 def create_user_role_by_admin
+	 	user_roles_permission = permission_control("user_role","create")
+	 	role_permission =  permission_control("role","create")
+	 	if user_roles_permission && role_permission
+	 		user_roles = UserRole.where("user_id": params[:user_role][:user_id],"role_id": params[:user_role][:role_id],"module_type_id": params[:user_role][:module_type_id],"isDelete": false)
+	 		if user_roles.present?
+	 			render json: {warning: "This privilege is already exists ,Please check in the list!"}
+	 		else
+		 		user_role = UserRole.new(user_role_params)
+		 		user_role.created_by = current_user.id
+		 		if user_role.save!
+		 			render json: user_role ,status: :created 
+		 			# set_roles_to_users
+		 		else
+		 			render json: user_role.errors, status: :unprocessable_entity
+		 		end	 			
+	 		end
+
+	 	else
+	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+	 	end
+	 	
+	 end
+
+	 def delete_user_role
+	 	user_roles_permission = permission_control("user_role","delete")
+	 	if user_roles_permission
+	 		user_role = UserRole.find(params[:id])
+	 		if user_role.present?
+	 			user_role.isDelete = true
+	 			user_role.deleted_by = current_user.id 
+	 			if user_role.save!
+	 				render json: user_role,status: :ok
+	 			else
+	 				render json: user_role.errors, status: :ok
+	 			end
+	 		else
+	 			render json: {warning: "This privilege does not exists"}
+	 		end 
+	 	else
+	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 		
+	 	end
+	 	
+	 end
 
 	 def edit
 	 	# binding.pry

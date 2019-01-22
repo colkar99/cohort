@@ -8,6 +8,7 @@
 ModuleType.create!(name: "user", description: "This module used to give permission to user_modules")
 ModuleType.create!(name: "role", description: "This module used to give permission to user_modules")
 ModuleType.create!(name: "user_role", description: "This module used to give permission to user role modules")
+ModuleType.create!(name: "role_user", description: "This module used to give permission to role_user modules")
 ModuleType.create!(name: "program_type", description: "This module used to give permission to program type modules")
 ModuleType.create!(name: "program_location", description: "This module used to give permission to program location modules")
 ModuleType.create!(name: "program", description: "This module used to give permission to program modules")
@@ -18,6 +19,8 @@ ModuleType.create!(name: "application_question",description: "this module used t
 ModuleType.create!(name: "app_ques_response",description: "this module used to program reg questions")
 ModuleType.create!(name: "contract_form",description: "this module used to controll contract form")
 ModuleType.create!(name: "startup_profile",description: "this module used to controll startup profile")
+ModuleType.create!(name: "additional_contract_information",description: "this module used to controll additional contract informations")
+
 # user
 # role
 # user_role
@@ -52,15 +55,35 @@ end
 puts "user role created"
 
 ProgramStatus.create!(status:"PR",description: "Application registered" ,stage: "auto")
+ProgramStatus.create!(status:"RP",description: "Reviews pending by admin" ,stage: "initial")
+ProgramStatus.create!(status:"RC",description: "Reviews completed by admin" ,stage: "initial")
+ProgramStatus.create!(status:"IS",description: "intial shortlist" ,stage: "initial")
+ProgramStatus.create!(status:"CSFI",description: "current state form initialized" ,stage: "initial")
+ProgramStatus.create!(status:"CSFR",description: "current state form received by startups" ,stage: "initial")
+
+ProgramStatus.create!(status:"CSFS",description: "Current state form submitted", stage: "current_state_form")
+ProgramStatus.create!(status:"CSFR",description: "Current state form reviewed", stage: "current_state_form")
 ProgramStatus.create!(status:"AA",description: "Accepted", stage: "initial")
 ProgramStatus.create!(status:"AR",description: "Rejected", stage: "initial")
 ProgramStatus.create!(status:"CFR",description: "Contract form received", stage: "contract")
 ProgramStatus.create!(status:"CSWFP",description: "Contract form Signed waiting for approval", stage: "contract")
 ProgramStatus.create!(status:"CFA",description: "Contract form approved by C_manager", stage: "contract")
 ProgramStatus.create!(status:"SPC",description: "Startup profile created", stage: "profile_creation")
-ProgramStatus.create!(status:"CSFS",description: "Current state form submitted", stage: "current_state_form")
-ProgramStatus.create!(status:"CSFR",description: "Current state form reviewed", stage: "current_state_form")
+
 puts "program_status created"
 
-
+AdditionalContractInformation.create!(purpose_of_contract: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",contract_termination: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", contract_terms_condition: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",authorization: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+puts "additional contract information created"
 # UserRole.create!(user_id: 1,role_id: 1, module_type_id: 12,create_rule: true,update_rule: true, delete_rule: true, show_rule: true)
+ 
+ Framework.create!(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+puts "framework created"
+
+ProgramLocation.create!(address_line_1: "some address line 1", address_line_2: "some address line 2",city: "some city",state_province_region: "demo state",country: "demo country" )
+ puts "program location created"
+
+ProgramType.create!(program_type_title: "demo type",program_type_description: "demo type description", program_type_duration: "3 months")
+puts "prgram type created"
+
+ApplicationQuestion.create!(title: "demo questions", question: "demo question",description: "demo description" )
+  

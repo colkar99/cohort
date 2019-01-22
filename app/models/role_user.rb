@@ -3,5 +3,4 @@ class RoleUser < ApplicationRecord
   belongs_to :role
 
 
-
 end

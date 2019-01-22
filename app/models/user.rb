@@ -16,6 +16,7 @@ class User < ApplicationRecord
 	before_save  :set_create_attr
 	before_validation :downcase_email
 	validates :email, :uniqueness => { :case_sensitive => false }
+	attr_accessor :role
 
 	
 	def set_create_attr

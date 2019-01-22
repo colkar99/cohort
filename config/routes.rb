@@ -1,7 +1,19 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   	scope module: :v1 do
-		post 'v1/authenticate', to: 'authentication#authenticate'
+		post 'v1/authenticate', to: 'authentication#authenticate' ##using
+		get 'v1/get-user-details', to: 'users#get_user_detail' #using
+		post 'v1/get-roles-user-type', to: 'roles#get_role_by_user_type' #using
+		post 'v1/create-user-by-admin', to: 'users#create_user_by_admin' #using
+		put 'v1/update-user-by-admin', to: 'users#update_user_by_admin' #using
+		get 'v1/get-all-users', to: 'users#get_all_users' #using
+		put 'v1/put-user-role', to: 'user_roles#put_by_admin'#using
+		post 'v1/create-user-role-by-admin', to: 'user_roles#create_user_role_by_admin'#using
+		put 'v1/delete-user-role', to: 'user_roles#delete_user_role' #using
+		post 'v1/delete-role-user-by-admin', to: 'role_users#delete_role_user_by_admin'#using
+		post 'v1/get-user-related-data', to: 'users#get_user_related_datas'#using
+		get 'v1/get-program-module', to: 'programs#get_data_for_program_module' #using
+		get 'v1/get-list-of-programs', to: 'programs#get_list_of_programs' #using
 		post 'v1/user/registration', to: 'users#create'
 		post 'v1/users/show-all', to: 'users#show_user_by_type'
 		put 'v1/user/edit', to: 'users#edit'
@@ -16,6 +28,17 @@ Rails.application.routes.draw do
 		get 'v1/show-program-types', to: 'program_types#show'
 		post 'v1/delete-program-type', to: 'program_types#delete'
 		###################
+		##########Initial Flow controller##########
+		post 'v1/program/admin/request-current-form', to: 'initial_flows#request_current_state_form' #using
+		post 'v1/gentle-reminder', to: 'initial_flows#reminder_mail_for_current_state' #using
+		post 'v1/get-application-current-form-data', to: 'initial_flows#get_application_current_form_data' #using
+		post 'v1/startup-accept-by-admin', to: 'initial_flows#startup_accept_by_admin' #using
+		post 'v1/startup-reject-by-admin', to: 'initial_flows#startup_reject_by_admin' #using
+		post 'v1/startup-current-state-form-submission', to: 'initial_flows#current_state_form_submit' #using
+
+		#############################################
+		###########Contract Flow controller #############3
+		get 'v1/get-contract-additional-information', to: 'contract_flows#get_additional_contract_information'#using
 		#######startup user registration#########
 		post 'v1/user/startup/registration' ,to: 'users#startup_user'
 		#########################################
@@ -40,16 +63,21 @@ Rails.application.routes.draw do
 		post 'v1/delete-program-location', to: 'program_locations#delete'
 		###############
 		####Program ######
-		post 'v1/create-program', to: 'programs#create'
+		post 'v1/create-program', to: 'programs#create' #using
 		put 'v1/edit-program', to: 'programs#edit'
-		get 'v1/show-programs', to: 'programs#show'
+		get 'v1/show-programs', to: 'programs#show'#using
+		get 'v1/contract-manager-programs', to: 'programs#contract_manager_programs' #using
 		post 'v1/delete-program', to: 'programs#delete'
 
 		####Program Registration Questions######
 		post 'v1/create-application-question', to: 'application_questions#create'
 		put 'v1/edit-application-question', to: 'application_questions#edit'
 		get 'v1/show-application-questions', to: 'application_questions#show'
+		post 'v1/show-program-questions', to: 'application_questions#show_ques_related_program'
 		post 'v1/delete-application-question', to: 'application_questions#delete'
+		post 'v1/create-program-questions-response', to: 'application_questions#application_question_response'#using
+		post 'v1/get-program-question-response', to: 'application_questions#get_application_response_questions' #using
+		post 'v1/admin-feedback-for-startup-response', to: 'application_questions#app_ques_res_admin' #using
 		###############
 		####startup Registration Questions######
 		post 'v1/create-startup-profile-question', to: 'startup_profile_questions#create'
@@ -58,9 +86,10 @@ Rails.application.routes.draw do
 		post 'v1/delete-startup-profile-question', to: 'startup_profile_questions#delete'
 		###############
 		###############Startup_registration - program-registration#######
-		post 'v1/program/startup-registration', to: 'startup_registrations#create'
+		post 'v1/program/startup-registration', to: 'startup_registrations#create' #using
 		post 'v1/program/startup-app-response', to: 'startup_registrations#app_ques_res'
-		post 'v1/program/show-startup-program-wise', to: 'startup_registrations#show_registered_startup'
+		post 'v1/program/show-startup-program-wise', to: 'startup_registrations#show_registered_startup'#using
+		post 'v1/program/show-startup-for-contract', to: 'startup_registrations#show_accetped_startup'
 		post 'v1/program/startup-application-details', to: 'startup_registrations#show_all_details'
 		post 'v1/program/admin/startup-app-response', to: 'startup_registrations#app_ques_res_admin'
 		post 'v1/program/admin/startup-application-status-change' ,to: 'startup_registrations#set_app_status'

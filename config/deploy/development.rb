@@ -59,10 +59,12 @@
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
 server '54.172.0.213', user: 'ubuntu', roles: %w{app db web}
+
 set :repo_url, "git@github.com:colkar99/cohort.git"
-set :branch, (ENV['BRANCH'] || 'production')
-set :rails_env, 'production'
+set :branch, (ENV['BRANCH'] || 'development')
+set :rails_env, 'development'
 
 set :ssh_options, {
   user: "ubuntu",

@@ -47,11 +47,16 @@ module V1
 
 		def admin_show
 			# binding.pry
-			current_state_form =  CurrentStateForm.where(program_id: params[:current_state_form][:program_id], startup_profile_id: params[:current_state_form][:startup_profile_id]).first
-			if current_state_form.present?
-				render json: current_state_form ,status: :ok
+			module_grand_access = permission_control("current_state_form","show")
+			if module_grand_access
+				current_state_form =  CurrentStateForm.where(program_id: params[:current_state_form][:program_id], startup_registration_id: params[:current_state_form][:startup_registration_id]).first
+				if current_state_form.present?
+					render json: current_state_form ,status: :ok
+				else
+					render json: {error: "Object not found"}, status: :not_found
+				end
 			else
-				render json: {error: "Object not found"}, status: :not_found
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
 			end
 		end
 
@@ -114,7 +119,6 @@ module V1
  	    	# return false if !startup_profile.present?
  	    	# true
  	   end
-
 
  	    private
  	    def current_state_form_params
