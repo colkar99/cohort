@@ -59,6 +59,7 @@
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
 server '54.172.0.213', user: 'ubuntu', roles: %w{app db web}
 
 set :ssh_options, {
@@ -66,6 +67,5 @@ set :ssh_options, {
   keys: %w(~/.ssh/cohort_keypair.pem),
   forward_agent: false,
 }
-
-set :stage, :production
-set :rails_env, :production
+set :stage, :development
+set :rails_env, :development
