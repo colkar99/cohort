@@ -12,3 +12,5 @@
 
 #   after 'deploy:migrate', 'deploy:seed'
 # end
+
+run "APP_ENV=#{fetch(:stage)} bundle exec rake my:task"
