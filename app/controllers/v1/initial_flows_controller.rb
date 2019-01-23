@@ -49,15 +49,15 @@ module V1
  	   	module_grand_access = permission_control("startup_application","update")
    		if module_grand_access
    			program_status = ProgramStatus.find_by_status("CSFI")
-   			startup_application = StartupRegistration.find(params[:startup_registration_id])
-   			status_change = status_change_for_app(startup_application,"CSFI")
-   			if status_change
-   				###########Send mail to contract manager to send contract form####
-   				render json: startup_application, status: :ok
-   			else
- 				render json: {error: "Something happened please contact support"}, status: :unprocessable_entity
-
+   			params[:startup_app_ids].each do |id|
+   				startup_application = StartupRegistration.find(id)
+   				status_change = status_change_for_app(startup_application,"CSFI")
+   				if !status_change
+   					###########Send mail to contract manager to send contract form####
+   					render json: {error: "Something happened please contact support"}, status: :unprocessable_entity
+	   			end
    			end
+   			render json: {message: "Current state form initilized"}, status: :ok
    		else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
    		end

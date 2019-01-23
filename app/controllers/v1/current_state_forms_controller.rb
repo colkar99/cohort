@@ -81,7 +81,7 @@ module V1
 			if current_state_form && module_grand_access
 				status = ProgramStatus.find_by_status("CSFR")
 				startup_application = current_state_form.startup_registration
-				startup_profile = startup_application.startup_profile
+				# startup_profile = startup_application.startup_profile
 				startup_application.current_state_form_reviewed = true
 				startup_application.program_status_id = status.id
 				startup_application.application_status = status.status
