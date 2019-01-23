@@ -88,7 +88,7 @@ module V1
 				startup_application.app_status_description = status.description
 				startup_application.save!
 				current_state_form.reviewer_id = current_user.id
-				MailersController.program_startup_status(startup_application)
+				# MailersController.program_startup_status(startup_application)
 				if current_state_form.update!(current_state_form_params)
 					render json: current_state_form, status: :ok
 
