@@ -45,8 +45,17 @@ User.create!(first_name: "admin",last_name: "test",email: "admin@gmail.com", pho
 User.create!(first_name: "app",last_name: "manager",email: "manager@gmail.com", phone_number: "8056756218", password: "123456", password_confirmation: "123456", user_type: "site")
 User.create!(first_name: "contract",last_name: "manager",email: "contract@gmail.com", phone_number: "8056756218", password: "123456", password_confirmation: "123456", user_type: "site")
 User.create!(first_name: "program",last_name: "director",email: "director@gmail.com", phone_number: "8056756218", password: "123456", password_confirmation: "123456", user_type: "site")
+User.create!(first_name: "program",last_name: "admin",email: "program-admin@gmail.com", phone_number: "8056756218", password: "123456", password_confirmation: "123456", user_type: "site")
 
 puts  " users created"
+
+RoleUser.create!(user_id: 1, role_id: 1)
+RoleUser.create!(user_id: 2, role_id: 4)
+RoleUser.create!(user_id: 3, role_id: 5)
+RoleUser.create!(user_id: 4, role_id: 3)
+RoleUser.create!(user_id: 5, role_id: 2)
+
+puts "User roles are created"
 
 ModuleType.all.each do |mo_type|
 	UserRole.create!(user_id: 1,role_id: 1, module_type_id: mo_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")
@@ -59,8 +68,6 @@ ProgramStatus.create!(status:"RP",description: "Reviews pending by admin" ,stage
 ProgramStatus.create!(status:"RC",description: "Reviews completed by admin" ,stage: "initial")
 ProgramStatus.create!(status:"IS",description: "intial shortlist" ,stage: "initial")
 ProgramStatus.create!(status:"CSFI",description: "current state form initialized" ,stage: "initial")
-ProgramStatus.create!(status:"CSFR",description: "current state form received by startups" ,stage: "initial")
-
 ProgramStatus.create!(status:"CSFS",description: "Current state form submitted", stage: "current_state_form")
 ProgramStatus.create!(status:"CSFR",description: "Current state form reviewed", stage: "current_state_form")
 ProgramStatus.create!(status:"AA",description: "Accepted", stage: "initial")
