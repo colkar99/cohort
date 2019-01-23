@@ -52,7 +52,7 @@ module V1
 			 	# program_type.isDelete = true
 			 	# program_type.deleted_date = Time.now
 			 	# program_type.deleted_by = current_user.id
-			 	if program_type.delete!
+			 	if program_type.destroy!
 			 		render json: program_type ,status: :ok 
 			 	else
 			 		render json: program_type.errors, status: :unprocessable_entity

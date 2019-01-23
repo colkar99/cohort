@@ -23,10 +23,10 @@ Rails.application.routes.draw do
 		post 'v1/create-user-role', to: 'user_roles#create'
 		post 'v1/edit-user-role', to: 'user_roles#edit'
 		post 'v1/delete-user-role', to: 'user_roles#delete'
-		post 'v1/create-program-type', to: 'program_types#create'
-		put 'v1/edit-program-type', to: 'program_types#edit'
+		post 'v1/create-program-type', to: 'program_types#create' #using
+		put 'v1/edit-program-type', to: 'program_types#edit' #using
 		get 'v1/show-program-types', to: 'program_types#show'
-		put 'v1/delete-program-type', to: 'program_types#delete'
+		post 'v1/delete-program-type', to: 'program_types#delete'#using
 		###################
 		##########Initial Flow controller##########
 		post 'v1/program/admin/request-current-form', to: 'initial_flows#request_current_state_form' #using
