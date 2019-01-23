@@ -60,7 +60,7 @@ Rails.application.routes.draw do
 		post 'v1/create-program-location', to: 'program_locations#create' #using
 		put 'v1/edit-program-location', to: 'program_locations#edit' #using
 		get 'v1/show-program-locations', to: 'program_locations#show'
-		post 'v1/delete-program-location', to: 'program_locations#delete'
+		post 'v1/delete-program-location', to: 'program_locations#delete'#using
 		###############
 		####Program ######
 		post 'v1/create-program', to: 'programs#create' #using

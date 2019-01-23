@@ -131,12 +131,16 @@ module V1
 					end
 
 				end
-				status = check_startups(startup_registration_id)
-				if status
-					render json: {message: "Reviews are completed"}, status: :ok
-				else
-					render json: {message: "Have pending reviews"}, status: :ok
+				startup_registration = StartupRegistration.find(startup_registration_id)
+				if startup_registration.application_status == "PR" || startup_registration.application_status == "RP"
+					status = check_startups(startup_registration_id)
+					if status
+						render json: {message: "Reviews are completed"}, status: :ok
+					else
+						render json: {message: "Have pending reviews"}, status: :ok
+					end
 				end
+				render json: {message: "Reviews are completed"}, status: :ok 
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 
