@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 		post 'v1/create-program-type', to: 'program_types#create'
 		put 'v1/edit-program-type', to: 'program_types#edit'
 		get 'v1/show-program-types', to: 'program_types#show'
-		post 'v1/delete-program-type', to: 'program_types#delete'
+		put 'v1/delete-program-type', to: 'program_types#delete'
 		###################
 		##########Initial Flow controller##########
 		post 'v1/program/admin/request-current-form', to: 'initial_flows#request_current_state_form' #using
