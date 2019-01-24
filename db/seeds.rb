@@ -20,16 +20,9 @@ ModuleType.create!(name: "app_ques_response",description: "this module used to p
 ModuleType.create!(name: "contract_form",description: "this module used to controll contract form")
 ModuleType.create!(name: "startup_profile",description: "this module used to controll startup profile")
 ModuleType.create!(name: "additional_contract_information",description: "this module used to controll additional contract informations")
+ModuleType.create!(name: "framework",description: "this module used to controll framework actions")
 
-# user
-# role
-# user_role
-# current_state_form
-# roadmap
-# startup_application
-# app_ques_response
-# contract_form
-# startup_profile
+
 puts  "Modules created"
 
 Role.create!(name: "site_admin" ,user_role_type: "site")

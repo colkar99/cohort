@@ -33,7 +33,9 @@ Rails.application.routes.draw do
 		post 'v1/gentle-reminder', to: 'initial_flows#reminder_mail_for_current_state' #using
 		post 'v1/get-application-current-form-data', to: 'initial_flows#get_application_current_form_data' #using
 		post 'v1/startup-accept-by-admin', to: 'initial_flows#startup_accept_by_admin' #using
+		post 'v1/startup-accept-by-admin-bulk', to: 'initial_flows#startup_accept_by_admin_bulk' #using
 		post 'v1/startup-reject-by-admin', to: 'initial_flows#startup_reject_by_admin' #using
+		post 'v1/startup-reject-by-admin-bulk', to: 'initial_flows#startup_reject_by_admin_bulk' #using
 		post 'v1/startup-current-state-form-submission', to: 'initial_flows#current_state_form_submit' #using
 
 		#############################################

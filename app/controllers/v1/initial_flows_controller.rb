@@ -24,6 +24,7 @@ module V1
 	 			render json: {error: "Startup Registration not found"}, status: :unprocessable_entity
 	 		end
 	 	else
+	 	   	render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	
 	 	end
 	 end
 
@@ -102,6 +103,56 @@ module V1
 
  	 	end
  	 end
+
+ 	 def startup_accept_by_admin_bulk
+	 	module_grand_access = permission_control("startup_application","update")
+	 	if module_grand_access
+	 		program_status = ProgramStatus.find_by_status("AA")
+	 		params[:startup_app_ids].each do |id|
+	 			startup_application = StartupRegistration.find(id)
+	 			current_state_form = CurrentStateForm.where(startup_registration_id: id).first
+	 			startup_application.program_status_id = status.id
+				startup_application.application_status = status.status
+				startup_application.app_status_description = status.description
+				startup_application.score = current_state_form.total_rating
+				if startup_application.save!
+					puts "Updated startup_application details"
+				else
+					render json: {errors: "Something happend please contact supprt team"}
+				end
+	 		end
+	 		   render json: {message: "Applications are accepted "}, status: :ok
+	 	else
+	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+
+	 	end
+	 end
+
+ 	 def startup_reject_by_admin_bulk
+	 	module_grand_access = permission_control("startup_application","update")
+	 	if module_grand_access
+	 		program_status = ProgramStatus.find_by_status("AR")
+	 		params[:startup_app_ids].each do |id|
+	 			startup_application = StartupRegistration.find(id)
+	 			current_state_form = CurrentStateForm.where(startup_registration_id: id).first
+	 			startup_application.program_status_id = status.id
+				startup_application.application_status = status.status
+				startup_application.app_status_description = status.description
+				startup_application.score = current_state_form.total_rating
+				if startup_application.save!
+					puts "Updated startup_application details"
+				else
+					render json: {errors: "Something happend please contact supprt team"}
+				end
+	 		end
+	 		   render json: {message: "Applications are accepted "}, status: :ok
+	 	else
+	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+
+	 	end
+	 end
+	 
+
  	 
 	 private
 

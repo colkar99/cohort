@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_09_103330) do
+ActiveRecord::Schema.define(version: 2019_01_24_094217) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -176,6 +176,15 @@ ActiveRecord::Schema.define(version: 2019_01_09_103330) do
     t.index ["program_id"], name: "index_current_state_forms_on_program_id"
     t.index ["startup_profile_id"], name: "index_current_state_forms_on_startup_profile_id"
     t.index ["startup_registration_id"], name: "index_current_state_forms_on_startup_registration_id"
+  end
+
+  create_table "framework_activity_links", force: :cascade do |t|
+    t.integer "framework_id"
+    t.integer "activity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_framework_activity_links_on_activity_id"
+    t.index ["framework_id"], name: "index_framework_activity_links_on_framework_id"
   end
 
   create_table "frameworks", force: :cascade do |t|
