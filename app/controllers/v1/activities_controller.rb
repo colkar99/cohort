@@ -22,15 +22,26 @@ module V1
 		end
 
 		def show_all
-			activities = Activity.all.where("isDelete": false,"isActive":true)
-			render json: activities, status: :ok
+			module_grand_access = permission_control("activity","show")
+			if module_grand_access
+				activities = Activity.all
+				render json: activities, status: :ok
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
+
 			
 		end
 
 		def show
-			activities = Framework.find(params[:framework_id]).activities.where("isDelete": false)
-			render json: activities, status: :ok
-			
+			module_grand_access = permission_control("activity","show")
+			if module_grand_access
+				activities = Framework.find(params[:framework_id]).activities
+				render json: activities, status: :ok
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+			end
 		end
 
 		def edit

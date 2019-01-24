@@ -108,12 +108,12 @@ module V1
 	 	module_grand_access = permission_control("startup_application","update")
 	 	if module_grand_access
 	 		program_status = ProgramStatus.find_by_status("AA")
-	 		params[:startup_app_ids].each do |id|
+   			params[:startup_app_ids].each do |id|
 	 			startup_application = StartupRegistration.find(id)
 	 			current_state_form = CurrentStateForm.where(startup_registration_id: id).first
-	 			startup_application.program_status_id = status.id
-				startup_application.application_status = status.status
-				startup_application.app_status_description = status.description
+	 			startup_application.program_status_id = program_status.id
+				startup_application.application_status = program_status.status
+				startup_application.app_status_description = program_status.description
 				startup_application.score = current_state_form.total_rating
 				if startup_application.save!
 					puts "Updated startup_application details"
@@ -135,9 +135,9 @@ module V1
 	 		params[:startup_app_ids].each do |id|
 	 			startup_application = StartupRegistration.find(id)
 	 			current_state_form = CurrentStateForm.where(startup_registration_id: id).first
-	 			startup_application.program_status_id = status.id
-				startup_application.application_status = status.status
-				startup_application.app_status_description = status.description
+	 			startup_application.program_status_id = program_status.id
+				startup_application.application_status = program_status.status
+				startup_application.app_status_description = program_status.description
 				startup_application.score = current_state_form.total_rating
 				if startup_application.save!
 					puts "Updated startup_application details"
@@ -151,7 +151,7 @@ module V1
 
 	 	end
 	 end
-	 
+
 
  	 
 	 private
