@@ -139,8 +139,15 @@ module V1
 					else
 						render json: {message: "Have pending reviews"}, status: :ok
 					end
+				else
+					app_ques_res = startup_registration.app_ques_responses
+					startup_registration.score = app_ques_res.sum(:reviewer_rating)
+					if startup_registration.save!
+						render json: {message: "Reviews are completed"}, status: :ok 
+					else
+						render json: startup_registration.errors, status: :unprocessable_entity
+					end
 				end
-				render json: {message: "Reviews are completed"}, status: :ok 
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 

@@ -79,23 +79,30 @@ module V1
 			module_grand_access = permission_control("current_state_form","update")
 			current_state_form =  CurrentStateForm.find(params[:current_state_form][:id])
 			if current_state_form && module_grand_access
-				status = ProgramStatus.find_by_status("CSFR")
-				startup_application = current_state_form.startup_registration
-				# startup_profile = startup_application.startup_profile
-				startup_application.current_state_form_reviewed = true
-				startup_application.program_status_id = status.id
-				startup_application.application_status = status.status
-				startup_application.app_status_description = status.description
-				startup_application.save!
 				current_state_form.reviewer_id = current_user.id
 				# MailersController.program_startup_status(startup_application)
 				if current_state_form.update!(current_state_form_params)
-					render json: current_state_form, status: :ok
+					status = ProgramStatus.find_by_status("CSFR")
+					startup_application = current_state_form.startup_registration
+					# current_state_form.total_rating = params[:current_state_form][:total_rating]
+					startup_application.score = 0
+					startup_application.score = current_state_form.total_rating
+					# startup_profile = startup_application.startup_profile
+					startup_application.current_state_form_reviewed = true
+					startup_application.program_status_id = status.id
+					startup_application.application_status = status.status
+					startup_application.app_status_description = status.description
+					if startup_application.save!
+						render json: {current_state_form: current_state_form,startup_registration: startup_application}, status: :ok
+					else
+							render json: startup_application.errors, status: :unprocessable_entity
 
+					end
 				else
 					render json: current_state_form.errors, status: :unprocessable_entity
 
 				end
+
 			else
 				render json: {error: "Invalid Authorization or result not found"}, status: :unauthorized
 			end
