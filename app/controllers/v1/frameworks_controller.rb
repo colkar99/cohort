@@ -21,14 +21,25 @@ module V1
 		end
 
 		def show_all
-			frameworks = Framework.all
-			render json: frameworks, status: :ok
-			
+			module_grand_access = permission_control("framework","show")
+			if module_grand_access
+				frameworks = Framework.all
+				render json: frameworks, status: :ok
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
 		end
 
 		def show
-			framework = Program.find(params[:program_id]).framework
-			render json: framework, status: :ok
+			module_grand_access = permission_control("framework","show")
+			if module_grand_access
+				framework = Program.find(params[:framework][:id])
+				render json: framework, status: :ok
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end
 			
 		end
 
