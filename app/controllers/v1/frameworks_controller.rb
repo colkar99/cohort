@@ -34,7 +34,7 @@ module V1
 		def show
 			module_grand_access = permission_control("framework","show")
 			if module_grand_access
-				framework = Program.find(params[:framework][:id])
+				framework = Framework.find(params[:framework][:id])
 				render json: framework, status: :ok
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
