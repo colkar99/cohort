@@ -130,6 +130,52 @@ module V1
 			end
 		end
 
+		def activity_and_checklists_update
+			module_grand_access = permission_control("framework","delete")
+			if module_grand_access
+				framework = Framework.find(params[:framework_id])
+				if framework.save!
+					activity = Activity.find(params[:activity][:id])
+					if activity.update!(activity_params)
+						params[:checklists].each do |check_li|
+							if check_li[:id].present?
+								checklist = Checklist.find(check_li[:id])
+								checklist.name = check_li[:name]
+								checklist.description = check_li[:description]
+								checklist.framework_id = framework.id
+								checklist.activity_id = activity.id
+								checklist.created_by = current_user.id
+								if checklist.save!
+									puts "Checklist successfully updated!!!!!!!!!!"
+								else
+									render json: checklist.errors, status: :unprocessable_entity
+								end
+							else
+								checklist = Checklist.new
+								checklist.name = check_li[:name]
+								checklist.description = check_li[:description]
+								checklist.framework_id = framework.id
+								checklist.activity_id = activity.id
+								checklist.created_by = current_user.id
+								if checklist.save!
+									puts "Checklists saved successfully"
+								else
+									render json: checklist.errors,status: :ok
+								end
+							end
+						end
+						render json: framework, status: :ok
+					else
+						render json: activity.errors, status: :unprocessable_entity
+					end
+				else
+					render json: {error: "Framework not found"}, status: :unprocessable_entity
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized					
+			end
+		end
+
 
 
 
