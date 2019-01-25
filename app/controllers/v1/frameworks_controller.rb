@@ -183,8 +183,8 @@ end
 
 ####### checklist##########
 
-   t.string "name"
-    t.text "description"
-    t.integer "framework_id"
-    t.integer "activity_id"
-    t.integer "created_by"
+   # t.string "name"
+   #  t.text "description"
+   #  t.integer "framework_id"
+   #  t.integer "activity_id"
+   #  t.integer "created_by"
