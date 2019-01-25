@@ -172,7 +172,9 @@ Rails.application.routes.draw do
 		get 'v1/program/framework/show-all-activities', to: 'activities#show_all'
 		post 'v1/program/framework/show-activity', to: 'activities#show' 
 		put 'v1/program/framework/edit-activity', to: 'activities#edit' 
-		put 'v1/program/framework/delete-activity', to: 'activities#delete' 
+		put 'v1/program/framework/delete-activity', to: 'activities#delete'
+		post 'v1/program/framework/create-activity-and-checklists', to: 'activities#activity_and_checklists_create' #using
+ 
 		##############################
 
 		################checklists###########################

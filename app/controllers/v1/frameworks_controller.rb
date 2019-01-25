@@ -137,6 +137,7 @@ module V1
 
 
 
+
  	    private
  	    def framework_params
 		    params.require(:framework).permit(:id,
@@ -173,3 +174,17 @@ end
 # t.datetime "created_at", null: false
 # t.datetime "updated_at", null: false
 
+
+#####Activity############
+# t.string "name"
+# t.text "description"
+# t.text "placeholder"
+# t.integer "order"
+
+####### checklist##########
+
+   t.string "name"
+    t.text "description"
+    t.integer "framework_id"
+    t.integer "activity_id"
+    t.integer "created_by"
