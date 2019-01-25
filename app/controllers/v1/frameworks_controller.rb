@@ -16,7 +16,7 @@ module V1
 		                       
 				end
 			else
-				render json: {error: "Invalid Authorization"}, status: :unauthorized
+				render json: {error: "You dont have access to perform this action,Please contact Site admin"}, status: :unauthorized
 			end
 		end
 
@@ -55,7 +55,7 @@ module V1
 		                       
 				end
 			else
-				render json: {error: "Invalid Authorization"}, status: :unauthorized
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 			end
 
 			
@@ -68,20 +68,71 @@ module V1
 			if module_grand_access
 				framework = Framework.find(params[:framework][:id])
 				# framework.created_by = current_user.id
-				framework.isActive = false
-				framework.isDelete = true
-				framework.deleted_at = Time.now
-				framework.deleted_by = current_user.id
-				if framework.update!(framework_params)
+				# framework.isActive = false
+				# framework.isDelete = true
+				# framework.deleted_at = Time.now
+				# framework.deleted_by = current_user.id
+				if framework.destroy!
 					render json: framework ,status: :ok
 				else
 					render json: framework, status: :unprocessable_entity
 		                       
 				end
 			else
-				render json: {error: "Invalid Authorization"}, status: :unauthorized
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 			end
 
+		end
+
+		def assign_activity_to_framework
+			module_grand_access = permission_control("framework","update")
+			if module_grand_access
+				framework = Framework.find(params[:framework_id])
+				if framework.present?
+					params[:activity_ids].each do |id|
+						activity = Activity.find(id)
+						if activity.present?
+							framework_activity_link = FrameworkActivityLink.new
+							framework_activity_link.framework_id = framework.id
+							framework_activity_link.activity_id = activity.id
+							if framework_activity_link.save!
+								puts 'New framework_activity_link created with framework_id: #{framework_activity_link.framework_id} & activity_id: #{framework_activity_link.activity_id}'
+							else
+								render json: framework_activity_link.errors, status: :ok
+							end
+						else
+							render json: {error: "activity not found"}, status: :unprocessable_entity
+						end
+					end
+					render json: {message: "Activities are successfully merged with framework"}, status: :ok
+				else
+					render json: {error: "Framework not found "}, status: :unprocessable_entity
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
+		end
+
+		def remove_activities_from_framework
+			module_grand_access = permission_control("framework","delete")
+			if module_grand_access
+				framework = Framework.find(params[:framework_id])
+				if framework.present?
+					params[:activity_ids].each do |id|
+						framework_activity_link = FrameworkActivityLink.where(framework_id: framework,activity_id: id).first
+						if framework_activity_link.destroy!
+							puts "Activity successfully removed from the framework"
+						else
+							render json: framework_activity_link.errors, status: :unprocessable_entity
+						end
+					end
+					render json: {message: "Activities are successfully merged with framework"}, status: :ok
+				else
+					render json: {error: "Framework not found "}, status: :unprocessable_entity
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
 		end
 
 
@@ -122,4 +173,3 @@ end
 # t.datetime "created_at", null: false
 # t.datetime "updated_at", null: false
 
-	

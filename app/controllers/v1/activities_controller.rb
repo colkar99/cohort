@@ -69,11 +69,11 @@ module V1
 			if module_grand_access
 				activity = Activity.find(params[:activity][:id])
 				# framework.created_by = current_user.id
-				activity.isActive = false
-				activity.isDelete = true
-				activity.deleted_at = Time.now
-				activity.deleted_by = current_user.id
-				if activity.update!(activity_params)
+				# activity.isActive = false
+				# activity.isDelete = true
+				# activity.deleted_at = Time.now
+				# activity.deleted_by = current_user.id
+				if activity.destroy!
 					render json: activity ,status: :ok
 				else
 					render json: activity, status: :unprocessable_entity
