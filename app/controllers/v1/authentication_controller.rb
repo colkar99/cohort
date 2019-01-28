@@ -8,6 +8,7 @@ module V1
 	   @user = User.find_by_email(params[:email])
 	   if command.success?
 	   	if @user.user_type == "site"
+	   		UserMailer.login(@user).deliver_now
 	   		render json: { auth_token: command.result,
 	   					 user_type: @user.user_type,
 	   					 user_id: @user.id,

@@ -59,6 +59,7 @@ module V1
 	   			end
    			end
    			render json: {message: "Current state form initilized"}, status: :ok
+   			FlowMailer.csfi(startup_application).deliver_now
    		else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
    		end
