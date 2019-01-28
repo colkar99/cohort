@@ -120,7 +120,7 @@ module V1
 			if module_grant_access
 				program = Program.find(params[:program_id])
 				if program
-					startups = program.startup_registrations.where("application_status": "AA")
+					startups = program.startup_registrations.where("application_status": ["AA","CFR","CSWFP","CFA","SPC"])
 					if startups
 						render json: startups, status: :ok
 					else

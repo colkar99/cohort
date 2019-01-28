@@ -101,6 +101,8 @@ Rails.application.routes.draw do
 		####################Contract form creation#######################
 		post 'v1/program/startup/create-contract', to: 'contract_forms#create_contract_form'
 		put 'v1/program/startup/update-contract', to: 'contract_forms#update_contract_form'
+		post 'v1/program/startup/contract-data-for-startup', to: 'contract_forms#show_contract_for_startup'
+		post 'v1/program/startup/startup-response-contract', to: 'contract_forms#startup_response_for_contract'
 		post 'v1/program/startup/get-contract-form-for-user', to: 'contract_forms#send_contract_details'
 		post 'v1/program/startup/contract-form-response', to: 'contract_forms#contract_form_response'
 		post 'v1/program/admin/get-approval-contract-form', to: 'contract_forms#get_contract_form_by_approval'

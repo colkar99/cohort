@@ -1,7 +1,7 @@
 # app/controllers/authentication_controller.rb
 module V1
 	class ContractFormsController < ApplicationController
-		skip_before_action :authenticate_request, only: [:send_contract_details,:send_to_startup,:contract_form_response]
+		skip_before_action :authenticate_request, only: [:send_contract_details,:send_to_startup,:contract_form_response,:show_contract_for_startup]
 
 	
 		def self.create(startup_app)
@@ -164,6 +164,51 @@ module V1
 				end
 			else
 				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
+		end
+
+		def show_contract_for_startup
+			startup_application = StartupRegistration.find(params[:startup_registration_id])
+			if startup_application.present?
+				contract_form = startup_application.contract_form
+				if contract_form.present?
+					render json: {startup_application: startup_application, contract_form: contract_form},status: :ok
+				else
+					render json: {error: "Contract form not found"}, status: :not_found
+				end
+			else
+				render json: {error: "Startup Application not found"}, status: :not_found
+			end
+		end
+
+		def startup_response_for_contract
+			contract_form = ContractForm.find(params[:contract_form][:id])
+			startup_application = StartupRegistration.find(params[:contract_form][:startup_registration_id])
+			program_status = ProgramStatus.find_by_status("CSWFP")
+			if contract_form.present? && startup_application
+				if params[:contract_form][:accept_terms_condition]
+					contract_form.contract_signed = true;
+					contract_form.signed_date = Time.now;
+					if contract_form.update!(contract_form_params)
+						startup_application.program_status_id = program_status.id
+						startup_application.application_status = program_status.status
+						startup_application.app_status_description = program_status.description
+						startup_application.contract_signed = true
+						startup_application.contract_signed_date = Time.now
+						if startup_application.save!
+							#######send mail to application manager#######
+							render json: {contract_form: contract_form,startup_application: startup_application}, status: :ok
+						else
+							render json: startup_application.errors ,status: :unprocessable_entity
+						end
+					else
+						render json: contract_form.errors,status: :unprocessable_entity
+					end
+				else
+					render json: {message: "please accept terms and condition"}, status: :not_found
+				end
+			else
+				render json: {error: "Contract form not found"}, status: :unprocessable_entity
 			end
 		end
 
