@@ -145,33 +145,27 @@ module V1
 			end
 		end
 
-		# def create_contract_form
-		# 	module_grant_access = permission_control("contract_form","create")
-		# 	# module_grant_access = true
-		# 	if module_grant_access
-		# 		startup_application = StartupRegistration.find(params[:contract_form][:startup_registration_id])
-		# 		program_status = ProgramStatus.find_by_status("CFR")
-		# 		contract_form = ContractForm.new(contract_form_params)
-		# 		contract_form.contract_send_date = Time.now
-		# 		contract_form.contract_manager_id = current_user.id
-		# 		if contract_form.save!
-		# 			startup_application.program_status_id = program_status.id
-		# 			startup_application.application_status = program_status.status
-		# 			startup_application.app_status_description = program_status.description
-		# 			startup_application.contract_received_date = Time.now
-		# 			if startup_application.save!
-		# 				############send mail to sign contract form###############
-		# 				render json: contract_form, status: :ok
-		# 			else
-		# 				render json: startup_application.errors , status: :unprocessable_entity
-		# 			end
-		# 		else
-		# 			render json: contract_form.errors, status: :unprocessable_entity
-		# 		end
-		# 	else
-		# 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
-		# 	end
-		# end
+		def update_contract_form
+			module_grant_access = permission_control("contract_form","update")
+			# module_grant_access = true
+			if module_grant_access
+				startup_application = StartupRegistration.find(params[:contract_form][:startup_registration_id])
+				program_status = ProgramStatus.find_by_status("CFR")
+				contract_form = ContractForm.find(params[:contract_form][:id])
+				if contract_form.update!(contract_form_params)
+					if startup_application.save!
+						############send mail to sign contract form###############
+						render json: contract_form, status: :ok
+					else
+						render json: startup_application.errors , status: :unprocessable_entity
+					end
+				else
+					render json: contract_form.errors, status: :unprocessable_entity
+				end
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
+		end
 
 
 
