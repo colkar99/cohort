@@ -213,7 +213,46 @@ module V1
 			end
 		end
 
+		def contract_approval_by_admin
+			module_grant_access = permission_control("contract_form","update")
+			if module_grant_access
+				contract_form = ContractForm.find(params[:contract_form][:id])
+				program_status = ProgramStatus.find_by_status("CFA")
+				contract_form.manager_approval = true
+				contract_form.manager_approved_date = Time.now
+				if contract_form.save!
+					startup_application = contract_form.startup_registration
+					startup_application.application_status = program_status.status
+					startup_application.app_status_description = program_status.description
+					if startup_application.save!
+						startup_profile = StartupProfile.new
+						startup_profile.startup_name = startup_application.startup_name
+						startup_profile.founded_date = startup_application.founded_date
+						startup_profile.address_line_1 = startup_application.startup_address_line_1
+						startup_profile.address_line_2 = startup_application.startup_address_line_2
+						startup_profile.city = startup_application.startup_city
+						startup_profile.state_province_region = startup_application.startup_state_province_region
+						startup_profile.zip_pincode_postalcode = startup_application.startup_zip_pincode_postalcode
+						startup_profile.country = startup_application.startup_country
+						startup_profile.geo_location = startup_application.startup_geo_location
+						startup_profile.startup_registration_id = startup_application.id
+						if startup_profile.save!
+							user = User.new
+							user.full_name = startup_application.founder_name
 
+						else
+							render json: startup_profile.errors, status: :unprocessable_entity
+						end
+					else
+						render json: startup_application.errors, status: :ok
+					end
+				else
+					render json: contract_form.errors , status: :unprocessable_entity
+				end	
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
+			end
+		end
 
 		private
 
@@ -312,3 +351,57 @@ end
 # t.index ["additional_contract_information_id"], name: "index_contract_forms_on_additional_contract_information_id"
 # t.index ["program_id"], name: "index_contract_forms_on_program_id"
 # t.index ["startup_registration_id"], name: "index_contract_forms_on_startup_registration_id"
+
+#########startup Profile########
+# t.string "startup_name"
+# t.string "email"
+# t.string "main_image"
+# t.string "thumb_image"
+# t.string "logo_image"
+# t.string "founded_date"
+# t.text "description"
+# t.boolean "incorporated"
+# t.string "address_line_1"
+# t.string "address_line_2"
+# t.string "city"
+# t.string "state_province_region"
+# t.string "zip_pincode_postalcode"
+# t.string "country"
+# t.string "geo_location"
+# t.integer "created_by"
+# t.boolean "isDelete", default: false
+# t.string "deleted_by"
+# t.string "delete_at"
+# t.integer "team_size"
+# t.string "current_stage"
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
+# t.integer "startup_registration_id"
+
+
+##############users#################333
+# t.string "first_name"
+# t.string "last_name"
+# t.string "full_name"
+# t.string "email"
+# t.string "password_digest"
+# t.string "access_token"
+# t.string "user_main_image"
+# t.string "credentials"
+# t.string "commitment"
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
+# t.string "phone_number"
+# t.boolean "isDelete", default: false
+# t.integer "deleted_by"
+# t.datetime "deleted_date"
+# t.integer "created_by"
+# t.string "address_line_1"
+# t.string "address_line_2"
+# t.string "city"
+# t.string "state_province_region"
+# t.string "zip_pincode_postalcode"
+# t.string "country"
+# t.string "geo_location"
+# t.string "user_type"
+# t.string "designation"

@@ -17,4 +17,6 @@ class FlowMailer < ApplicationMailer
     mail to: @startup.founder_email, subject: "Congrats!!!"
   end
 
+
+
 end
