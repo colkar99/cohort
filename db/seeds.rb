@@ -22,6 +22,7 @@ ModuleType.create!(name: "startup_profile",description: "this module used to con
 ModuleType.create!(name: "additional_contract_information",description: "this module used to controll additional contract informations")
 ModuleType.create!(name: "framework",description: "this module used to controll framework actions")
 ModuleType.create!(name: "activity",description: "this module used to controll activity actions")
+ModuleType.create!(name:"checklist",description: "This type is used to control checklist items")
 
 
 puts  "Modules created"

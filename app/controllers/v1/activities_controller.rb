@@ -65,31 +65,32 @@ module V1
 		
 
 		def delete
-			module_grand_access = permission_control("activity","delete")
+			# module_grand_access = permission_control("activity","delete")
+			module_grand_access = true
 			if module_grand_access
 				activity = Activity.find(params[:activity_id])
-				# frameworks = Framework.find(params[:framework_id])
-				checklists = activity.checklists
-				framework_activity_link = FrameworkActivityLink.where("activity_id": activity.id, "framework_id": params[:framework_id] ).first
-				if checklists.destroy_all!
-					if activity.destroy!
-						if framework_activity_link.destroy!
-							render json: {error: "Activity and checklits are deleted successfully"}, status: :ok
+				if activity.present?
+					# frameworks = Framework.find(params[:framework_id])
+					checklists = activity.checklists
+					framework_activity_link = FrameworkActivityLink.where("activity_id": activity.id, "framework_id": params[:framework_id] ).first
+					if checklists.destroy_all
+						if activity.destroy
+							if framework_activity_link.destroy
+								render json: {error: "Activity and checklits are deleted successfully"}, status: :ok
+							else
+								render json: framework_activity_link.errors, status: :unprocessable_entity
+							end
 						else
-							render json: framework_activity_link.errors, status: :unprocessable_entity
+							render json: activity.errors, status: :unprocessable_entity
+			                       
 						end
 					else
-						render json: activity.errors, status: :unprocessable_entity
-		                       
+						render json: checklists.errors,status: :unprocessable_entity
 					end
 				else
-					render json: checklists.errors,status: :unprocessable_entity
+					render json: {error: "Activity not found"},status: :unprocessable_entity
 				end
-				# framework.created_by = current_user.id
-				# activity.isActive = false
-				# activity.isDelete = true
-				# activity.deleted_at = Time.now
-				# activity.deleted_by = current_user.id
+				
 			else
 				render json: {error: "Invalid Authorization"}, status: :unauthorized
 			end
