@@ -1,6 +1,6 @@
 class Framework < ApplicationRecord
 	has_many :framework_activity_links
-	has_many :activities, through: :framework_activity_links
+	has_many :activities, through: :framework_activity_links , dependent: :destroy
 	has_many :checklists
 	has_many :activity_responses
 	has_many :programs

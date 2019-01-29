@@ -76,7 +76,7 @@ module V1
 					if checklists.destroy_all
 						if activity.destroy
 							if framework_activity_link.destroy
-								render json: {error: "Activity and checklits are deleted successfully"}, status: :ok
+								render json: {message: "Activity and checklits are deleted successfully"}, status: :ok
 							else
 								render json: framework_activity_link.errors, status: :unprocessable_entity
 							end
