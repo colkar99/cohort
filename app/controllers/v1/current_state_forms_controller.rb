@@ -117,7 +117,7 @@ module V1
 					startup_application.score = 0
 					startup_application.score = current_state_form.total_rating
 					if startup_application.save!
-						render json: current_state_form,status: :ok
+						render json: {current_state_form: current_state_form,startup_registration: startup_application},status: :ok
 					else
 						render json: current_state_form.errors,status: :unprocessable_entity
 					end
