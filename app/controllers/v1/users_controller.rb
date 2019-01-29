@@ -57,7 +57,7 @@ module V1
 	    end
 
 	    def update_user_by_admin
-	    	user = User.find_by_email(params[:user][:email])
+	    	user = User.find(params[:user][:id])
 	    	roles = user.roles
 	    	role_user = RoleUser.new
 	      module_access_grands = permission_control("user","create")
