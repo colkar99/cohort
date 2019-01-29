@@ -72,7 +72,7 @@ module V1
 				# framework.isDelete = true
 				# framework.deleted_at = Time.now
 				# framework.deleted_by = current_user.id
-				if framework.destroy!
+				if framework.destroy
 					render json: framework ,status: :ok
 				else
 					render json: framework, status: :unprocessable_entity
