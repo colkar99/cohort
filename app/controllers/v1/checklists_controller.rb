@@ -58,18 +58,18 @@ module V1
 			if module_grand_access
 				checklist = Checklist.find(params[:checklist][:id])
 				# framework.created_by = current_user.id
-				checklist.isActive = false
-				checklist.isDelete = true
-				checklist.deleted_at = Time.now
-				checklist.deleted_by = current_user.id
-				if checklist.update!(checklist_params)
+				# checklist.isActive = false
+				# checklist.isDelete = true
+				# checklist.deleted_at = Time.now
+				# checklist.deleted_by = current_user.id
+				if checklist.destroy!
 					render json: checklist ,status: :ok
 				else
-					render json: checklist, status: :unprocessable_entity
+					render json: checklist.errors, status: :unprocessable_entity
 		                       
 				end
 			else
-				render json: {error: "Invalid Authorization"}, status: :unauthorized
+ 	  			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
 			end
 
 		end

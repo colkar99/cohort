@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello <%= @user.full_name%></h1>
+	<h4>
+		Congrats!!!!!!!Your contract form was approved and new profile created for you startup.
+
+  		<!-- <a href="http://localhost:4200/contract-form-sign/<%= @startup.id %>">Click here to update your account</a> -->
+	</h4>
+  <h4>Your credentials</h4>
+    Email: <%= @user.email%>
+    password: <%= @password%>
+    <p>Please user the below link to login</p>
+    <a href="http://localhost:3000/login"></a>
+  </body>
+</html>

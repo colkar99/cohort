@@ -67,18 +67,29 @@ module V1
 		def delete
 			module_grand_access = permission_control("activity","delete")
 			if module_grand_access
-				activity = Activity.find(params[:activity][:id])
+				activity = Activity.find(params[:activity_id])
+				# frameworks = Framework.find(params[:framework_id])
+				checklists = activity.checklists
+				framework_activity_link = FrameworkActivityLink.where("activity_id": activity.id, "framework_id": params[:framework_id] ).first
+				if checklists.destroy_all!
+					if activity.destroy!
+						if framework_activity_link.destroy!
+							render json: {error: "Activity and checklits are deleted successfully"}, status: :ok
+						else
+							render json: framework_activity_link.errors, status: :unprocessable_entity
+						end
+					else
+						render json: activity.errors, status: :unprocessable_entity
+		                       
+					end
+				else
+					render json: checklists.errors,status: :unprocessable_entity
+				end
 				# framework.created_by = current_user.id
 				# activity.isActive = false
 				# activity.isDelete = true
 				# activity.deleted_at = Time.now
 				# activity.deleted_by = current_user.id
-				if activity.destroy!
-					render json: activity ,status: :ok
-				else
-					render json: activity, status: :unprocessable_entity
-		                       
-				end
 			else
 				render json: {error: "Invalid Authorization"}, status: :unauthorized
 			end

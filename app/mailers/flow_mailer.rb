@@ -17,6 +17,12 @@ class FlowMailer < ApplicationMailer
     mail to: @startup.founder_email, subject: "Congrats!!!"
   end
 
+  def startup_profile_created(profile,user,password)
+    @profile = profile
+    @password = password
+    @user = user
 
+      mail to: @user.email, subject: "Profile created"
+  end
 
 end

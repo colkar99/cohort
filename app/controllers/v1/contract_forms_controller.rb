@@ -216,6 +216,7 @@ module V1
 		def contract_approval_by_admin
 			module_grant_access = permission_control("contract_form","update")
 			if module_grant_access
+				password = ""
 				contract_form = ContractForm.find(params[:contract_form][:id])
 				program_status = ProgramStatus.find_by_status("CFA")
 				contract_form.manager_approval = true
@@ -239,6 +240,24 @@ module V1
 						if startup_profile.save!
 							user = User.new
 							user.full_name = startup_application.founder_name
+							user.email = startup_application.founder_email
+							user.password = SecureRandom.urlsafe_base64(8)
+							user.password_confirmation = user.password
+							password = user.password_confirmation
+							user.credentials = startup_application.founder_credentials
+							user.commitment = startup_application.founder_commitment
+							user.user_type = "startup"
+							user.designation = "founder"
+							if user.save!
+								startup_user = StartupUser.new
+								startup_user.user_id = user.id
+								startup_user.startup_profile_id = startup_profile.id
+								startup_user.save!
+								FlowMailer.startup_profile_created(startup_profile,user,password)
+								render json: startup_application,status: :ok
+							else
+								render json: user.errors,status: :unprocessable_entity
+							end
 
 						else
 							render json: startup_profile.errors, status: :unprocessable_entity
