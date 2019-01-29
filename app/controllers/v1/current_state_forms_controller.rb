@@ -108,6 +108,26 @@ module V1
 			end
 		end
 
+		def admin_edit_current_state_form
+			module_grand_access = permission_control("current_state_form","update")
+			if module_grand_access
+				current_state_form = CurrentStateForm.find(params[:current_state_form][:id])
+				if current_state_form.save!
+					startup_application = current_state_form.startup_registration
+					startup_application.score = 0
+					startup_application.score = current_state_form.total_rating
+					if startup_application.save!
+						render json: current_state_form,status: :ok
+					else
+						render json: current_state_form.errors,status: :unprocessable_entity
+					end
+				else
+					render json: current_state_form.errors,status: :unprocessable_entity
+				end
+			else
+			end
+		end
+
 
 		def delete
 			
