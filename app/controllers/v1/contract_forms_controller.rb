@@ -172,7 +172,8 @@ module V1
 			if startup_application.present?
 				contract_form = startup_application.contract_form
 				if contract_form.present?
-					render json: {startup_application: startup_application, contract_form: contract_form},status: :ok
+					additional_contract_information = contract_form.additional_contract_information
+					render json: {startup_application: startup_application, contract_form: contract_form, additional_contract_information: additional_contract_information},status: :ok
 				else
 					render json: {error: "Contract form not found"}, status: :not_found
 				end

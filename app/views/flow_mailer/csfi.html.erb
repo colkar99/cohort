@@ -7,7 +7,7 @@
     <h1>Hello <%= @startup.startup_name%></h1>
 	<p>
 		Congrats!!!!!!!You have successfully passed the initial screen ,please use the below link to fill additional details for further process
-  		<a href="https://localhost:4200/current-state-form/{{@startup.id}}">Click here to update your account</a>
+  		<a href="http://localhost:4200/current-state-form/<%= @startup.id %>">Click here to update your account</a>
 	</p>
   </body>
 </html>

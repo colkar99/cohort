@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello <%= @startup.startup_name%></h1>
+	<p>
+		Congrats!!!!!!!You have successfully accepted for cohort program ,Please click the below link to sign contract.
+  		<a href="http://localhost:4200/contract-form-sign/<%= @startup.id %>">Click here to update your account</a>
+	</p>
+  </body>
+</html>

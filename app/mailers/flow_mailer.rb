@@ -11,4 +11,10 @@ class FlowMailer < ApplicationMailer
     mail to: @startup.founder_email, subject: "Current state form initialized"
   end
 
+  def accepted(startup_reg)
+    @startup = startup_reg 
+
+    mail to: @startup.founder_email, subject: "Congrats!!!"
+  end
+
 end

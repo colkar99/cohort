@@ -57,9 +57,9 @@ module V1
    					###########Send mail to contract manager to send contract form####
    					render json: {error: "Something happened please contact support"}, status: :unprocessable_entity
 	   			end
+	   			 FlowMailer.csfi(startup_application).deliver_now
    			end
    			render json: {message: "Current state form initilized"}, status: :ok
-   			FlowMailer.csfi(startup_application).deliver_now
    		else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
    		end
@@ -117,6 +117,7 @@ module V1
 				startup_application.app_status_description = program_status.description
 				startup_application.score = current_state_form.total_rating
 				if startup_application.save!
+					FlowMailer.accepted(startup_application).deliver_now
 					puts "Updated startup_application details"
 				else
 					render json: {errors: "Something happend please contact supprt team"}
