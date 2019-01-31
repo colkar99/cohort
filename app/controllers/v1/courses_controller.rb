@@ -4,6 +4,20 @@ module V1
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		
+		def view_all_courses
+			# module_grand_access = permission_control("course","show")
+			module_grand_access = true
+			if module_grand_access
+				courses = Course.all
+				if courses.present?
+					render json: courses ,status: :ok
+				else
+					render json: {error: "No Courses are created"}, status: :not_found
+				end
+			else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
+		end
 	 	def create_new_course
 			# module_grand_access = permission_control("course","create")
 			module_grand_access = true
@@ -124,6 +138,15 @@ module V1
 								if course_activity_link_delete
 									if activity.destroy
 										course_framework_link_delete = CoursesController.course_framework_link_delete(course)
+										if course_framework_link_delete
+											if course.destroy
+												render json: {message: "Course and Related activity and checklists are deleted"}
+											else
+												raise ActiveRecord::Rollback																	
+											end
+										else
+											raise ActiveRecord::Rollback																	
+										end
 									else
 										raise ActiveRecord::Rollback																	
 									end
@@ -145,7 +168,22 @@ module V1
 	 		
 	 	end
 
-	 	def course_activity_link_delete(course,activity)
+	 	def self.course_framework_link_delete(course)
+	 		framework_course_link = FrameworkCourseLink.where("course_id": course.id)
+	 		if framework_course_link.present?
+	 			framework_course_link.each do |delete_this|
+	 				if delete_this.destroy
+	 					true
+	 				else
+	 					false
+	 				end
+	 			end
+	 		else
+	 			true
+	 		end
+	 	end
+
+	 	def self.course_activity_link_delete(course,activity)
 	 		course_activity_link = CourseActivityLink.where("course_id": course.id,"activity_id": activity.id ).first
 	 		if course_activity_link.present?
 	 			if course_activity_link.destroy

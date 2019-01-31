@@ -172,6 +172,7 @@ Rails.application.routes.draw do
 		post 'v1/program/delete-activity-with-framework', to: 'frameworks#remove_activities_from_framework' #using
 		###########################
 		##########courses###############
+		get 'v1/framework/course/view-all', to: 'courses#view_all_courses'
 		post 'v1/framework/course/create-and-update-course', to: 'courses#create_new_course'
 		post 'v1/framework/course/create-activity-and-checklists', to: 'courses#create_activity'
 		post 'v1/framework/course/delete-activity-and-checklists', to: 'courses#delete_activity'
