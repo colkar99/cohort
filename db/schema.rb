@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_24_094217) do
+ActiveRecord::Schema.define(version: 2019_01_31_094500) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.text "placeholder"
     t.integer "order"
-    t.integer "framework_id"
     t.integer "created_by"
     t.boolean "isActive", default: true
     t.boolean "isDelete", default: false
@@ -25,7 +24,6 @@ ActiveRecord::Schema.define(version: 2019_01_24_094217) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["framework_id"], name: "index_activities_on_framework_id"
   end
 
   create_table "activity_responses", force: :cascade do |t|
@@ -99,7 +97,6 @@ ActiveRecord::Schema.define(version: 2019_01_24_094217) do
   create_table "checklists", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.integer "framework_id"
     t.integer "activity_id"
     t.integer "created_by"
     t.boolean "isActive", default: true
@@ -109,7 +106,6 @@ ActiveRecord::Schema.define(version: 2019_01_24_094217) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_checklists_on_activity_id"
-    t.index ["framework_id"], name: "index_checklists_on_framework_id"
   end
 
   create_table "contract_forms", force: :cascade do |t|
@@ -146,6 +142,27 @@ ActiveRecord::Schema.define(version: 2019_01_24_094217) do
     t.index ["startup_registration_id"], name: "index_contract_forms_on_startup_registration_id"
   end
 
+  create_table "course_activity_links", force: :cascade do |t|
+    t.integer "activity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "course_id"
+    t.index ["activity_id"], name: "index_course_activity_links_on_activity_id"
+    t.index ["course_id"], name: "index_course_activity_links_on_course_id"
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.text "additional_description"
+    t.boolean "isActive", default: true
+    t.integer "deleted_by"
+    t.string "deleted_at"
+    t.integer "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "current_state_forms", force: :cascade do |t|
     t.text "revenue"
     t.text "traction"
@@ -178,13 +195,13 @@ ActiveRecord::Schema.define(version: 2019_01_24_094217) do
     t.index ["startup_registration_id"], name: "index_current_state_forms_on_startup_registration_id"
   end
 
-  create_table "framework_activity_links", force: :cascade do |t|
+  create_table "framework_course_links", force: :cascade do |t|
     t.integer "framework_id"
-    t.integer "activity_id"
+    t.integer "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["activity_id"], name: "index_framework_activity_links_on_activity_id"
-    t.index ["framework_id"], name: "index_framework_activity_links_on_framework_id"
+    t.index ["course_id"], name: "index_framework_course_links_on_course_id"
+    t.index ["framework_id"], name: "index_framework_course_links_on_framework_id"
   end
 
   create_table "frameworks", force: :cascade do |t|
