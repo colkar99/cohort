@@ -131,19 +131,15 @@ module V1
 					course = Course.find(params[:course_id])
 					if course.present?
 						activities = course.activities
-						checklists = activities.checklists
-						if checklists.destroy_all
-							activities.each do |activity|
+						activities.each do |activity|
+							checklists = activity.checklists
+							if checklists.destroy_all
 								course_activity_link_delete = CoursesController.course_activity_link_delete(course,activity)
 								if course_activity_link_delete
 									if activity.destroy
 										course_framework_link_delete = CoursesController.course_framework_link_delete(course)
 										if course_framework_link_delete
-											if course.destroy
-												render json: {message: "Course and Related activity and checklists are deleted"}
-											else
-												raise ActiveRecord::Rollback																	
-											end
+											puts "course_framework_link_deleted"
 										else
 											raise ActiveRecord::Rollback																	
 										end
@@ -154,7 +150,12 @@ module V1
 									raise ActiveRecord::Rollback																	
 
 								end
+							else
+								raise ActiveRecord::Rollback																	
 							end
+						end
+						if course.destroy
+							render json: {message: "Course and Related activity and checklists are deleted"}
 						else
 							raise ActiveRecord::Rollback																	
 						end
@@ -332,3 +333,6 @@ end
    #  t.integer "framework_id"
    #  t.integer "activity_id"
    #  t.integer "created_by"
+
+
+

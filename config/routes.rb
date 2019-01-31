@@ -172,11 +172,11 @@ Rails.application.routes.draw do
 		post 'v1/program/delete-activity-with-framework', to: 'frameworks#remove_activities_from_framework' #using
 		###########################
 		##########courses###############
-		get 'v1/framework/course/view-all', to: 'courses#view_all_courses'
-		post 'v1/framework/course/create-and-update-course', to: 'courses#create_new_course'
-		post 'v1/framework/course/create-activity-and-checklists', to: 'courses#create_activity'
-		post 'v1/framework/course/delete-activity-and-checklists', to: 'courses#delete_activity'
-		post 'v1/framework/course/delete-course-activity-and-checklists', to: 'courses#delete_course'
+		get 'v1/framework/course/view-all', to: 'courses#view_all_courses' #using
+		post 'v1/framework/course/create-and-update-course', to: 'courses#create_new_course' #using
+		post 'v1/framework/course/create-activity-and-checklists', to: 'courses#create_activity' #uisng
+		post 'v1/framework/course/delete-activity-and-checklists', to: 'courses#delete_activity' #using
+		post 'v1/framework/course/delete-course-activity-and-checklists', to: 'courses#delete_course' #using
 
 		################################
 
@@ -197,7 +197,7 @@ Rails.application.routes.draw do
 		get 'v1/program/framework/activity/show-all-checklists', to: 'checklists#show_all'
 		post 'v1/program/framework/activity/show-checklist', to: 'checklists#show' 
 		put 'v1/program/framework/activity/edit-checklist', to: 'checklists#edit' 
-		put 'v1/program/framework/activity/delete-checklist', to: 'checklists#delete' 
+		put 'v1/program/framework/activity/delete-checklist', to: 'checklists#delete' #using 
 		###################################
 
 		######Activity response##############
