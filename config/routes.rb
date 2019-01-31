@@ -168,8 +168,8 @@ Rails.application.routes.draw do
 		post 'v1/program/show-framework', to: 'frameworks#show' #using
 		put 'v1/program/edit-framework', to: 'frameworks#edit'  #using
 		put 'v1/program/delete-framework', to: 'frameworks#delete' #using
-		post 'v1/program/merge-activity-with-framework', to: 'frameworks#assign_activity_to_framework' #using
-		post 'v1/program/delete-activity-with-framework', to: 'frameworks#remove_activities_from_framework' #using
+		post 'v1/program/merge-courses-with-framework', to: 'frameworks#assign_courses_to_framework' #using
+		post 'v1/program/delete-activity-with-framework', to: 'frameworks#remove_courses_from_framework' #using
 		###########################
 		##########courses###############
 		get 'v1/framework/course/view-all', to: 'courses#view_all_courses' #using
