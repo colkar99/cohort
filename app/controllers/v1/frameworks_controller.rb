@@ -84,29 +84,29 @@ module V1
 
 		end
 
-		def assign_activity_to_framework
+		def assign_courses_to_framework
 			module_grand_access = permission_control("framework","update")
 			if module_grand_access
 				framework = Framework.find(params[:framework_id])
 				if framework.present?
-					params[:activity_ids].each do |id|
-						activity = Activity.find(id)
-						if activity.present?
-							framework_activity_link = FrameworkActivityLink.new
-							framework_activity_link.framework_id = framework.id
-							framework_activity_link.activity_id = activity.id
-							if framework_activity_link.save!
-								puts 'New framework_activity_link created with framework_id: #{framework_activity_link.framework_id} & activity_id: #{framework_activity_link.activity_id}'
+					params[:course_ids].each do |id|
+						course_val = Course.find(id)
+						if course_val.present?
+							framework_course_link = FrameworkCourseLink.new
+							framework_course_link.framework_id = framework.id
+							framework_course_link.course_id = course_val.id
+							if framework_course_link.save!
+								puts "Framework Course link saved"
 							else
-								render json: framework_activity_link.errors, status: :ok
+								render json: framework_course_link.errors,status: :bad_request
 							end
 						else
-							render json: {error: "activity not found"}, status: :unprocessable_entity
+							render json: {error: "Some courses ids not present"}
 						end
 					end
-					render json: {message: "Activities are successfully merged with framework"}, status: :ok
+					render json: framework , status: :ok
 				else
-					render json: {error: "Framework not found "}, status: :unprocessable_entity
+					render json: {error: "Framework not found with this id"}, status: :not_found
 				end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized				
