@@ -23,6 +23,7 @@ ModuleType.create!(name: "additional_contract_information",description: "this mo
 ModuleType.create!(name: "framework",description: "this module used to controll framework actions")
 ModuleType.create!(name: "activity",description: "this module used to controll activity actions")
 ModuleType.create!(name:"checklist",description: "This type is used to control checklist items")
+ModuleType.create!(name:"course",description: "This type is used to control course items")
 
 
 puts  "Modules created"

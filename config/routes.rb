@@ -171,6 +171,13 @@ Rails.application.routes.draw do
 		post 'v1/program/merge-activity-with-framework', to: 'frameworks#assign_activity_to_framework' #using
 		post 'v1/program/delete-activity-with-framework', to: 'frameworks#remove_activities_from_framework' #using
 		###########################
+		##########courses###############
+		post 'v1/framework/course/create-and-update-course', to: 'courses#create_new_course'
+		post 'v1/framework/course/create-activity-and-checklists', to: 'courses#create_activity'
+		post 'v1/framework/course/delete-activity-and-checklists', to: 'courses#delete_activity'
+		post 'v1/framework/course/delete-course-activity-and-checklists', to: 'courses#delete_course'
+
+		################################
 
 		##########Activities###########################
 		post 'v1/program/framework/create-activity' , to: 'activities#create'
