@@ -109,6 +109,88 @@ module V1
 			end	 		
 	 	end
 
+	 	def delete_course
+	 		# module_grand_access = permission_control("course","delete")
+			module_grand_access = true
+			if module_grand_access
+				Course.transaction do
+					course = Course.find(params[:course_id])
+					if course.present?
+						activities = course.activities
+						checklists = activities.checklists
+						if checklists.destroy_all
+							activities.each do |activity|
+								course_activity_link_delete = CoursesController.course_activity_link_delete(course,activity)
+								if course_activity_link_delete
+									if activity.destroy
+										course_framework_link_delete = CoursesController.course_framework_link_delete(course)
+									else
+										raise ActiveRecord::Rollback																	
+									end
+								else
+									raise ActiveRecord::Rollback																	
+
+								end
+							end
+						else
+							raise ActiveRecord::Rollback																	
+						end
+					else
+						render json: {error: "Course not found with this id"},status: :ok
+					end  
+				end
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
+			end
+	 		
+	 	end
+
+	 	def course_activity_link_delete(course,activity)
+	 		course_activity_link = CourseActivityLink.where("course_id": course.id,"activity_id": activity.id ).first
+	 		if course_activity_link.present?
+	 			if course_activity_link.destroy
+	 				true
+	 			else
+	 				false
+	 			end
+	 		else
+	 			true
+	 		end
+	 		
+	 	end
+
+	 	def delete_activity
+	 		# module_grand_access = permission_control("activity","delete")
+			module_grand_access = true
+			if module_grand_access
+				activity = Activity.find(params[:activity_id])
+				if activity.present?
+					Activity.transaction do
+						checklists = activity.checklists
+						if checklists.destroy_all
+							puts "Checklists related to this activities are deleted"
+							if activity.destroy
+								course_activity_link = CourseActivityLink.where("course_id": params[:course_id],"activity_id": activity.id)
+								if course_activity_link.destroy_all
+									render json: {message: "Activity and related checklists are deleted successfully"},status: :ok
+								else
+									raise ActiveRecord::Rollback										
+								end
+							else
+								raise ActiveRecord::Rollback										
+							end
+						else
+							raise ActiveRecord::Rollback										
+						end
+					end
+				else
+					render json: {error: "Activity not found"},status: :bad_request
+				end
+			else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
+	 		end
+	 	end
+
 	 	def self.link_course_and_activity(course,activity)
 	 		course_activity_link_available = CourseActivityLink.where("activity_id": activity.id,"course_id": course.id).first
 	 		if course_activity_link_available.present?
