@@ -1,11 +1,10 @@
 # app/controllers/authentication_controller.rb
 module V1
 	class ContractFormsController < ApplicationController
-		skip_before_action :authenticate_request, only: [:send_contract_details,:send_to_startup,:contract_form_response,:show_contract_for_startup]
+		skip_before_action :authenticate_request, only: [:send_contract_details,:send_to_startup,:contract_form_response,:show_contract_for_startup,:startup_response_for_contract]
 
 	
 		def self.create(startup_app)
-			binding.pry
 				startup_application = startup_app
 				contract_form = ContractForm.new
 				program_status = ProgramStatus.where("status": "CFR").first
@@ -133,6 +132,7 @@ module V1
 					startup_application.contract_received_date = Time.now
 					if startup_application.save!
 						############send mail to sign contract form###############
+						FlowMailer.contract_form_created(startup_application).deliver_now
 						render json: contract_form, status: :ok
 					else
 						render json: startup_application.errors , status: :unprocessable_entity
@@ -213,6 +213,66 @@ module V1
 			end
 		end
 
+		# def contract_approval_by_admin
+		# 	module_grant_access = permission_control("contract_form","update")
+		# 	if module_grant_access
+		# 		password = ""
+		# 		contract_form = ContractForm.find(params[:contract_form][:id])
+		# 		program_status = ProgramStatus.find_by_status("CFA")
+		# 		contract_form.manager_approval = true
+		# 		contract_form.manager_approved_date = Time.now
+		# 		if contract_form.save!
+		# 			startup_application = contract_form.startup_registration
+		# 			startup_application.application_status = program_status.status
+		# 			startup_application.app_status_description = program_status.description
+		# 			if startup_application.save!
+		# 				startup_profile = StartupProfile.new
+		# 				startup_profile.startup_name = startup_application.startup_name
+		# 				startup_profile.founded_date = startup_application.founded_date
+		# 				startup_profile.address_line_1 = startup_application.startup_address_line_1
+		# 				startup_profile.address_line_2 = startup_application.startup_address_line_2
+		# 				startup_profile.city = startup_application.startup_city
+		# 				startup_profile.state_province_region = startup_application.startup_state_province_region
+		# 				startup_profile.zip_pincode_postalcode = startup_application.startup_zip_pincode_postalcode
+		# 				startup_profile.country = startup_application.startup_country
+		# 				startup_profile.geo_location = startup_application.startup_geo_location
+		# 				startup_profile.startup_registration_id = startup_application.id
+		# 				if startup_profile.save!
+		# 					user = User.new
+		# 					user.full_name = startup_application.founder_name
+		# 					user.email = startup_application.founder_email
+		# 					user.password = SecureRandom.urlsafe_base64(8)
+		# 					user.password_confirmation = user.password
+		# 					password = user.password_confirmation
+		# 					user.credentials = startup_application.founder_credentials
+		# 					user.commitment = startup_application.founder_commitment
+		# 					user.user_type = "startup"
+		# 					user.designation = "founder"
+		# 					if user.save!
+		# 						startup_user = StartupUser.new
+		# 						startup_user.user_id = user.id
+		# 						startup_user.startup_profile_id = startup_profile.id
+		# 						startup_user.save!
+		# 						FlowMailer.startup_profile_created(startup_profile,user,password)
+		# 						render json: startup_application,status: :ok
+		# 					else
+		# 						render json: user.errors,status: :unprocessable_entity
+		# 					end
+
+		# 				else
+		# 					render json: startup_profile.errors, status: :unprocessable_entity
+		# 				end
+		# 			else
+		# 				render json: startup_application.errors, status: :ok
+		# 			end
+		# 		else
+		# 			render json: contract_form.errors , status: :unprocessable_entity
+		# 		end	
+		# 	else
+		# 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
+		# 	end
+		# end
+
 		def contract_approval_by_admin
 			module_grant_access = permission_control("contract_form","update")
 			if module_grant_access
@@ -222,54 +282,58 @@ module V1
 				contract_form.manager_approval = true
 				contract_form.manager_approved_date = Time.now
 				if contract_form.save!
-					startup_application = contract_form.startup_registration
-					startup_application.application_status = program_status.status
-					startup_application.app_status_description = program_status.description
-					if startup_application.save!
-						startup_profile = StartupProfile.new
-						startup_profile.startup_name = startup_application.startup_name
-						startup_profile.founded_date = startup_application.founded_date
-						startup_profile.address_line_1 = startup_application.startup_address_line_1
-						startup_profile.address_line_2 = startup_application.startup_address_line_2
-						startup_profile.city = startup_application.startup_city
-						startup_profile.state_province_region = startup_application.startup_state_province_region
-						startup_profile.zip_pincode_postalcode = startup_application.startup_zip_pincode_postalcode
-						startup_profile.country = startup_application.startup_country
-						startup_profile.geo_location = startup_application.startup_geo_location
-						startup_profile.startup_registration_id = startup_application.id
-						if startup_profile.save!
-							user = User.new
-							user.full_name = startup_application.founder_name
-							user.email = startup_application.founder_email
-							user.password = SecureRandom.urlsafe_base64(8)
-							user.password_confirmation = user.password
-							password = user.password_confirmation
-							user.credentials = startup_application.founder_credentials
-							user.commitment = startup_application.founder_commitment
-							user.user_type = "startup"
-							user.designation = "founder"
-							if user.save!
-								startup_user = StartupUser.new
-								startup_user.user_id = user.id
-								startup_user.startup_profile_id = startup_profile.id
-								startup_user.save!
-								FlowMailer.startup_profile_created(startup_profile,user,password)
-								render json: startup_application,status: :ok
+					StartupRegistration.transaction do
+						startup_application = contract_form.startup_registration
+						startup_application.application_status = program_status.status
+						startup_application.app_status_description = program_status.description
+						if startup_application.save!
+							startup_profile = StartupProfile.new
+							startup_profile.startup_name = startup_application.startup_name
+							startup_profile.founded_date = startup_application.founded_date
+							startup_profile.address_line_1 = startup_application.startup_address_line_1
+							startup_profile.address_line_2 = startup_application.startup_address_line_2
+							startup_profile.city = startup_application.startup_city
+							startup_profile.state_province_region = startup_application.startup_state_province_region
+							startup_profile.zip_pincode_postalcode = startup_application.startup_zip_pincode_postalcode
+							startup_profile.country = startup_application.startup_country
+							startup_profile.geo_location = startup_application.startup_geo_location
+							startup_profile.startup_registration_id = startup_application.id
+							if startup_profile.save!
+								user = User.new
+								user.full_name = startup_application.founder_name
+								user.email = startup_application.founder_email
+								user.password = SecureRandom.urlsafe_base64(8)
+								user.password_confirmation = user.password
+								password = user.password_confirmation
+								user.credentials = startup_application.founder_credentials
+								user.commitment = startup_application.founder_commitment
+								user.user_type = "startup"
+								user.designation = "founder"
+								if user.save!
+									startup_user = StartupUser.new
+									startup_user.user_id = user.id
+									startup_user.startup_profile_id = startup_profile.id
+									startup_user.save!
+									FlowMailer.startup_profile_created(startup_profile,user,password).deliver_now
+									render json: startup_application,status: :ok
+								else
+									raise ActiveRecord::Rollback
+									render json: user.errors , status: :unprocessable_entity										
+								end
 							else
-								render json: user.errors,status: :unprocessable_entity
+								raise ActiveRecord::Rollback										
+								render json: startup_profile.errors, status: :unprocessable_entity
 							end
-
 						else
-							render json: startup_profile.errors, status: :unprocessable_entity
-						end
-					else
-						render json: startup_application.errors, status: :ok
+							raise ActiveRecord::Rollback
+							render json: startup_application.errors, status: :ok
+						end 
 					end
 				else
-					render json: contract_form.errors , status: :unprocessable_entity
-				end	
+					render json: contract_form.errors, status: :bad_request
+				end
 			else
-				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized												
 			end
 		end
 

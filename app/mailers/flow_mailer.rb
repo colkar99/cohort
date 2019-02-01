@@ -17,6 +17,12 @@ class FlowMailer < ApplicationMailer
     mail to: @startup.founder_email, subject: "Congrats!!!"
   end
 
+  def contract_form_created(startup_reg)
+    @startup = startup_reg 
+
+    mail to: @startup.founder_email, subject: "Contract Request"
+  end
+
   def startup_profile_created(profile,user,password)
     @profile = profile
     @password = password

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+	<h4>
+		Hello <%= @startup.founder_name%>
+	</h4>
+  <h4>Contract manager send you the contract form please click the below click to sign the contract.</h4>
+ 
+    <a href="http://localhost:4200/contract-form-sign/<%= @startup.id %>">Contract form</a>
+  </body>
+</html>
