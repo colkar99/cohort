@@ -62,7 +62,7 @@ module V1
 				# checklist.isDelete = true
 				# checklist.deleted_at = Time.now
 				# checklist.deleted_by = current_user.id
-				if checklist.destroy!
+				if checklist.destroy
 					render json: checklist ,status: :ok
 				else
 					render json: checklist.errors, status: :unprocessable_entity
