@@ -113,20 +113,18 @@ module V1
 			end
 		end
 
-		def remove_activities_from_framework
+		def remove_courses_from_framework
 			module_grand_access = permission_control("framework","delete")
 			if module_grand_access
 				framework = Framework.find(params[:framework_id])
 				if framework.present?
-					params[:activity_ids].each do |id|
-						framework_activity_link = FrameworkActivityLink.where(framework_id: framework,activity_id: id).first
-						if framework_activity_link.destroy!
-							puts "Activity successfully removed from the framework"
-						else
-							render json: framework_activity_link.errors, status: :unprocessable_entity
-						end
+					framework_course_link = FrameworkCourseLink.where(framework_id: framework.id,course_id: params[:course_id]).first
+					if framework_course_link.destroy
+						puts "Course successfully removed from the framework"
+					else
+						render json: framework_course_link.errors, status: :unprocessable_entity
 					end
-					render json: {message: "Activities are successfully merged with framework"}, status: :ok
+					render json: {message: "Course is successfully removed with framework"}, status: :ok
 				else
 					render json: {error: "Framework not found "}, status: :unprocessable_entity
 				end
