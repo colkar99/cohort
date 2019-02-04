@@ -29,7 +29,8 @@ module V1
  	    	if startup_profile.present? && startup_registration.present?
  	    	# binding.pry
 	 	    	# startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
-	 	    	render json: {startup_profile: startup_profile, startup_registration: startup_registration, users: users},status: :ok	 	    	
+	 	    	# render json: {startup_profile: startup_profile, startup_registration: startup_registration, users: users},status: :ok	 	    	
+	 	    	render json: startup_profile,status: :ok	 	    	
 	 	    else
 	 	    	render json:  { error: "ID not found" } , status: :not_found
 	 	    end
