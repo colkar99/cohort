@@ -275,7 +275,7 @@ module V1
 
 	  	def password_reset
 	  		user = User.find(params[:user][:id])
-	  		if user
+	  		if user.present?
 	  			User.transaction do
 	  				# user.password = params[:user][:password]
 	  				# user.password_confirmation = params[:user][:password_confirmation]
@@ -286,7 +286,6 @@ module V1
 	  					render json: user.errors, status: :bad_request
 	  				end	
 	  			end
-
 	  		else
 	  			render json: {error: "User not found"}
 	  		end
@@ -294,7 +293,7 @@ module V1
 
 	  	def password_reset_link
 	  		user = User.find_by_email(params[:user][:email])
-	  		if user
+	  		if user.present?
 	  			user.is_first_time_logged_in = true
 	  			if user.save!
 	  				UserMailer.password_reset(user).deliver_now
@@ -309,7 +308,7 @@ module V1
 
 	  	def get_user
 	  		user = User.find(params[:user][:id])
-	  		if user
+	  		if user.present?
 	  			render json: user, status: :ok 
 	  		else
 	  			render json: {error: "User not found with this ID"}
