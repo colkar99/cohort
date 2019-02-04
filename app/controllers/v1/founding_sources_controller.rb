@@ -8,7 +8,9 @@ module V1
 			startup_auth = startup_auth_check(params[:founding_source][:startup_profile_id],current_user)
 			if startup_auth
 				if founding_source.save!
-					render json: founding_source , status: :created
+					startup_profile = StartupProfile.find(params[:founding_source][:startup_profile_id])
+					founding_sources = startup_profile.founding_sources
+					render json: founding_sources , status: :created
 				else
 					render json: founding_source.errors, status: :unprocessable_entity
 				end
@@ -22,7 +24,9 @@ module V1
 			startup_auth = startup_auth_check(founding_source.startup_profile_id,current_user)
 			if startup_auth
 				if founding_source.update!(founding_sources_params)
-					render json: founding_source , status: :ok
+					startup_profile = StartupProfile.find(params[:founding_source][:startup_profile_id])
+					founding_sources = startup_profile.founding_sources
+					render json: founding_sources , status: :ok
 				else
 					render json: founding_source.errors, status: :unprocessable_entity
 				end
@@ -38,6 +42,9 @@ module V1
 			if startup_auth
 				if founding_source.destroy
 					render json: founding_source , status: :ok
+					startup_profile = StartupProfile.find(founding_source.startup_profile_id)
+					founding_sources = startup_profile.founding_sources
+					render json: founding_sources,status: :ok
 				else
 					render json: founding_source.errors, status: :unprocessable_entity
 				end
