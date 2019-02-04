@@ -273,24 +273,15 @@ module V1
 		   	end
 	  	end
 
-	  	def first_time_passwors_set
+	  	def password_reset
 	  		user = User.find(params[:user][:id])
 	  		if user
 	  			User.transaction do
-	  				user.password = params[:user][:password]
-	  				user.password_confirmation = params[:user][:password_confirmation]
+	  				# user.password = params[:user][:password]
+	  				# user.password_confirmation = params[:user][:password_confirmation]
+	  				user.is_first_time_logged_in = false
 	  				if user.update!(user_params)
-	  					startup_profile = user.startup_profiles
-	  					if  startup_profile
-	  						startup_profile.logged_in_first_time = false
-	  						if startup_profile.save!
-	  							render json: startup_profile, status: :ok
-	  						else
-	  							render json: startup_profile.errors, status: :unprocessable_entity
-	  						end
-	  					else
-	  						render json: {error: "startup_profile not found"}, status: :bad_request
-	  					end
+	  					render json: user ,status: :ok
 	  				else
 	  					render json: user.errors, status: :bad_request
 	  				end	
@@ -298,6 +289,21 @@ module V1
 
 	  		else
 	  			render json: {error: "User not found"}
+	  		end
+	  	end
+
+	  	def password_reset_link
+	  		user = User.find_by_email(params[:user][:email])
+	  		if user
+	  			user.is_first_time_logged_in = true
+	  			if user.save!
+	  				UserMailer.password_reset(user).deliver_now
+	  				render json: user ,status: :ok
+	  			else
+	  				render json: user.errors, status: :unprocessable_entity
+	  			end
+	  		else
+	  			render json: {error: "User not found with this email id"}, status: :unprocessable_entity
 	  		end
 	  	end
 

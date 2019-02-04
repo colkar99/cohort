@@ -18,7 +18,8 @@ Rails.application.routes.draw do
 		post 'v1/users/show-all', to: 'users#show_user_by_type'
 		put 'v1/user/edit', to: 'users#edit'
 		post 'v1/cohort/get-user', to: 'users#get_user' #using
-		put 'v1/password-set-first-time', to: 'users#first_time_passwors_set' #using
+		put 'v1/password-reset', to: 'users#password_reset' #using
+		put 'v1/password-reset-link', to: 'users#password_reset_link'
 		post 'v1/user/direct/registration', to: 'users#direct_registration'
 		put 'v1/user/delete-user', to: 'users#delete'
 		get 'v1/user-roles', to: 'user_roles#index'

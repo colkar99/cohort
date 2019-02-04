@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello <%= @user.full_name%></h1>
+	<p>
+		You Have successfully registered with us ,
+    Thank you for your interest we will shortly contact you.
+    Please click the blow link to reset your password
+  		<a href="https://localhost:4200/password-reset/<%= @user.id%>" target="_blank">Click here to reset you password</a>
+	</p>
+  </body>
+</html>

@@ -314,7 +314,8 @@ module V1
 									startup_user.user_id = user.id
 									startup_user.startup_profile_id = startup_profile.id
 									startup_user.save!
-									FlowMailer.startup_profile_created(startup_profile,user,password).deliver_now
+									# FlowMailer.startup_profile_created(startup_profile,user,password).deliver_now
+									UserMailer.first_time_logged_in(user).deliver_now
 									render json: startup_application,status: :ok
 								else
 									raise ActiveRecord::Rollback
