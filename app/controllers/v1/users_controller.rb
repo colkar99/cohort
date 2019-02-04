@@ -301,6 +301,15 @@ module V1
 	  		end
 	  	end
 
+	  	def get_user
+	  		user = User.find(params[:user][:id])
+	  		if user
+	  			render json: user, status: :ok 
+	  		else
+	  			render json: {error: "User not found with this ID"}
+	  		end
+	  	end
+
 	    private
 
 	    def user_params
