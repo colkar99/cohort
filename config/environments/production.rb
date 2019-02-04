@@ -92,8 +92,8 @@ Rails.application.configure do
     domain: 'example.com',
     authentication: "plain",
     # enable_starttls_auto: true,
-    user_name: "colkar99@gmail.com",
-    password: "colkar.99"
+    user_name: ENV["GMAIL_USERNAME"] ,
+    password: ENV["GMAIL_PASSWORD"]
   }
   config.action_mailer.default_url_options = {host: "localhost:3000"}
 end
