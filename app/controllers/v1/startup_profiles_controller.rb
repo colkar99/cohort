@@ -117,14 +117,24 @@ module V1
  	    	end
  	    end
 
- 	    def edit_team_member
+ 	    def delete_team_member
  	    	startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
  	    	# auth = check_auth_user(current_user,params[:startup_profile])
  	    	if startup_auth
  	    		User.transaction do
  	    		 	user = User.find(params[:user][:id])
-	 	    		user.user_type = "startup"
-	 	    		if user.update!(user_params)
+ 	    	startup_user = StartupUser.where(user_id: user.id,startup_profile_id: params[:startup_profile_id]).first
+ 	    	if startup_user.present?
+ 	    		if startup_user.destroy
+ 	    			
+ 	    		else
+ 	    			render json: startup_user.errors,status: :unprocessable_entity
+ 	    		end
+ 	    	else
+ 	    		render json: {error: "Somthing happend"},status: :bad_request
+ 	    	end
+	 	    		if user.destroy
+
  	    				startup_profile = StartupProfile.find(params[:startup_profile_id])
 	 	    			startup_users = startup_profile.users
 	 	    			render json: {startup_users: startup_users}, status: :ok

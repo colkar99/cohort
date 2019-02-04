@@ -10,7 +10,7 @@ module V1
 				if founding_source.save!
 					startup_profile = StartupProfile.find(params[:founding_source][:startup_profile_id])
 					founding_sources = startup_profile.founding_sources
-					render json: founding_sources , status: :created
+					render json:  founding_sources , status: :created
 				else
 					render json: founding_source.errors, status: :unprocessable_entity
 				end
