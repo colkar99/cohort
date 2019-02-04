@@ -130,6 +130,13 @@ Rails.application.routes.draw do
 		# post 'v1/program/startup-profile/edit', to: 'startup_profiles#edit_startup'
 		#################################
 
+		#####################Founding source#######################
+		post 'v1/startup-profile/founding-source/create', to: 'founding_sources#create'
+		put 'v1/startup-profile/founding-source/edit', to: 'founding_sources#edit'
+		put 'v1/startup-profile/founding-source/delete', to: 'founding_sources#delete'
+
+		###########################################################
+
 		################program status########
 		post 'v1/create-status', to: 'program_statuses#create'
 		get 'v1/show-statuses', to: 'program_statuses#show'

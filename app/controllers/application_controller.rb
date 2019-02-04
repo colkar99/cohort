@@ -57,7 +57,15 @@ class ApplicationController < ActionController::API
 		User.find_by_access_token(auth_token)
 	end
 
-
+	def startup_auth_check(startup_id,current_user)
+		startup_profiles = current_user.startup_profiles
+		startup_profiles.each do |startup_profile|
+			if startup_profile.id == startup_id
+				return true
+			end
+		end
+		false
+	end
 
 
 	

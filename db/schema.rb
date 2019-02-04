@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_04_043829) do
+ActiveRecord::Schema.define(version: 2019_02_04_071133) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -214,6 +214,17 @@ ActiveRecord::Schema.define(version: 2019_02_04_043829) do
     t.index ["program_id"], name: "index_current_state_forms_on_program_id"
     t.index ["startup_profile_id"], name: "index_current_state_forms_on_startup_profile_id"
     t.index ["startup_registration_id"], name: "index_current_state_forms_on_startup_registration_id"
+  end
+
+  create_table "founding_sources", force: :cascade do |t|
+    t.text "source"
+    t.text "amount"
+    t.text "description"
+    t.datetime "date"
+    t.integer "startup_profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["startup_profile_id"], name: "index_founding_sources_on_startup_profile_id"
   end
 
   create_table "framework_course_links", force: :cascade do |t|
