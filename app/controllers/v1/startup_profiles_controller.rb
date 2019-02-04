@@ -25,10 +25,11 @@ module V1
  	    def show
  	    	startup_profile = StartupProfile.find(params[:startup_profile][:id])
  	    	startup_registration = startup_profile.startup_registration
+ 	    	users = startup_profile.users
  	    	if startup_profile.present? && startup_registration.present?
  	    	# binding.pry
 	 	    	# startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
-	 	    	render json: {startup_profile: startup_profile, startup_registration: startup_registration},status: :ok	 	    	
+	 	    	render json: {startup_profile: startup_profile, startup_registration: startup_registration, users: users},status: :ok	 	    	
 	 	    else
 	 	    	render json:  { error: "ID not found" } , status: :not_found
 	 	    end
