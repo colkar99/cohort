@@ -1,6 +1,6 @@
 module V1
 	 class UsersController < ApplicationController
-	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_user,:mentor_user]
+	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_user,:mentor_user,:get_user,:password_reset,:password_reset_link]
 	 	# before_action  :current_user, :get_module
  	    def create
 	      @user = User.new(user_params)
