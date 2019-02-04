@@ -287,7 +287,7 @@ module V1
 	  				end	
 	  			end
 	  		else
-	  			render json: {error: "User not found"}
+	  			render json: {error: "User not found"}, status: :not_found
 	  		end
 	  	end
 
@@ -302,7 +302,7 @@ module V1
 	  				render json: user.errors, status: :unprocessable_entity
 	  			end
 	  		else
-	  			render json: {error: "User not found with this email id"}, status: :unprocessable_entity
+	  			render json: {error: "User not found with this email id"}, status: :not_found
 	  		end
 	  	end
 
@@ -311,7 +311,7 @@ module V1
 	  		if user.present?
 	  			render json: user, status: :ok 
 	  		else
-	  			render json: {error: "User not found with this ID"}
+	  			render json: {error: "User not found with this ID"}, status: :not_found
 	  		end
 	  	end
 
