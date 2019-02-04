@@ -113,7 +113,7 @@ Rails.application.routes.draw do
 		######startup profile ###########
 		post 'v1/startup/direct-registration', to: 'startup_profiles#direct_registration'
 		post 'v1/startup/authentication', to: 'startup_profiles#startup_authenticate'
-		get 'v1/startup/show-profile', to: 'startup_profiles#show'
+		post 'v1/startup/show-profile', to: 'startup_profiles#show'
 		get 'v1/startup/show-startup-profiles', to: 'startup_profiles#show_all'
 		put 'v1/user/startup/edit-startup-profile', to: 'startup_profiles#admin_edit'
 		post 'v1/startup/delete-startup-profile', to: 'startup_profiles#delete'
