@@ -42,8 +42,8 @@ module V1
  	    	
  	    end
  	    def edit
- 	    	auth = check_auth_user(current_user,params[:startup_profile])
- 	    	if auth
+ 	    	startup_auth = startup_auth_check(params[:startup_profile][:id],current_user)
+ 	    	if startup_auth
  	    		startup_profile = StartupProfile.find(params[:startup_profile][:id])
  	    		if startup_profile.update!(startup_profile_params)
  	    			render json: startup_profile,status: :ok
@@ -67,42 +67,73 @@ module V1
  	    end
 
  	    def add_team_member
- 	    	auth = check_auth_user(current_user,params[:startup_profile])
- 	    	if auth
- 	    		user = User.new(user_params)
- 	    		user.user_type = "startup"
- 	    		user.created_by = current_user.id
- 	    		if user.save!
- 	    			startup_user_create(user,params[:startup_profile][:id])
- 	    			startup_profile = StartupProfile.find(params[:startup_profile][:id])
- 	    			startup_users = startup_profile.users
- 	    			render json: {startup_users: startup_users}, status: :ok
- 	    		else
- 	    			render json: user.errors,status: :unprocessable_entity
+ 	    	startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
+ 	    	# auth = check_auth_user(current_user,params[:startup_profile])
+ 	    	if startup_auth
+ 	    		User.transaction do
+ 	    		 	user = User.new(user_params)
+	 	    		user.user_type = "startup"
+	 	    		user.created_by = current_user.id
+	 	    		user.password = "demo_user"
+	 	    		user.password_confirmation = "demo_user"
+	 	    		if user.save!
+	 	    			startup_user_created = startup_user_create(user,params[:startup_profile_id])
+	 	    			if startup_user_created != false
+	 	    				startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 	    				startup_users = startup_profile.users
+	 	    				UserMailer.first_time_logged_in(user).deliver_now
+	 	    				render json: {startup_users: startup_users}, status: :ok
+	 	    			else
+	 	    				raise ActiveRecord::Rollback
+	 	    				render json: {error: "Some thin has happened please contact site admin"}
+	 	    			end
+	 	    		else
+	 	    			render json: user.errors,status: :unprocessable_entity
+	 	    		end
  	    		end
  	    	else
  	    		render json: {error: "Invalid Authorization"}, status: :unauthorized
-
  	    	end
 
  	    end
 
  	    def edit_team_member
- 	    	auth = check_auth_user(current_user,params[:startup_profile])
- 	    	if auth
- 	    		user = User.find(params[:user][:id])
- 	    		binding.pry
- 	    		if user.update!(user_params)
- 	    			# startup_user_create(user,params[:startup_profile][:id])
- 	    			# startup_profile = StartupProfile.find(params[:startup_profile][:id])
- 	    			# startup_users = startup_profile.users
- 	    			render json: {startup_user: user}, status: :ok
- 	    		else
- 	    			render json: user.errors,status: :unprocessable_entity
+ 	    	startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
+ 	    	# auth = check_auth_user(current_user,params[:startup_profile])
+ 	    	if startup_auth
+ 	    		User.transaction do
+ 	    		 	user = User.find(params[:user][:id])
+	 	    		user.user_type = "startup"
+	 	    		if user.update!(user_params)
+ 	    				startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 	    			startup_users = startup_profile.users
+	 	    			render json: {startup_users: startup_users}, status: :ok
+	 	    		else
+	 	    			render json: user.errors,status: :unprocessable_entity
+	 	    		end
  	    		end
  	    	else
  	    		render json: {error: "Invalid Authorization"}, status: :unauthorized
+ 	    	end
+ 	    end
 
+ 	    def edit_team_member
+ 	    	startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
+ 	    	# auth = check_auth_user(current_user,params[:startup_profile])
+ 	    	if startup_auth
+ 	    		User.transaction do
+ 	    		 	user = User.find(params[:user][:id])
+	 	    		user.user_type = "startup"
+	 	    		if user.update!(user_params)
+ 	    				startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 	    			startup_users = startup_profile.users
+	 	    			render json: {startup_users: startup_users}, status: :ok
+	 	    		else
+	 	    			render json: user.errors,status: :unprocessable_entity
+	 	    		end
+ 	    		end
+ 	    	else
+ 	    		render json: {error: "Invalid Authorization"}, status: :unauthorized
  	    	end
  	    end
 
@@ -167,6 +198,8 @@ module V1
  	    	startup_user = StartupUser.new(user_id: user.id,startup_profile_id: startup_profile_id)
  	    	if startup_user.save!
  	    		return startup_user
+ 	    	else
+ 	    		return false
  	    	end
  	    end
 
