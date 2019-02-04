@@ -23,17 +23,14 @@ module V1
     		end
  	    end
  	    def show
- 	    	check_valid_startup = check_auth
- 	    	if check_valid_startup
+ 	    	startup_profile = StartupProfile.find(params[:startup_profile][:id])
+ 	    	startup_registration = startup_profile.startup_registration
+ 	    	if startup_profile.present? && startup_registration.present?
  	    	# binding.pry
-	 	    	startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
-	 	    	if startup_profile
-	 	    		render json: startup_profile,status: :ok
-	 	    	else
-	 	    		render json:  { error: "ID not found" } , status: :not_found
-	 	    	end
+	 	    	# startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
+	 	    	render json: {startup_profile: startup_profile, startup_registration: startup_registration},status: :ok	 	    	
 	 	    else
-	 	    	render json: {error: "Invalid Authorization"}, status: :unauthorized
+	 	    	render json:  { error: "ID not found" } , status: :not_found
 	 	    end
  	    end
 
@@ -46,7 +43,6 @@ module V1
  	    	auth = check_auth_user(current_user,params[:startup_profile])
  	    	if auth
  	    		startup_profile = StartupProfile.find(params[:startup_profile][:id])
- 	    		binding.pry
  	    		if startup_profile.update!(startup_profile_params)
  	    			render json: startup_profile,status: :ok
  	    		else
