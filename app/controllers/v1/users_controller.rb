@@ -249,29 +249,57 @@ module V1
 
 	    end
 
-	   def edit
-	   	if current_user.id == params[:user][:id]
-	   		user = User.find(params[:user][:id])
-	   		if user.update!(user_params)
-	   			render json: user , status: :ok
-	   		else
-	   			render json: user.errors, status: :unprocessable_entity
-	   		end
-	   	else
-	   		 module_access_grands = permission_control("user","update")
-	   		 if module_access_grands
-	   		 	user = User.find(params[:user][:id])
+	   	def edit
+		   	if current_user.id == params[:user][:id]
+		   		user = User.find(params[:user][:id])
 		   		if user.update!(user_params)
 		   			render json: user , status: :ok
 		   		else
 		   			render json: user.errors, status: :unprocessable_entity
-		   		end	
-	   		 else
-	   		 	render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
-	   		 end
+		   		end
+		   	else
+		   		 module_access_grands = permission_control("user","update")
+		   		 if module_access_grands
+		   		 	user = User.find(params[:user][:id])
+			   		if user.update!(user_params)
+			   			render json: user , status: :ok
+			   		else
+			   			render json: user.errors, status: :unprocessable_entity
+			   		end	
+		   		 else
+		   		 	render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+		   		 end
 
-	   	end
-	   end
+		   	end
+	  	end
+
+	  	def first_time_passwors_set
+	  		user = User.find(params[:user][:id])
+	  		if user
+	  			User.transaction do
+	  				user.password = params[:user][:password]
+	  				user.password_confirmation = params[:user][:password_confirmation]
+	  				if user.update!(user_params)
+	  					startup_profile = user.startup_profiles
+	  					if  startup_profile
+	  						startup_profile.logged_in_first_time = false
+	  						if startup_profile.save!
+	  							render json: startup_profile, status: :ok
+	  						else
+	  							render json: startup_profile.errors, status: :unprocessable_entity
+	  						end
+	  					else
+	  						render json: {error: "startup_profile not found"}, status: :bad_request
+	  					end
+	  				else
+	  					render json: user.errors, status: :bad_request
+	  				end	
+	  			end
+
+	  		else
+	  			render json: {error: "User not found"}
+	  		end
+	  	end
 
 	    private
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_04_035109) do
+ActiveRecord::Schema.define(version: 2019_02_04_043829) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -644,6 +644,7 @@ ActiveRecord::Schema.define(version: 2019_02_04_035109) do
     t.string "geo_location"
     t.string "user_type"
     t.string "designation"
+    t.boolean "is_first_time_logged_in", default: true
   end
 
 end
