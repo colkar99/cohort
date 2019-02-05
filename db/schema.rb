@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_04_071133) do
+ActiveRecord::Schema.define(version: 2019_02_05_064051) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -299,6 +299,16 @@ ActiveRecord::Schema.define(version: 2019_02_04_071133) do
     t.index ["user_id"], name: "index_mentor_users_on_user_id"
   end
 
+  create_table "milestones", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.text "metric"
+    t.integer "road_map_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["road_map_id"], name: "index_milestones_on_road_map_id"
+  end
+
   create_table "module_types", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -422,6 +432,7 @@ ActiveRecord::Schema.define(version: 2019_02_04_071133) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "road_map_completed", default: true
     t.index ["program_id"], name: "index_road_maps_on_program_id"
     t.index ["startup_profile_id"], name: "index_road_maps_on_startup_profile_id"
   end

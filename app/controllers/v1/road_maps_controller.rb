@@ -5,16 +5,84 @@ module V1
 	 	# before_action  :current_user, :get_module
 		
 		def create
-			check_valid_auth = check_auth
+			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
 			if check_valid_auth
-				road_map = RoadMap.new(road_map_params)
-				startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
-				if road_map.save!
-					render json: road_map ,status: :created
-				else
-					# render json: {:errors => activity_response.errors}
-					render json: road_map.errors, status: :unprocessable_entity 
-		                       
+				startup_profile = StartupProfile.find(params[:startup_profile_id])
+				RoadMap.transaction do
+					if params[:road_map][:id].present?
+						road_map = RoadMap.find(params[:road_map][:id])
+						if road_map.present?
+							if road_map.update!(road_map_params)
+								params[:milestones].each do |milestone|
+									if milestone[:id].present?
+										milestone_update = Milestone.find(milestone[:id])
+										milestone_update.name = milestone[:name]
+										milestone_update.description = milestone[:description]
+										milestone_update.metric = milestone[:metric]
+										milestone_update.road_map_id = road_map.id
+										if milestone_update.save!
+											puts "Milestone successfully updated"
+										else
+											raise ActiveRecord::Rollback
+											render json: milestone_update.errors, status: :unprocessable_entity
+										end
+									else
+										milestone_create = Milestone.new
+										milestone_create.name = milestone[:name]
+										milestone_create.description = milestone[:description]
+										milestone_create.metric = milestone[:metric]
+										milestone_create.road_map_id = road_map.id
+										if milestone_create.save!
+											puts "Mile stone created successfully"
+										else
+											raise ActiveRecord::Rollback
+											render json: milestone_create.errors, status: :unprocessable_entity
+										end
+									end
+								end
+								render json: road_map,status: :ok								
+							else
+								render json: road_map.errors,status: :unprocessable_entity
+							end
+						else
+							render json: {error: "Roadmap not found with this id"}
+						end
+					else
+						road_map = RoadMap.new(road_map_params)
+						if road_map.save!
+							params[:milestones].each do |milestone|
+								if milestone[:id].present?
+									milestone_update = Milestone.find(milestone[:id])
+									milestone_update.name = milestone[:name]
+									milestone_update.description = milestone[:description]
+									milestone_update.metric = milestone[:metric]
+									milestone_update.road_map_id = road_map.id
+									if milestone_update.save!
+										puts "Milestone successfully updated"
+									else
+										raise ActiveRecord::Rollback
+										render json: milestone_update.errors, status: :unprocessable_entity
+									end
+								else
+									milestone_create = Milestone.new
+									milestone_create.name = milestone[:name]
+									milestone_create.description = milestone[:description]
+									milestone_create.metric = milestone[:metric]
+									milestone_create.road_map_id = road_map.id
+									if milestone_create.save!
+										puts "Mile stone created successfully"
+									else
+										raise ActiveRecord::Rollback
+										render json: milestone_create.errors, status: :unprocessable_entity
+									end
+								end
+							end
+							render json: road_map,status: :created
+						else
+							# render json: {:errors => activity_response.errors}
+							render json: road_map.errors, status: :unprocessable_entity                
+						end
+					end
 				end
 			else
 				render json: {error: "Invalid Authorization"}, status: :unauthorized
@@ -95,6 +163,14 @@ module V1
 	 end
 end
 
+###############mile stone params##########
+    # t.string "name"
+    # t.text "description"
+    # t.text "metric"
+    # t.integer "road_map_id"
+    # t.datetime "created_at", null: false
+    # t.datetime "updated_at", null: false
+    # t.index ["road_map_id"], name: "index_milestones_on_road_map_id"
 ###############raod_map params##########33
    # t.string "goal"
    #  t.text "strategy"
