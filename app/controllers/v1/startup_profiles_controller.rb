@@ -1,7 +1,7 @@
 module V1
 	 class StartupProfilesController < ApplicationController
 	 	# skip_before_action :authenticate_request
-	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show , :delete,:create_password]
+	 	skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show , :delete,:create_password,:edit]
 	 	# before_action  :current_user, :get_module
 		def direct_registration
 	 		# binding.pry
