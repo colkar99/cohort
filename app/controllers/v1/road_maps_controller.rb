@@ -1,9 +1,25 @@
 module V1
 	 class RoadMapsController < ApplicationController
-	 	skip_before_action :authenticate_request, only: [:create,:show_all,:startup_edit]
+	 	skip_before_action :authenticate_request, only: [:create,:show_all,:startup_edit,:delete]
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		
+		def get_program_for_startup
+			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
+			if check_valid_auth
+				startup_profile = StartupProfile.find(params[:startup_profile_id])
+				startup_application = startup_profile.startup_registration
+				program = startup_application.program
+				if program.present?
+					render json: program, status: :ok
+				else
+					render json: {error: "Sorry you have not registered with any program"},status: :not_found
+				end
+			else
+				render json: {error: "Invalid Authorization"}, status: :unauthorized
+			end
+		end
+
 		def create
 			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
 			if check_valid_auth
@@ -83,6 +99,35 @@ module V1
 							render json: road_map.errors, status: :unprocessable_entity                
 						end
 					end
+				end
+			else
+				render json: {error: "Invalid Authorization"}, status: :unauthorized
+
+			end
+		end
+
+		def delete
+			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
+			if check_valid_auth
+				road_map = RoadMap.find(params[:road_map][:id])
+				if road_map.present?
+					RoadMap.transaction do
+						milestones = road_map.milestones
+						milestones.each do |milestone|
+							if milestone.destroy
+								puts "milestone destroyed successfully"
+							else
+								render json: milestone.errors,status: :unprocessable_entity
+							end 
+						end
+						if road_map.destroy
+							render json: road_map, status: :ok
+						else
+							render json: road_map.errors,status: :unprocessable_entity
+						end 
+					end
+				else
+					render json: {error: "Road map not present with this ID"}, status: :unprocessable_entity 
 				end
 			else
 				render json: {error: "Invalid Authorization"}, status: :unauthorized
