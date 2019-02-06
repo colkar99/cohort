@@ -162,7 +162,7 @@ Rails.application.routes.draw do
 		# post 'v1/delete-status', to: 'program_statuses#delete'
 		######################################
 		###########road map#############
-		post 'v1/program/startup/get-program-for-startup', to: 'road_maps#get_program_for_startup'
+		post 'v1/program/startup/get-program-road_map-for-startup', to: 'road_maps#get_program_for_startup'
 		post 'v1/program/startup/create-road-map', to: 'road_maps#create'
 		post 'v1/program/startup/delete-road-map', to: 'road_maps#delete'
 		post 'v1/program/startup/show-road-maps', to: 'road_maps#show_all'

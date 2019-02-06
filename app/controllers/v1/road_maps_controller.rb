@@ -10,8 +10,9 @@ module V1
 				startup_profile = StartupProfile.find(params[:startup_profile_id])
 				startup_application = startup_profile.startup_registration
 				program = startup_application.program
+				road_map = startup_profile.road_map
 				if program.present?
-					render json: program, status: :ok
+					render json: {program: program,road_map: road_map}, status: :ok
 				else
 					render json: {error: "Sorry you have not registered with any program"},status: :not_found
 				end
