@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_05_064051) do
+ActiveRecord::Schema.define(version: 2019_02_06_120926) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -306,6 +306,7 @@ ActiveRecord::Schema.define(version: 2019_02_05_064051) do
     t.integer "road_map_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "month"
     t.index ["road_map_id"], name: "index_milestones_on_road_map_id"
   end
 

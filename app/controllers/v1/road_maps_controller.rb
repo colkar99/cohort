@@ -36,6 +36,7 @@ module V1
 										milestone_update.name = milestone[:name]
 										milestone_update.description = milestone[:description]
 										milestone_update.metric = milestone[:metric]
+										milestone_update.month = milestone[:month]
 										milestone_update.road_map_id = road_map.id
 										if milestone_update.save!
 											puts "Milestone successfully updated"
@@ -48,6 +49,7 @@ module V1
 										milestone_create.name = milestone[:name]
 										milestone_create.description = milestone[:description]
 										milestone_create.metric = milestone[:metric]
+										milestone_create.month = milestone[:month]
 										milestone_create.road_map_id = road_map.id
 										if milestone_create.save!
 											puts "Mile stone created successfully"
@@ -73,6 +75,7 @@ module V1
 									milestone_update.name = milestone[:name]
 									milestone_update.description = milestone[:description]
 									milestone_update.metric = milestone[:metric]
+									milestone_update.month = milestone[:month]
 									milestone_update.road_map_id = road_map.id
 									if milestone_update.save!
 										puts "Milestone successfully updated"
@@ -85,6 +88,7 @@ module V1
 									milestone_create.name = milestone[:name]
 									milestone_create.description = milestone[:description]
 									milestone_create.metric = milestone[:metric]
+									milestone_create.month = milestone[:month]
 									milestone_create.road_map_id = road_map.id
 									if milestone_create.save!
 										puts "Mile stone created successfully"
