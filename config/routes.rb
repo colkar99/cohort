@@ -222,7 +222,7 @@ Rails.application.routes.draw do
 		#####################################
 
 		###############StartupEnquires###############
-		post 'v1/program/startup-registration/enquiries', to: 'authentication#contract_quiries_to_admin'
+		post 'v1/program/startup-registration/queries', to: 'authentication#contract_quiries_to_admin'
 
 
 	end

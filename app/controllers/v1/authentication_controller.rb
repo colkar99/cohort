@@ -40,8 +40,10 @@ module V1
 	 	if startup_registration.present? && program.present?
 	 		program_admin = User.find(program.program_admin)
 	 		program_director = User.find(program.program_director)
-	 		contract_manager = program.contract_manager
-	 		UserMailer.send_quiries_to_admin(program_admin,program_director,contract_manager)
+	 		contract_manager = User.find(program.contract_manager)
+	 		data = {subject: params[:subject],description: params[:description]}
+	 		UserMailer.send_queries_to_admin(program_admin,program_director,contract_manager,data,startup_registration).deliver_later
+	 		render json: {message: "Email successfully send"},status: :ok
 	 	else
 	 		render json: {error: "startup or program not found with this ID"}
 	 	end

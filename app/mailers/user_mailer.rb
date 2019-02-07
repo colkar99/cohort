@@ -24,8 +24,14 @@ class UserMailer < ApplicationMailer
       @user = user
       mail to: @user.email , subject: "Congrats!!"
   end
-  # def send_quiries_to_admin(program_admin,program_director,contract_manager)
-    
-  #   mail to: @user.email , subject: "Congrats!!"
-  # end
+  def send_queries_to_admin(program_admin,program_director,contract_manager,params,startup_app)
+    @program_admin = program_admin
+    @program_director = program_director
+    @contract_manager = contract_manager
+    @values = params
+    @startup_app = startup_app
+    mail(:to => @contract_manager.email ,  :subject => "Queries",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@program_admin.email,@program_director.email] )
+  end
 end
