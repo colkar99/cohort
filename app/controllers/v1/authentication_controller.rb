@@ -34,18 +34,18 @@ module V1
 	   end
 	 end
 
-	 def contract_quiries_to_admin
-	 	startup_registration = StartupRegistration.find(params[:startup_registration_id])
-	 	program = Program.find(params[:program_id])
-	 	if startup_registration.present? && program.present?
-	 		admin_user = User.find(program.program_admin
-	 		program_director = program.program_director
-	 		contract_manager = program.contract_manager
-	 		UserMailer.send_quiries_to_admin(program_admin,program_director,contract_manager)
-	 	else
-	 		render json: {error: "startup or program not found with this ID"}
-	 	end
-	 end
+	 # def contract_quiries_to_admin
+	 # 	startup_registration = StartupRegistration.find(params[:startup_registration_id])
+	 # 	program = Program.find(params[:program_id])
+	 # 	if startup_registration.present? && program.present?
+	 # 		admin_user = User.find(program.program_admin
+	 # 		program_director = program.program_director
+	 # 		contract_manager = program.contract_manager
+	 # 		UserMailer.send_quiries_to_admin(program_admin,program_director,contract_manager)
+	 # 	else
+	 # 		render json: {error: "startup or program not found with this ID"}
+	 # 	end
+	 # end
 
 	 private
 	 	def return_user(user)
