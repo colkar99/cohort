@@ -127,6 +127,7 @@ Rails.application.routes.draw do
 		post 'v1/startup/create-team-member', to: 'startup_profiles#add_team_member'
 		put 'v1/startup/edit-team-member', to: 'startup_profiles#edit_team_member'
 		put 'v1/startup/delete-team-member', to: 'startup_profiles#delete_team_member'
+		post 'v1/startup/show-profiles-for-admin', to: 'startup_profiles#show_profile_created_startups'
 
 		# post 'v1/program/startup-profile/edit', to: 'startup_profiles#edit_startup'
 		#################################
@@ -221,7 +222,7 @@ Rails.application.routes.draw do
 		#####################################
 
 		###############StartupEnquires###############
-		# post 'v1/program/startup-registration/enquiries', to: 'authentication#contract_quiries_to_admin'
+		post 'v1/program/startup-registration/enquiries', to: 'authentication#contract_quiries_to_admin'
 
 
 	end

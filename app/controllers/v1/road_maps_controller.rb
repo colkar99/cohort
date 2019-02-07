@@ -83,7 +83,12 @@ module V1
 						end
 					else
 						road_map = RoadMap.new(road_map_params)
-						if road_map.save!
+						program_status = ProgramStatus.find_by_status("RMD")
+						startup_application = startup_profile.startup_registration
+						startup_application.application_status = program_status.status
+						startup_application.app_status_description = program_status.description
+						startup_application.program_status_id = program_status.id
+						if road_map.save! && startup_application.save!
 							params[:milestones].each do |milestone|
 								if milestone[:id].present?
 									milestone_update = Milestone.find(milestone[:id])

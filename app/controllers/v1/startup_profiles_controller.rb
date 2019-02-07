@@ -298,6 +298,33 @@ module V1
  	    	end
  	    end
 
+ 	    def show_profile_created_startups
+ 	    	module_grand_access = permission_control("startup_profile","show")
+ 	    	if  module_grand_access
+ 	    		program = Program.find(params[:program_id])
+ 	    		if program.present?
+ 	    			startup_profiles = []
+ 	    			startup_applications = program.startup_registrations
+ 	    			startup_applications.each do |startup_application|
+ 	    				startup_status = startup_application.program_status
+ 	    				startup_profile = startup_application.startup_profile
+ 	    				if startup_status.stage == "onboard"
+ 	    					startup_profiles.push(startup_profile)
+ 	    				else
+ 	    					puts "Reject"
+ 	    				end
+ 	    			end
+ 	    			render json: startup_profiles,status: :ok
+ 	    		else
+ 	    			render json: {error: "program not found with this ID"}
+ 	    		end
+ 	    	else
+	       	render json: { error: "You dont have access to create users,Please contact Site admin" }, status: :unauthorized
+ 	    	end
+
+ 	    	
+ 	    end
+
 
  	    private
  	    def startup_profile_params

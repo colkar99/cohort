@@ -71,8 +71,8 @@ ProgramStatus.create!(status:"AR",description: "Rejected", stage: "initial")
 ProgramStatus.create!(status:"CFR",description: "Contract form received", stage: "contract")
 ProgramStatus.create!(status:"CSWFP",description: "Contract form Signed waiting for approval", stage: "contract")
 ProgramStatus.create!(status:"CFA",description: "Contract form approved by C_manager", stage: "contract")
-ProgramStatus.create!(status:"SPC",description: "Startup profile created", stage: "profile_creation")
-ProgramStatus.create!(status:"SPC",description: "Road map drafted by startup", stage: "roadmap")
+ProgramStatus.create!(status:"SPC",description: "Startup profile created", stage: "onboard")
+ProgramStatus.create!(status:"RMD",description: "Road map drafted by startup", stage: "onboard")
 
 puts "program_status created"
 

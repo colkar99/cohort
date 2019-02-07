@@ -284,6 +284,7 @@ module V1
 				if contract_form.save!
 					StartupRegistration.transaction do
 						startup_application = contract_form.startup_registration
+						startup_application.program_status_id = program_status.id
 						startup_application.application_status = program_status.status
 						startup_application.app_status_description = program_status.description
 						if startup_application.save!
@@ -299,6 +300,11 @@ module V1
 							startup_profile.geo_location = startup_application.startup_geo_location
 							startup_profile.startup_registration_id = startup_application.id
 							if startup_profile.save!
+								program_status = ProgramStatus.find_by_status("SPC")
+								startup_application.application_status = program_status.status
+								startup_application.app_status_description = program_status.description
+								startup_application.program_status_id = program_status.id
+								startup_application.save!
 								user = User.new
 								user.full_name = startup_application.founder_name
 								user.email = startup_application.founder_email
