@@ -165,6 +165,7 @@ Rails.application.routes.draw do
 		###########road map#############
 		post 'v1/program/startup/get-program-road_map-for-startup', to: 'road_maps#get_program_for_startup'
 		post 'v1/program/startup/get-road_map-for-startup', to: 'road_maps#get_road_map_for_startup'
+		post 'v1/program/startup/get-road_map-for-startup-admin', to: 'road_maps#get_road_map_for_startup_admin'
 		post 'v1/program/startup/create-road-map', to: 'road_maps#create'
 		post 'v1/program/startup/delete-road-map', to: 'road_maps#delete'
 		post 'v1/program/startup/show-road-maps', to: 'road_maps#show_all'

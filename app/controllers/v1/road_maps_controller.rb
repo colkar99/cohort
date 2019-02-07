@@ -36,6 +36,21 @@ module V1
 			end
 		end
 
+		def get_road_map_for_startup_admin
+	     	 module_access_grands = permission_control("road_map","show")
+			if module_access_grands
+				startup_profile = StartupProfile.find(params[:startup_profile_id])
+				if startup_profile.present?
+					road_map = RoadMap.find(params[:road_map_id])
+					render json: road_map,status: :ok
+				else
+					render json: {error: "startup_profile not found with this ID"},status: :not_found
+				end
+			else
+				render json: {error: "Invalid Authorization"}, status: :unauthorized				
+			end
+		end
+
 		def create
 			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
 			if check_valid_auth
