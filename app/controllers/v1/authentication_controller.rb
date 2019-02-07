@@ -2,6 +2,8 @@
 module V1
 	class AuthenticationController < ApplicationController
 	 skip_before_action :authenticate_request
+	 # skip_before_action :authenticate_request, only: [:authenticate,:show_all,:startup_edit,:delete]
+
 
 	 def authenticate
 	   command = AuthenticateUser.call(params[:email], params[:password])
@@ -30,6 +32,19 @@ module V1
 	   else
 	     render json: { message: command.errors[:message][0] }, status: :unauthorized
 	   end
+	 end
+
+	 def contract_quiries_to_admin
+	 	startup_registration = StartupRegistration.find(params[:startup_registration_id])
+	 	program = Program.find(params[:program_id])
+	 	if startup_registration.present? && program.present?
+	 		admin_user = User.find(program.program_admin
+	 		program_director = program.program_director
+	 		contract_manager = program.contract_manager
+	 		UserMailer.send_quiries_to_admin(program_admin,program_director,contract_manager)
+	 	else
+	 		render json: {error: "startup or program not found with this ID"}
+	 	end
 	 end
 
 	 private
