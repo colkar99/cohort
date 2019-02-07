@@ -24,4 +24,8 @@ class UserMailer < ApplicationMailer
       @user = user
       mail to: @user.email , subject: "Congrats!!"
   end
+  def send_quiries_to_admin(program_admin,program_director,contract_manager)
+    
+    mail to: @user.email , subject: "Congrats!!"
+  end
 end

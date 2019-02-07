@@ -1,6 +1,6 @@
 module V1
 	 class RoadMapsController < ApplicationController
-	 	skip_before_action :authenticate_request, only: [:create,:show_all,:startup_edit,:delete]
+	 	skip_before_action :authenticate_request, only: [:create,:show_all,:startup_edit,:delete,:get_road_map_for_startup]
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		
@@ -18,6 +18,21 @@ module V1
 				end
 			else
 				render json: {error: "Invalid Authorization"}, status: :unauthorized
+			end
+		end
+
+		def get_road_map_for_startup
+			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
+			if check_valid_auth
+				startup_profile = StartupProfile.find(params[:startup_profile_id])
+				if startup_profile.present?
+					road_map = RoadMap.find(params[:road_map_id])
+					render json: road_map,status: :ok
+				else
+					render json: {error: "startup_profile not found with this ID"},status: :not_found
+				end
+			else
+				render json: {error: "Invalid Authorization"}, status: :unauthorized				
 			end
 		end
 
