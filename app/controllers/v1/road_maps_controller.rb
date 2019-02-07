@@ -197,6 +197,7 @@ module V1
  	    private
  	    def road_map_params
 		    params.require(:road_map).permit(:id,
+		    									:month,
 		    									:goal,
 		    									:strategy,
 		    									:description,
