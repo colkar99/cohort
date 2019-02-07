@@ -219,7 +219,8 @@ Rails.application.routes.draw do
 		post 'v1/program/framework/activity/show-activity-response', to: 'activity_responses#show_all'
 		#####################################
 
-
+		###############StartupEnquires###############
+		# post 'v1/program/startup-registration/enquiries', to: ''
 
 
 	end
