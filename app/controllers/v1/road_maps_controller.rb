@@ -37,7 +37,7 @@ module V1
 		end
 
 		def get_road_map_for_startup_admin
-	     	 module_access_grands = permission_control("road_map","show")
+	     	 module_access_grands = permission_control("roadmap","show")
 			if module_access_grands
 				startup_profile = StartupProfile.find(params[:startup_profile_id])
 				if startup_profile.present?
