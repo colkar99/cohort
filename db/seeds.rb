@@ -33,7 +33,8 @@ Role.create!(name: "program_admin", user_role_type: "site")
 Role.create!(name: "program_director",user_role_type: "site")
 Role.create!(name: "application_manager",user_role_type: "site")
 Role.create!(name: "contract_manager",user_role_type: "site")
-Role.create!(name: "startup_admin",user_role_type: "startup")
+Role.create!(name: "startup_admin",user_role_type: "site")
+Role.create!(name: "mentor",user_role_type: "mentor")
 
 puts  "Roles created"
 
