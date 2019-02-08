@@ -1,4 +1,6 @@
 class Program < ApplicationRecord
+  mount_base64_uploader :main_image, PictureUploader
+  mount_base64_uploader :logo_image, PictureUploader
   belongs_to :program_type
   belongs_to :ProgramLocation
   # has_many :application_questions
