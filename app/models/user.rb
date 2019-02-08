@@ -17,7 +17,6 @@ class User < ApplicationRecord
 	has_many :roles, through: :role_users
 
 	before_save  :set_create_attr
-	after_save :set_main_image_url
 	before_validation :downcase_email
 	validates :email, :uniqueness => { :case_sensitive => false }
 	attr_accessor :role
@@ -29,9 +28,7 @@ class User < ApplicationRecord
 		end	
 	end
 
-	def set_main_image_url
-		binding.pry
-	end
+
 
 	private
 
