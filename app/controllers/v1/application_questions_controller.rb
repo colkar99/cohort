@@ -31,11 +31,11 @@ module V1
 		 	# binding.pry
 		 	module_grand_access = permission_control("application_question","update")
 		 	if module_grand_access
-			 	@program_reg_que = ApplicationQuestion.find(params[:program_registration_question][:id])
-			 	if @program_reg_que.update(application_question_params)
-			 		render json: @program_reg_que ,status: :ok 
+			 	program_reg_que = ApplicationQuestion.find(params[:application_question][:id])
+			 	if program_reg_que.update(application_question_params)
+			 		render json: program_reg_que ,status: :ok 
 			 	else
-			 		render json: @program_reg_que, status: :unprocessable_entity
+			 		render json: program_reg_que, status: :unprocessable_entity
 			 	end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
@@ -54,19 +54,52 @@ module V1
 			end 
 			
 		end
+
+		def show_app_ques_by_program
+			module_grand_access = permission_control("application_question","show")
+		 	if module_grand_access
+			 	program = Program.find(params[:program_id])
+			 	if program.present?
+			 		application_questions = program.application_questions
+			 		render json: application_questions,status: :ok
+			 	else
+			 		render json: {error: "Program not found with this ID"},status: :unprocessable_entity
+			 	end
+				# render json: application_questions ,status: :ok
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
+
+			end 			
+		end
 		########
 		def delete
 			# binding.pry
 		 	module_grand_access = permission_control("application_question","delete")
 		 	if module_grand_access
-			 	application_ques = ApplicationQuestion.find(params[:program_registration_question][:id])
-			 	application_ques.isDelete = true
-			 	application_ques.deleted_date = Time.now
-			 	application_ques.deleted_by = current_user.id
-			 	if application_ques.update(application_question_params)
-			 		render json: application_ques ,status: :ok 
+			 	application_ques = ApplicationQuestion.find(params[:application_question][:id])
+			 	if application_ques.present?
+			 		link_of_program = LinkOfProgramQuestion.where(application_question_id: application_ques.id)
+			 		if link_of_program.present?
+			 			if link_of_program.destroy_all
+			 				# application_ques.isDelete = true
+						 	# application_ques.deleted_date = Time.now
+						 	# application_ques.deleted_by = current_user.id
+						 	if application_ques.destroy
+						 		render json: application_ques ,status: :ok 
+						 	else
+						 		render json: application_ques, status: :unprocessable_entity
+						 	end
+			 			else
+			 				render json: link_of_program.errors,status: :unprocessable_entity
+			 			end
+			 		end
+	 				if application_ques.destroy
+				 		render json: application_ques ,status: :ok 
+				 	else
+				 		render json: application_ques, status: :unprocessable_entity
+				 	end
 			 	else
-			 		render json: application_ques, status: :unprocessable_entity
+			 		render json: {error: "Application questions not found with this ID"}
 			 	end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
@@ -186,7 +219,6 @@ module V1
 		    									:description,
 		    									:isActive,
 		    									:program_id,
-		    									:program_location_id,
 		    									:placeholder
 		    									 )
 		end

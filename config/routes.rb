@@ -80,8 +80,9 @@ Rails.application.routes.draw do
 		post 'v1/create-application-question', to: 'application_questions#create'
 		put 'v1/edit-application-question', to: 'application_questions#edit'
 		get 'v1/show-application-questions', to: 'application_questions#show'
+		put 'v1/show-application-questions-by-program', to: 'application_questions#show_app_ques_by_program'
 		post 'v1/show-program-questions', to: 'application_questions#show_ques_related_program'
-		post 'v1/delete-application-question', to: 'application_questions#delete'
+		put 'v1/delete-application-question', to: 'application_questions#delete'
 		post 'v1/create-program-questions-response', to: 'application_questions#application_question_response'#using
 		post 'v1/get-program-question-response', to: 'application_questions#get_application_response_questions' #using
 		post 'v1/admin-feedback-for-startup-response', to: 'application_questions#app_ques_res_admin' #using
