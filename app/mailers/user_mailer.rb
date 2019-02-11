@@ -34,4 +34,12 @@ class UserMailer < ApplicationMailer
      # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
      :cc => [@program_admin.email,@program_director.email] )
   end
+  def resource_request_to_admin(startup_profile,program,program_director,resource)
+    @startup_profile = startup_profile
+    @program = program
+    @program_director = program_director
+    @resource = resource
+    
+    mail to: @program_director.email , subject: "Resource Request!!"
+  end
 end

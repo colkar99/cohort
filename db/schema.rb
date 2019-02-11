@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_06_120926) do
+ActiveRecord::Schema.define(version: 2019_02_11_100629) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -299,6 +299,17 @@ ActiveRecord::Schema.define(version: 2019_02_06_120926) do
     t.index ["user_id"], name: "index_mentor_users_on_user_id"
   end
 
+  create_table "milestone_resource_links", force: :cascade do |t|
+    t.integer "milestone_id"
+    t.integer "resource_id"
+    t.integer "road_map_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["milestone_id"], name: "index_milestone_resource_links_on_milestone_id"
+    t.index ["resource_id"], name: "index_milestone_resource_links_on_resource_id"
+    t.index ["road_map_id"], name: "index_milestone_resource_links_on_road_map_id"
+  end
+
   create_table "milestones", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -307,6 +318,8 @@ ActiveRecord::Schema.define(version: 2019_02_06_120926) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "month"
+    t.integer "resource_id"
+    t.index ["resource_id"], name: "index_milestones_on_resource_id"
     t.index ["road_map_id"], name: "index_milestones_on_road_map_id"
   end
 
