@@ -73,6 +73,8 @@ Rails.application.routes.draw do
 		get 'v1/show-programs', to: 'programs#show'#using
 		get 'v1/contract-manager-programs', to: 'programs#contract_manager_programs' #using
 		post 'v1/delete-program', to: 'programs#delete'
+		put 'v1/program/assign-application-question-to-program', to: 'programs#assign_application_ques_to_program'
+		put 'v1/program/delete-application-question-to-program', to: 'programs#delete_app_ques_from_program'
 
 		####Program Registration Questions######
 		post 'v1/create-application-question', to: 'application_questions#create'

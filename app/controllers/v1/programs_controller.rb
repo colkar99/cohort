@@ -29,11 +29,11 @@ module V1
 		 	# binding.pry
 		 	module_grand_access = permission_control("program","update")
 		 	if module_grand_access
-			 	@program = Program.find(params[:program][:id])
-			 	if @program.update(program_params)
-			 		render json: @program ,status: :ok 
+			 	program = Program.find(params[:program][:id])
+			 	if program.update(program_params)
+			 		render json: program ,status: :ok 
 			 	else
-			 		render json: @program.errors, status: :unprocessable_entity
+			 		render json: program.errors, status: :unprocessable_entity
 			 	end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
@@ -145,6 +145,66 @@ module V1
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 			end
 		end
+
+		def assign_application_ques_to_program
+			module_grand_access = permission_control("program","show")
+			if module_grand_access
+				program = Program.find(params[:program_id])
+				if program.present?
+					ApplicationQuestion.transaction do
+						params[:application_questions].each do |app_ques|
+							link_of_program = LinkOfProgramQuestion.where(program_id: program.id, application_question_id: app_ques[:id],
+			 						program_location_id: program.ProgramLocation_id).first
+							if link_of_program.present?
+								puts "Application questions linked with program"
+							else
+								link_of_program = LinkOfProgramQuestion.new
+								link_of_program.program_id =  program.id 
+								link_of_program.application_question_id = app_ques[:id]
+			 					link_of_program.program_location_id = program.ProgramLocation_id
+			 					if link_of_program.save!
+			 						puts "Application question linked with program"
+			 					else
+			 						raise ActiveRecord::Rollback
+			 						render json: link_of_program.errors, status: :unprocessable_entity
+			 					end	
+							end
+						end
+						render json: program, status: :ok
+					end
+				else
+					render json: {error: "Program not found with this id"}
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end
+		end
+
+		def delete_app_ques_from_program
+			module_grand_access = permission_control("program","show")
+			if module_grand_access
+				ApplicationQuestion.transaction do
+					program = Program.find(params[:program_id])
+					if program.present?
+						params[:application_questions].each do |app_ques|
+							link_of_program = LinkOfProgramQuestion.where(program_id: program.id, application_question_id: app_ques[:id],
+			 								program_location_id: program.ProgramLocation_id).first
+							if link_of_program.destroy
+								puts "Application questions successfully removed from programs" 
+							else
+								render json: link_of_program.errors , status: :unprocessable_entity
+							end
+						end
+						render json: program, status: :ok
+					else
+						render json: {error: "Program not found with this ID"}
+					end 
+				end
+			else
+				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized								
+			end
+		end
+
 		private
 
 		def program_params
