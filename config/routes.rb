@@ -178,6 +178,8 @@ Rails.application.routes.draw do
 
 		######Resource Api's###########
 		post 'v1/program/startup/request-resource', to: 'resources#create'
+		put 'v1/program/startup/request-resource-edit', to: 'resources#edit'
+		put 'v1/program/startup/request-resource-get', to: 'resources#get_by_milestone'
 		###############################
 
 

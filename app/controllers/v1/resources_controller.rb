@@ -31,6 +31,30 @@ module V1
 			end
 		
 		end
+
+		def edit
+			resource = Resource.find(params[:resource][:id])
+			road_map = RoadMap.find(params[:resource][:road_map_id])
+			if resource.present?
+				if resource.update!(resource_params)
+					render json: resource,status: :ok
+				else
+					render json: resource.errors,status: :unprocessable_entity
+				end
+			else
+				render json: {error: "Resource not available with this ID"},status: :not_found
+			end
+		end
+
+		def get_by_milestone
+			milestone = Milestone.find(params[:milestone_id])
+			if milestone.present?
+				resources = milestone.resources
+				render json: resources,status: :ok
+			else
+				render json: {error: "milestones not present with this ID"},status: :not_found
+			end
+		end
 		def show_all
 			road_maps = StartupProfile.find(params[:startup_profile_id]).road_maps
 			render json: road_maps ,status: :ok
@@ -38,8 +62,6 @@ module V1
 
 		def startup_edit
 			# binding.pry
-			check_valid_auth = check_auth
-			if check_valid_auth
 				road_map = RoadMap.find(params[:road_map][:id])
 				startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
 				if road_map.update!(road_map_params)
@@ -49,10 +71,6 @@ module V1
 					render json: road_map.errors, status: :unprocessable_entity 
 		                       
 				end
-			else
-				render json: {error: "Invalid Authorization"}, status: :unauthorized
-
-			end
 			
 		end
 
