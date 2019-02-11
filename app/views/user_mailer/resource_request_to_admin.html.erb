@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Following Startup <%= @startup_profile.startup_name%> have request for resources.</h1>
+    <h4>Please find the details below</h4>
+    <p>Resource type: <%= @resource.resource_type%></p>
+    <p>Number of resources requested: <%= @resource.no_of_resource%></p>
+    <p>Number of hours needed: <%= @resource.hours_needed%></p>
+    <p>Date needed: <%= @resource.date_needed%></p>
+    <p>Payment mode: <%= @resource.payment_mode%></p>
+  </body>
+</html>
+

@@ -3,27 +3,34 @@ module V1
 	 	skip_before_action :authenticate_request, only: [:create,:show_all,:startup_edit]
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
-		
+
 		def create
 			# binding.pry
-			check_valid_auth = check_auth
-			if check_valid_auth
-				resource = Resource.new(resource_params)
-				resource.startup_profile_id = startup_profile.id
-				startup_profile = StartupProfile.find_by_password_digest(request.headers[:Authorization])
-				if resource.save!
-					render json: resource ,status: :created
+			resource = Resource.new(resource_params)
+			startup_profile = StartupProfile.find(params[:resource][:startup_profile_id])
+			program = startup_profile.startup_registration.program
+			program_director = User.find(program.program_director)
+			# resource.startup_profile_id = startup_profile.id
+			# resource.road_map_id = params[:road_map_id]
+			# resource.milestone_id = params[:milestone_id]
+			if resource.save!
+				UserMailer.resource_request_to_admin(startup_profile,program,program_director,resource).deliver_later
+				milestone_resource_link = MilestoneResourceLink.new
+				milestone_resource_link.milestone_id = params[:milestone_id] 
+				milestone_resource_link.resource_id = resource.id 
+				milestone_resource_link.road_map_id = resource.road_map_id
+				if milestone_resource_link.save!
+					render json: resource,status: :ok
 				else
-					# render json: {:errors => activity_response.errors}
-					render json: resource.errors, status: :unprocessable_entity 
-		                       
+					render json: milestone_resource_link.errors,status: :unprocessable_entity
 				end
 			else
-				render json: {error: "Invalid Authorization"}, status: :unauthorized
-
+				# render json: {:errors => activity_response.errors}
+				render json: resource.errors, status: :unprocessable_entity 
+	                       
 			end
+		
 		end
-
 		def show_all
 			road_maps = StartupProfile.find(params[:startup_profile_id]).road_maps
 			render json: road_maps ,status: :ok
@@ -91,10 +98,17 @@ module V1
 		    									:startup_profile_id
 		    									 )
  	    end
+ 	    def milestone_resource_link
+ 	    	params.require(:milestone_resource_link).permit(:id,:milestone_id,:resource_id,:road_map_id)
+ 	    end
 
 	 end
 end
 
+
+    # t.integer "milestone_id"
+    # t.integer "resource_id"
+    # t.integer "road_map_id"
 ###############resource params##########33
 # t.string "resource_type"
 # t.string "no_of_resource"
