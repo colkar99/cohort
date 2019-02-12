@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_11_100629) do
+ActiveRecord::Schema.define(version: 2019_02_12_111036) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -416,7 +416,7 @@ ActiveRecord::Schema.define(version: 2019_02_11_100629) do
     t.string "resource_type"
     t.string "no_of_resource"
     t.string "hours_needed"
-    t.datetime "date_needed"
+    t.string "date_needed"
     t.string "payment_mode"
     t.integer "road_map_id"
     t.boolean "isActive", default: true
