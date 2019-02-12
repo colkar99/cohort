@@ -3,6 +3,7 @@ module V1
 	 	skip_before_action :authenticate_request, only: [:create]
 	 	# before_action  :current_user, :get_module
 
+	 	#used for mentor registration
 	 	def self.create(user_id,data)
 	 		mentor_user = MentorUser.new("user_id": user_id,
 	 										"type_name": data[:type],
