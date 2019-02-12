@@ -107,6 +107,12 @@ module V1
 
  	 def startup_accept_by_admin_bulk
 	 	module_grand_access = permission_control("startup_application","update")
+	 	startups = []
+		program = {}
+		program_admin = {}
+		program_dir = {}
+		application_manager = {}
+		contract_manager = {}
 	 	if module_grand_access
 	 		program_status = ProgramStatus.find_by_status("AA")
    			params[:startup_app_ids].each do |id|
@@ -116,13 +122,20 @@ module V1
 				startup_application.application_status = program_status.status
 				startup_application.app_status_description = program_status.description
 				startup_application.score = current_state_form.total_rating
+				program = startup_application.program
+				program_admin = User.find(program.program_admin)
+				program_dir = User.find(program.program_director)
+				application_manager = User.find(program.application_manager)
+				contract_manager = User.find(program.contract_manager)
 				if startup_application.save!
-					FlowMailer.accepted(startup_application).deliver_now
+					startups.push(startup_application)
+					FlowMailer.accepted(startup_application).deliver_later
 					puts "Updated startup_application details"
 				else
 					render json: {errors: "Something happend please contact supprt team"}
 				end
 	 		end
+	 			FlowMailer.notification_contract_manager(program_admin,program_dir,application_manager,contract_manager,startups,program).deliver_later
 	 		   render json: {message: "Applications are accepted "}, status: :ok
 	 	else
 	 		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
