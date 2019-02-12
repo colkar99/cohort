@@ -5,6 +5,23 @@ class FlowMailer < ApplicationMailer
   #
   #   en.user_mailer.login.subject
   #
+  def startup_application_registered(startup_app)
+    @startup = startup_app
+      mail to: @startup.founder_email, subject: "Thank you for your interest"
+  end
+
+  def startup_registration_admin_notification(program_admin,program_dir,application_manager,startup,program)
+    @program_dir = program_dir
+    @program_admin = program_admin
+    @application_manager = application_manager
+    @startup = startup
+    @program = program
+  
+      mail(:to => @program_dir.email ,  :subject => "New Startup Registered",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@program_admin.email,@application_manager.email] )
+  end
+
   def csfi(startup_reg)
     @startup = startup_reg 
 

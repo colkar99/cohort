@@ -198,43 +198,6 @@ module V1
 
 	    def startup_user
 	    	user = User.new(user_params)
-	    	User.transaction do
-		    	if user.save!
-	      			command = AuthenticateUser.call(user.email, user.password)
-	      			if command.success?
-	      				role = Role.where(name: "mentor").first
-	      				role_user = RoleUser.new(user_id: user.id, role_id: role.id)
-	      				if role_user.save!
-			    	 		user.access_token = command.result
-			    	 		user.created_by = user.id
-			    	 		user.is_first_time_logged_in = false
-			    	  		user.save!
-			    	  		startup_user = StartupUsersController.create(user.id,params)
-			    	  		if startup_user
-			    	  			UserMailer.registration(user).deliver_later
-			    	  			# UserMailer.first_time_logged_in(user).deliver_later
-			    	  			render json: {auth_token: command.result, user: return_user(user)}, status: :ok 
-			    	  		else
-			    	  			raise ActiveRecord::Rollback
-			    	  			render json: {error: "Somrthing happened please contact admin"},status: :unprocessable_entity
-			    	  		end
-	      				else
-	      					raise ActiveRecord::Rollback
-	      					render json: role_user.errors, status: :unprocessable_entity
-	      				end
-		    		else
-		    			raise ActiveRecord::Rollback
-		    	  		render json: { error: command.errors }, status: :unauthorized
-		    		end
-				else
-					raise ActiveRecord::Rollback
-	      			render json: user.errors, status: :unprocessable_entity
-				end 
-	    	end
-	    end
-
-	    def mentor_user
-	    	user = User.new(user_params)
 	    	if user.save!
       			command = AuthenticateUser.call(user.email, user.password)
       			if command.success?
@@ -242,13 +205,49 @@ module V1
 	    	 		 user.access_token = command.result
 	    	 		 user.created_by = user.id
 	    	  		user.save!
-	    	  		MentorUsersController.create(user.id,params[:additional_details])
+	    	  		StartupUsersController.create(user.id,params)
 	    		else
 	    	  		render json: { error: command.errors }, status: :unauthorized
 	    		end
 			else
       			render json: @user.errors, status: :unprocessable_entity
 			end 
+	    	
+	    end
+
+	    def mentor_user
+	    	user = User.new(user_params)
+	    	User.transaction do
+		    	if user.save!
+	      			command = AuthenticateUser.call(user.email, user.password)
+	      			if command.success?
+	      				user.access_token = command.result
+			    	 	user.created_by = user.id
+			    	  	user.save!
+	      				role = Role.all.where(name: "mentor").first
+	      				role_user = RoleUser.new(user_id: user.id,role_id: role.id)
+	      				if role_user.save!
+	      					mentor_user = MentorUsersController.create(user.id,params[:additional_details])
+	      					if mentor_user
+	      						UserMailer.registration(user).deliver_later
+	      						render json: {auth_token: command.result, user: return_user(user)} 
+	      					else
+	      						raise ActiveRecord::Rollback
+	      						render json: {error: "Something happened please contact admin"},status: :unprocessable_entity
+	      					end
+	      				else
+	      					raise ActiveRecord::Rollback
+	      					render json: role_user.errors,status: :unprocessable_entity
+	      				end
+		    		else
+						raise ActiveRecord::Rollback
+		    	  		render json: { error: command.errors }, status: :unauthorized
+		    		end
+				else
+					raise ActiveRecord::Rollback
+	      			render json: user.errors, status: :unprocessable_entity
+				end 
+	    	end
 	    end
 
 	    def show_user_by_type

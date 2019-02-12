@@ -125,6 +125,11 @@ module V1
 				end
 			end
 			application_ques_responses = startup_application.app_ques_responses
+			program_admin = User.find(program.program_admin)
+			program_dir = User.find(program.program_director)
+			application_manager = User.find(program.application_manager)
+			FlowMailer.startup_application_registered(startup_application).deliver_later
+			FlowMailer.startup_registration_admin_notification(program_admin,program_dir,application_manager,startup_application,program).deliver_later
 			render json: application_ques_responses , status: :created
 		end
 		def get_application_response_questions
