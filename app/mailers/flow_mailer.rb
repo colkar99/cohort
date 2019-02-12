@@ -60,4 +60,16 @@ class FlowMailer < ApplicationMailer
      # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
      :cc => [@program_dir.email,@application_manager.email,@program_admin.email] )
   end
+
+  def admin_notification_for_current_state_form(program_admin,program_dir,application_manager,startups,program)
+    @program_admin = program_admin
+    @program_dir = program_dir
+    @application_manager = application_manager
+    @startups = startups
+    @program = program
+
+          mail(:to => @program_dir.email ,  :subject => "Current state forms initialized",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@program_admin.email,@application_manager.email] )
+  end
 end

@@ -49,16 +49,27 @@ module V1
 	 def request_current_state_form
  	   	module_grand_access = permission_control("startup_application","update")
    		if module_grand_access
+   			startups = []
+   			program = {}
+   			program_dir = {}
+   			program_admin = {}
+   			application_manager = {}
    			program_status = ProgramStatus.find_by_status("CSFI")
    			params[:startup_app_ids].each do |id|
    				startup_application = StartupRegistration.find(id)
+   				startups.push(startup_application)
+   				program = startup_application.program
+				program_admin = User.find(program.program_admin)
+				program_dir = User.find(program.program_director)
+				application_manager = User.find(program.application_manager)
    				status_change = status_change_for_app(startup_application,"CSFI")
    				if !status_change
    					###########Send mail to contract manager to send contract form####
    					render json: {error: "Something happened please contact support"}, status: :unprocessable_entity
 	   			end
-	   			 FlowMailer.csfi(startup_application).deliver_now
+	   			 FlowMailer.csfi(startup_application).deliver_later
    			end
+   			FlowMailer.admin_notification_for_current_state_form(program_admin,program_dir,application_manager,startups,program).deliver_later
    			render json: {message: "Current state form initilized"}, status: :ok
    		else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
