@@ -106,6 +106,11 @@ module V1
  	 	status = status_change_for_app(startup_registration,'CSFS')
  	 	if status
  	 		if current_state_form.save!
+ 	 			program = startup_registration.program
+ 	 			program_admin = User.find(program.program_admin)
+				program_dir = User.find(program.program_director)
+				application_manager = User.find(program.application_manager)
+ 	 			FlowMailer.startup_response_for_current_state_form(program_admin,program_dir,application_manager,startup_registration,program).deliver_later
  	 			render json: current_state_form, status: :ok
  	 		else
  	 			render json: current_state_form.errors, status: :unprocessable_entity

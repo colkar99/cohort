@@ -28,6 +28,18 @@ class FlowMailer < ApplicationMailer
     mail to: @startup.founder_email, subject: "Current state form initialized"
   end
 
+  def startup_response_for_current_state_form(program_admin,program_dir,application_manager,startups,program)
+    @program_admin = program_admin
+    @program_dir = program_dir
+    @application_manager = application_manager
+    @startup = startups
+    @program = program
+
+    mail(:to => [@program_dir.email,@program_admin.email] ,  :subject => "Current state forms submitted",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@application_manager.email] )
+  end
+
   def accepted(startup_reg)
     @startup = startup_reg 
 
