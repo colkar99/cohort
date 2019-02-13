@@ -16,12 +16,14 @@ module V1
 	   					 user_id: @user.id,
 	   					 roles: @user.roles }
 	   	elsif @user.user_type == "startup"
+	   		UserMailer.login(@user).deliver_later
 	   		startup_user = StartupUser.find_by_user_id(@user.id)
 	   		render json: { auth_token: command.result,
 	   						 user_type: @user.user_type,
 	   						 user_id: @user.id,
 	   						 startup_profile_id: startup_user.startup_profile_id }
 	   	elsif @user.user_type == "mentor"
+	   		UserMailer.login(@user).deliver_later
 	   		mentor_user = MentorUser.find_by_user_id(@user.id)
 	   		render json: { auth_token: command.result,
 	   						 user_type: @user.user_type,

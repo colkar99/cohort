@@ -42,4 +42,10 @@ class UserMailer < ApplicationMailer
     
     mail to: @program_director.email , subject: "Resource Request!!"
   end
+  def user_create_by_admin(user,current_user)
+      @user = user
+      @current_user = current_user
+    
+    mail to: @user.email , subject: "Create password!!"
+  end
 end

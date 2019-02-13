@@ -41,7 +41,8 @@ module V1
 	      			if role_user.save!
 	      				role = user.roles
 	      				###send mail to registerd user
-	      				UserMailer.registration(user).deliver_now
+	      				UserMailer.registration(user).deliver_later
+	      				UserMailer.user_create_by_admin(user,current_user).deliver_later
 	      				render json: {user: user, role: role} , status: :created
 	      			else
 	      				render json: role_user.errors, status: :unprocessable_entity
