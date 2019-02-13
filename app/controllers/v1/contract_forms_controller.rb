@@ -197,6 +197,12 @@ module V1
 						startup_application.contract_signed = true
 						startup_application.contract_signed_date = Time.now
 						if startup_application.save!
+							program = startup_application.program
+							program_admin = User.find(program.program_admin)
+							program_dir = User.find(program.program_director)
+							application_manager = User.find(program.application_manager)
+							contract_manager = User.find(program.contract_manager)
+							FlowMailer.startup_response_for_contract(program_admin,program_dir,application_manager,contract_manager,startup_application,program).deliver_later
 							#######send mail to application manager#######
 							render json: {contract_form: contract_form,startup_application: startup_application}, status: :ok
 						else

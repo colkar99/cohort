@@ -39,6 +39,18 @@ class FlowMailer < ApplicationMailer
      # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
      :cc => [@application_manager.email] )
   end
+  def startup_response_for_contract(program_admin,program_dir,application_manager,contract_manager,startup_application,program)
+    @program_admin = program_admin
+    @program_dir = program_dir
+    @application_manager = application_manager
+    @contract_manager = contract_manager
+    @startup = startup_application
+    @program = program
+
+    mail(:to => @contract_manager.email ,  :subject => "Contract forms signed",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@application_manager.email,@program_dir.email,@program_admin.email] )
+  end
 
   def accepted(startup_reg)
     @startup = startup_reg 
