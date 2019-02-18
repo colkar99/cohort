@@ -5,24 +5,56 @@ module V1
 	 	# before_action  :current_user, :get_module
 		
 		def create
-			# binding.pry
-			# md_access = permission_control("startup_application","create")
-			# binding.pry
-			# return 
+			StartupRegistration.transaction do
+				startup_registration = StartupRegistration.new(startup_registration_params)
+				app_status = ProgramStatus.find_by_status("PR")
+				startup_registration.program_status_id = app_status.id
+				 startup_registration.application_status = app_status.status
+				 startup_registration.app_status_description = app_status.description
+				if startup_registration.save!
+					# render json: startup_registration ,status: :created
+					# MailersController.program_startup_status(startup_registration)
+					app_ques = application_question_response(startup_registration)
+					if app_ques
+						render json: startup_registration,status: :created
+					else
+						raise ActiveRecord::Rollback
+						render json: {error: "Some error has occured "},status: :unprocessable_entity
+					end
+				else
+					raise ActiveRecord::Rollback
+					render json: startup_registration.errors, status: :unprocessable_entity           
+				end
+			end 
+		end
 
-			startup_registration = StartupRegistration.new(startup_registration_params)
-			app_status = ProgramStatus.find_by_status("PR")
-			startup_registration.program_status_id = app_status.id
-			 startup_registration.application_status = app_status.status
-			 startup_registration.app_status_description = app_status.description
-			if startup_registration.save!
-				render json: startup_registration ,status: :created
-				MailersController.program_startup_status(startup_registration)
-			else
-				render json: startup_registration.errors, status: :unprocessable_entity
-	                       
+
+		def application_question_response(startup_registration)
+			program = Program.find(params[:program_id])
+			startup_application = StartupRegistration.find(startup_registration.id)
+			app_questions_responses = params[:application_ques_response]
+			app_questions_responses.each do |app_que|
+				application_ques = AppQuesResponse.new
+				application_ques.application_question_id = app_que[:application_question_id]
+				application_ques.response = app_que[:response]
+				application_ques.startup_response = true
+				application_ques.program_location_id = program.ProgramLocation_id
+				application_ques.startup_registration_id = startup_registration.id
+				if application_ques.save!
+					puts "Created"
+				else
+					false
+					# render application_ques.errors, status: :unprocessable_entity
+				end
 			end
-
+			application_ques_responses = startup_application.app_ques_responses
+			program_admin = User.find(program.program_admin)
+			program_dir = User.find(program.program_director)
+			application_manager = User.find(program.application_manager)
+			FlowMailer.startup_application_registered(startup_registration).deliver_later
+			FlowMailer.startup_registration_admin_notification(program_admin,program_dir,application_manager,startup_registration,program).deliver_later
+			# render json: application_ques_responses , status: :created
+			true
 		end
 
 		def show_registered_startup #######show startups based on programs##########
