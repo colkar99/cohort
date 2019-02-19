@@ -230,6 +230,8 @@ Rails.application.routes.draw do
 		###############StartupEnquires###############
 		post 'v1/program/startup-registration/queries', to: 'authentication#contract_quiries_to_admin'
 
+		################Chart API############
+		get 'v1/chart/get-program-chart', to: 'charts#get_program_startups'
 
 	end
 
