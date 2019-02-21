@@ -6,7 +6,38 @@ module V1
 
 
 	 def authenticate
-	   command = AuthenticateUser.call(params[:email], params[:password])
+	 	command = AuthenticateUser.call(params[:email], params[:password],'email_login')
+	   @user = User.find_by_email(params[:email])
+	   if command.success?
+	   	if @user.user_type == "site"
+	   		UserMailer.login(@user).deliver_later
+	   		render json: { auth_token: command.result,
+	   					 user_type: @user.user_type,
+	   					 user_id: @user.id,
+	   					 roles: @user.roles }
+	   	elsif @user.user_type == "startup"
+	   		UserMailer.login(@user).deliver_later
+	   		startup_user = StartupUser.find_by_user_id(@user.id)
+	   		render json: { auth_token: command.result,
+	   						 user_type: @user.user_type,
+	   						 user_id: @user.id,
+	   						 startup_profile_id: startup_user.startup_profile_id }
+	   	elsif @user.user_type == "mentor"
+	   		UserMailer.login(@user).deliver_later
+	   		mentor_user = MentorUser.find_by_user_id(@user.id)
+	   		render json: { auth_token: command.result,
+	   						 user_type: @user.user_type,
+	   						 user_id: @user.id}					 
+	   	end
+	   		@user.access_token = command.result
+	     	@user.save!
+	   else
+	     render json: { message: command.errors[:message][0] }, status: :unauthorized
+	   end
+	 end
+
+	 def google_login
+	 	command = AuthenticateUser.call(params[:email], '123456',params[:type])
 	   @user = User.find_by_email(params[:email])
 	   if command.success?
 	   	if @user.user_type == "site"

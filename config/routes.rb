@@ -232,6 +232,7 @@ Rails.application.routes.draw do
 
 		################Chart API############
 		get 'v1/chart/get-program-chart', to: 'charts#get_program_startups'
+		post 'v1/google-login', to: 'authentication#google_login'
 
 	end
 
