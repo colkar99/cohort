@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  session: one
+  user: one
+  role: MyString
+  attendence_confirmation: false
+  startup_profile: one
+  isActive: false
+  created_by: 1
+
+two:
+  session: two
+  user: two
+  role: MyString
+  attendence_confirmation: false
+  startup_profile: two
+  isActive: false
+  created_by: 1

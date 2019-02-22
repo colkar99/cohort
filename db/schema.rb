@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_12_111036) do
+ActiveRecord::Schema.define(version: 2019_02_22_051127) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -504,6 +504,35 @@ ActiveRecord::Schema.define(version: 2019_02_12_111036) do
     t.datetime "updated_at", null: false
     t.index ["startup_profile_id"], name: "index_selected_mentors_on_startup_profile_id"
     t.index ["user_id"], name: "index_selected_mentors_on_user_id"
+  end
+
+  create_table "session_attendees", force: :cascade do |t|
+    t.integer "session_id"
+    t.integer "user_id"
+    t.string "role"
+    t.boolean "attendence_confirmation", default: true
+    t.integer "startup_profile_id"
+    t.boolean "isActive", default: true
+    t.integer "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_session_attendees_on_session_id"
+    t.index ["startup_profile_id"], name: "index_session_attendees_on_startup_profile_id"
+    t.index ["user_id"], name: "index_session_attendees_on_user_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.datetime "start_date_time"
+    t.datetime "end_date_time"
+    t.text "where"
+    t.integer "program_id"
+    t.boolean "isActive", default: true
+    t.integer "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_sessions_on_program_id"
   end
 
   create_table "social_media", force: :cascade do |t|

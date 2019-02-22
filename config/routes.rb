@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   	scope module: :v1 do
 		post 'v1/authenticate', to: 'authentication#authenticate' ##using
+		put 'v1/google-login', to: 'authentication#google_login' #using
 		get 'v1/get-user-details', to: 'users#get_user_detail' #using
 		post 'v1/get-roles-user-type', to: 'roles#get_role_by_user_type' #using
 		post 'v1/create-user-by-admin', to: 'users#create_user_by_admin' #using
@@ -232,7 +233,16 @@ Rails.application.routes.draw do
 
 		################Chart API############
 		get 'v1/chart/get-program-chart', to: 'charts#get_program_startups'
-		put 'v1/google-login', to: 'authentication#google_login'
+		get 'v1/chart/get-event', to: 'charts#get_event'
+		##############session Apis###############
+		post 'v1/program/create-session', to: 'sessions#create'
+		put 'v1/program/edit-session', to: 'sessions#edit'
+		put 'v1/program/delete-session', to: 'sessions#delete'
+		put 'v1/program/get-session-by-program', to: 'sessions#program_session_show'
+		put 'v1/program/get-session-attendees', to: 'sessions#show_session_attendees'
+
+
+
 
 	end
 
