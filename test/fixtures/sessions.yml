@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyText
+  description: MyText
+  start_date_time: 2019-02-22 10:37:21
+  end_date_time: 2019-02-22 10:37:21
+  where: MyText
+  program: 
+  isActive: false
+  created_by: 1
+
+two:
+  title: MyText
+  description: MyText
+  start_date_time: 2019-02-22 10:37:21
+  end_date_time: 2019-02-22 10:37:21
+  where: MyText
+  program: 
+  isActive: false
+  created_by: 1

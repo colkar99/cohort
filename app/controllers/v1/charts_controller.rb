@@ -133,6 +133,11 @@ module V1
 			render json: result,status: :ok
 		end
 
+		def get_event
+			event = [{title: "Event no 1", start: '2019-03-05T01:00:00+05:30'},{title: "Event no 6", start: '2019-03-06T01:00:00+05:30'}]
+			render json: event, status: :ok
+		end
+
 
 	 end
 end
