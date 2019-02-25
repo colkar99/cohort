@@ -240,6 +240,8 @@ Rails.application.routes.draw do
 		put 'v1/program/delete-session', to: 'sessions#delete'
 		put 'v1/program/get-session-by-program', to: 'sessions#program_session_show'
 		put 'v1/program/get-session-attendees', to: 'sessions#show_session_attendees'
+		put 'v1/program/assign-attendess-for-session', to: 'sessions#assign_attendees_to_session'
+		put 'v1/program/get-sessions-for-startup', to: 'sessions#show_sessions_to_startups'
 
 
 

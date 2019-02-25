@@ -12,27 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2019_02_22_051127) do
 
-  create_table "active_storage_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "record_type", null: false
-    t.integer "record_id", null: false
-    t.integer "blob_id", null: false
-    t.datetime "created_at", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
-  end
-
-  create_table "active_storage_blobs", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "filename", null: false
-    t.string "content_type"
-    t.text "metadata"
-    t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
   create_table "activities", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -253,12 +232,6 @@ ActiveRecord::Schema.define(version: 2019_02_22_051127) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "image_uploads", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "link_of_program_questions", force: :cascade do |t|
     t.integer "application_question_id"
     t.integer "program_id"
@@ -318,20 +291,12 @@ ActiveRecord::Schema.define(version: 2019_02_22_051127) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "month"
-    t.integer "resource_id"
-    t.index ["resource_id"], name: "index_milestones_on_resource_id"
     t.index ["road_map_id"], name: "index_milestones_on_road_map_id"
   end
 
   create_table "module_types", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "new_images", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

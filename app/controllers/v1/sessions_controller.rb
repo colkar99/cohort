@@ -1,6 +1,6 @@
 module V1
 	 class SessionsController < ApplicationController
-	 	# skip_before_action :authenticate_request, only: [:create,:show,:edit]
+	 	skip_before_action :authenticate_request, only: [:show_sessions_to_startups]
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		
@@ -106,6 +106,84 @@ module V1
 			else
  	  			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 				 			 								
 			end	 		
+	 	end
+
+	 	def assign_attendees_to_session
+	 		module_grand_access = permission_control("session","update")
+	 		if module_grand_access
+	 			SessionAttendee.transaction do
+		 			session = Session.find(params[:session][:id])
+		 			if session.present?
+		 				mentors = params[:mentors]
+		 				mentors.each do |mentor|
+		 					user = User.find(mentor)
+		 					if user.present?
+			 					attendee = SessionAttendee.new
+			 					attendee.session_id = session.id
+			 					attendee.user_id = user.id
+			 					attendee.role = user.user_type
+			 					attendee.role = user.user_type
+			 					if attendee.save!
+			 						puts "Mentors added to sessions"
+			 					else
+			 						raise ActiveRecord::Rollback
+			 						render json: attendee.errors,status: :bad_request
+			 					end
+		 					else
+	      						raise ActiveRecord::Rollback		 						
+		 						render json: {error: "Oops something happend"},status: :bad_request
+		 					end
+		 				end
+		 				startup_users = params[:startups]
+		 				startup_users.each do |startup_user|
+		 					user = User.find(startup_user)
+		 					if user.present?
+		 						startup_profile = user.startup_profiles.first
+		 						if startup_profile.present?
+		 							attendee = SessionAttendee.new
+				 					attendee.session_id = session.id
+				 					attendee.user_id = user.id
+				 					attendee.role = user.user_type
+				 					attendee.startup_profile_id = startup_profile.id
+				 					if attendee.save!
+				 						puts "startups added to sessions"
+				 					else
+	      								raise ActiveRecord::Rollback				 						
+				 						render json: attendee.errors,status: :bad_request
+				 					end
+		 						else
+	      							raise ActiveRecord::Rollback		 							
+		 							render json: {error: "Something happened Please contact admin"},status: :bad_request
+								end
+		 					else
+		 						raise ActiveRecord::Rollback
+		 						render json: {error: "some thing happened"},status: :bad_request
+		 					end
+		 				end
+		 				render json: {message: "attendees added successfully"},status: :ok
+		 			else
+		 				raise ActiveRecord::Rollback
+		 				render json: {error: "session with this ID not present"}, status: :bad_request
+		 			end
+	 			end
+	 		else
+	 			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	
+	 		end
+	 	end
+
+	 	def show_sessions_to_startups
+ 	    	startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
+ 	    	if startup_auth
+ 	    		program = Program.find(params[:program_id])
+ 	    		if program.present?
+ 	    			sessions = program.sessions
+ 	    			render json: sessions,status: :ok
+ 	    		else
+ 	    			render json: {error: "Program not found with this id"},status: :bad_request
+ 	    		end
+ 	    	else
+ 	    		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+ 	    	end
 	 	end
 
  	    private

@@ -24,6 +24,7 @@ ModuleType.create!(name: "framework",description: "this module used to controll 
 ModuleType.create!(name: "activity",description: "this module used to controll activity actions")
 ModuleType.create!(name:"checklist",description: "This type is used to control checklist items")
 ModuleType.create!(name:"course",description: "This type is used to control course items")
+ModuleType.create!(name:"session",description: "Used to controll session mentods")
 
 
 puts  "Modules created"

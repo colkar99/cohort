@@ -9,7 +9,7 @@ module V1
 	       if module_access_grands
 	       	 @user.created_by = current_user.id
 	       		if @user.save!
-	      			command = AuthenticateUser.call(@user.email, @user.password)
+	      			command = AuthenticateUser.call(@user.email, @user.password,'direct')
 	      			if command.success?
 		    	  		render json: {auth_token: command.result, user: return_user(@user)} 
 		    	 		 @user.access_token = command.result
@@ -180,7 +180,7 @@ module V1
 	      # binding.pry
 	       	 # @user.created_by = current_user.id
        		if @user.save!
-      			command = AuthenticateUser.call(@user.email, @user.password)
+      			command = AuthenticateUser.call(@user.email, @user.password,'direct')
       			if command.success?
 	    	  		render json: {auth_token: command.result, user: return_user(@user)} 
 	    	 		 @user.access_token = command.result
@@ -200,7 +200,7 @@ module V1
 	    def startup_user
 	    	user = User.new(user_params)
 	    	if user.save!
-      			command = AuthenticateUser.call(user.email, user.password)
+      			command = AuthenticateUser.call(user.email, user.password,'direct')
       			if command.success?
 	    	  		render json: {auth_token: command.result, user: return_user(user)} 
 	    	 		 user.access_token = command.result
@@ -220,7 +220,7 @@ module V1
 	    	user = User.new(user_params)
 	    	User.transaction do
 		    	if user.save!
-	      			command = AuthenticateUser.call(user.email, user.password)
+	      			command = AuthenticateUser.call(user.email, user.password,'some')
 	      			if command.success?
 	      				user.access_token = command.result
 			    	 	user.created_by = user.id
