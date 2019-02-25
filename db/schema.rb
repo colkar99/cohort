@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_22_051127) do
+ActiveRecord::Schema.define(version: 2019_02_25_204436) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(version: 2019_02_22_051127) do
 
   create_table "activity_responses", force: :cascade do |t|
     t.text "startup_response"
-    t.integer "framework_id"
     t.integer "startup_profile_id"
     t.integer "activity_id"
     t.integer "checklist_id"
@@ -47,9 +46,12 @@ ActiveRecord::Schema.define(version: 2019_02_22_051127) do
     t.integer "admin_id"
     t.integer "mentor_id"
     t.integer "program_id"
+    t.string "target_date"
+    t.boolean "startup_responsed", default: false
+    t.integer "course_id"
     t.index ["activity_id"], name: "index_activity_responses_on_activity_id"
     t.index ["checklist_id"], name: "index_activity_responses_on_checklist_id"
-    t.index ["framework_id"], name: "index_activity_responses_on_framework_id"
+    t.index ["course_id"], name: "index_activity_responses_on_course_id"
     t.index ["program_id"], name: "index_activity_responses_on_program_id"
     t.index ["startup_profile_id"], name: "index_activity_responses_on_startup_profile_id"
   end
