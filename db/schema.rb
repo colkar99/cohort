@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_25_204436) do
+ActiveRecord::Schema.define(version: 2019_02_26_062513) do
 
   create_table "activities", force: :cascade do |t|
     t.string "name"
@@ -30,8 +30,6 @@ ActiveRecord::Schema.define(version: 2019_02_25_204436) do
     t.text "startup_response"
     t.integer "startup_profile_id"
     t.integer "activity_id"
-    t.integer "checklist_id"
-    t.boolean "checklist_status", default: false
     t.integer "admin_rating"
     t.text "admin_feedback"
     t.integer "mentor_rating"
@@ -49,8 +47,9 @@ ActiveRecord::Schema.define(version: 2019_02_25_204436) do
     t.string "target_date"
     t.boolean "startup_responsed", default: false
     t.integer "course_id"
+    t.boolean "admin_responsed", default: false
+    t.boolean "mentor_responsed", default: false
     t.index ["activity_id"], name: "index_activity_responses_on_activity_id"
-    t.index ["checklist_id"], name: "index_activity_responses_on_checklist_id"
     t.index ["course_id"], name: "index_activity_responses_on_course_id"
     t.index ["program_id"], name: "index_activity_responses_on_program_id"
     t.index ["startup_profile_id"], name: "index_activity_responses_on_startup_profile_id"
@@ -94,6 +93,24 @@ ActiveRecord::Schema.define(version: 2019_02_25_204436) do
     t.text "placeholder"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "checklist_responses", force: :cascade do |t|
+    t.integer "activity_id"
+    t.integer "course_id"
+    t.integer "program_id"
+    t.integer "startup_profile_id"
+    t.text "admin_feedback"
+    t.boolean "admin_responsed", default: false
+    t.text "mentor_feedback"
+    t.boolean "mentor_responsed", default: false
+    t.boolean "is_passed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_checklist_responses_on_activity_id"
+    t.index ["course_id"], name: "index_checklist_responses_on_course_id"
+    t.index ["program_id"], name: "index_checklist_responses_on_program_id"
+    t.index ["startup_profile_id"], name: "index_checklist_responses_on_startup_profile_id"
   end
 
   create_table "checklists", force: :cascade do |t|

@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  activity: one
+  course: one
+  program: 
+  admin_feedback: MyText
+  admin_responsed: false
+  mentor_feedback: MyText
+  mentor_responsed: false
+  is_passed: false
+
+two:
+  activity: two
+  course: two
+  program: 
+  admin_feedback: MyText
+  admin_responsed: false
+  mentor_feedback: MyText
+  mentor_responsed: false
+  is_passed: false

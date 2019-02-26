@@ -277,61 +277,35 @@ module V1
 			end
 	 	end
 	 
-	 	# def assign_courses_to_startup
-	 	# 	module_grand_access = permission_control("activity","update")
-	 	# 	if module_grand_access
-	 	# 		startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 	# 		if startup_profile.present?
-	 	# 			courses = params[:courses]
-	 	# 			courses.each do |course|
-	 	# 				course = Course.find(course)
-	 	# 				if course.present?
-	 	# 					activities = course.activities
-	 	# 					activities.each do |activity|
+	 	def assign_activity_to_startups
+	 		module_grand_access = permission_control("activity","update")
+	 		if module_grand_access
+	 			ActivityResponse.transaction do
+	 				program = Program.find(params[:program_id])
+	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 				if program.present? && startup_profile.present?
+	 					courses = params[:courses]
+	 					courses.each do |course|
+	 						activities = course.activities
+	 						activities.each do |activity|
+	 							checklists = activity.checklists
+	 							checklists.each do |checklist|
+	 								checklist_status = 
+	 							end
+	 						end
+	 					end
+	 				else
+	 					render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
+	 				end
+	 			end
+	 		else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 			
+	 		end
+	 	end
 
-	 	# 					end
-	 	# 				else
-	 	# 					render json: {error: "Courses not found with this ID"},status: :bad_request
-	 	# 				end
-	 	# 			end
-	 	# 		else
-	 	# 			render json: {error: "Startup profile with this ID not present"},status: :bad_request
-	 	# 		end
-	 	# 	else
-   # 			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 			
-			# end
-	 	# end
-
-	 	# def self.create_activity_response(activity,startup_profile,course,target_date,program_id)
-	 	# 	avtivity_create = ActivityResponse.new
-	 	# 	avtivity_create.startup_profile_id = startup_profile.id
-	 	# 	avtivity_create.activity_id = activity.id
-	 	# 	avtivity_create.activity_id = activity.id
-
-
-	 	# end
-    # t.text "startup_response"
-    # t.integer "startup_profile_id"
-    # t.integer "activity_id"
-    # t.integer "checklist_id"
-    # t.boolean "checklist_status", default: false
-    # t.integer "admin_rating"
-    # t.text "admin_feedback"
-    # t.integer "mentor_rating"
-    # t.text "mentor_feedback"
-    # t.integer "created_by"
-    # t.boolean "isActive", default: true
-    # t.boolean "isDelete", default: false
-    # t.integer "deleted_by"
-    # t.datetime "deleted_at"
-    # t.datetime "created_at", null: false
-    # t.datetime "updated_at", null: false
-    # t.integer "admin_id"
-    # t.integer "mentor_id"
-    # t.integer "program_id"
-    # t.string "target_date"
-    # t.boolean "startup_responsed", default: false
-    # t.integer "course_id"
+	 	def self.create_checklist_response(checklist,course,activity,startup_profile,program)
+	 		binding.pry
+	 	end
 
  	    private
  	    def framework_params
