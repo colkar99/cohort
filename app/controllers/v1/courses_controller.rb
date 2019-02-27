@@ -277,64 +277,67 @@ module V1
 			end
 	 	end
 	 
-	 	# def assign_activity_to_startups
-	 	# 	module_grand_access = permission_control("activity","update")
-	 	# 	if module_grand_access
-	 	# 		ActivityResponse.transaction do
-	 	# 			program = Program.find(params[:program_id])
-	 	# 			startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 	# 			if program.present? && startup_profile.present?
-	 	# 				courses = params[:courses]
-	 	# 				courses.each do |course|
-	 	# 					activities = course[:activities]
-	 	# 					activities.each do |activity|
-	 	# 						checklists = activity[:checklists]
-	 	# 							checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
-	 	# 						checklists.each do |checklist|
-	 	# 							checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
-	 	# 						end
-	 	# 					end
-	 	# 				end
-	 	# 			else
-	 	# 				render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
-	 	# 			end
-	 	# 		end
-	 	# 	else
-   # 			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 			
-	 	# 	end
-	 	# end
+	 	def assign_activity_to_startups
+	 		module_grand_access = permission_control("activity","update")
+	 		if module_grand_access
+	 			ActivityResponse.transaction do
+	 				program = Program.find(params[:program_id])
+	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 				if program.present? && startup_profile.present?
+	 					courses = params[:courses]
+	 					courses.each do |course|
+	 						activities = course[:activities]
+	 						activities.each do |activity|
+	 							activity_status = CoursesController.create_activity_response(course,activity,startup_profile,program)
+	 							if activity_status
+	 								checklists = activity[:checklists]
+		 							checklists.each do |checklist|
+		 								checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
+		 							end
+	 							else
+	 								raise ActiveRecord::Rollback
+	 								render json: {error: "Oops something happened please contact site admin"},status: :bad_request										
+	 							end
+	 						end
+	 					end
+	 					render json: {message: "Activities maped to startups"},status: :ok
+	 				else
+	 					render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
+	 				end
+	 			end
+	 		else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 			
+	 		end
+	 	end
 
-	 	# def self.create_checklist_response(checklist,course,activity,startup_profile,program)
-	 	# 	binding.pry
-	 	# 	checklist_response = ChecklistResponse.new
-	 	# 	checklist_response.activity_id = activity[:id]
-	 	# 	checklist_response.course_id = course[:id]
-	 	# 	checklist_response.program_id = program[:id]
-	 	# 	checklist_response.startup_profile_id = startup_profile[:id]
-	 	# 	binding.pry
-	 	# 	# if checklist_response.save!
-	 	# 	# 	true
-	 	# 	# else
-	 	# 	# 	raise ActiveRecord::Rollback										
-	 	# 	# 	false
-	 	# 	# end
-	 	# end
-	 	# def self.create_activity_response(checklist,course,activity,startup_profile,program)
-	 	# 	binding.pry
-	 	# 	activity_response = ActivityResponse.new
-	 	# 	activity_response.activity_id = activity[:id]
-	 	# 	activity_response.course_id = course[:id]
-	 	# 	activity_response.program_id = program[:id]
-	 	# 	activity_response.startup_profile_id = startup_profile[:id]
-	 	# 	activity_response.target_date = activity[:target_date]
-	 	# 	binding.pry
-	 	# 	# if checklist_response.save!
-	 	# 	# 	true
-	 	# 	# else
-	 	# 	# 	raise ActiveRecord::Rollback										
-	 	# 	# 	false
-	 	# 	# end
-	 	# end
+	 	def self.create_checklist_response(checklist,course,activity,startup_profile,program)
+	 		checklist_response = ChecklistResponse.new
+	 		checklist_response.activity_id = activity[:id]
+	 		checklist_response.course_id = course[:id]
+	 		checklist_response.program_id = program[:id]
+	 		checklist_response.startup_profile_id = startup_profile[:id]
+	 		if checklist_response.save!
+	 			true
+	 		else
+	 			raise ActiveRecord::Rollback										
+	 			false
+	 		end
+	 	end
+	 	def self.create_activity_response(course,activity,startup_profile,program)
+	 		activity_response = ActivityResponse.new
+	 		activity_response.activity_id = activity[:id]
+	 		activity_response.course_id = course[:id]
+	 		activity_response.program_id = program[:id]
+	 		activity_response.startup_profile_id = startup_profile[:id]
+	 		activity_response.target_date = activity[:target_date]
+	 		# activity_response.created_by = current_user.id
+	 		if activity_response.save!
+	 			true
+	 		else
+	 			raise ActiveRecord::Rollback										
+	 			false
+	 		end
+	 	end
 
  	    private
  	    def framework_params

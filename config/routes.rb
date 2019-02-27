@@ -199,7 +199,7 @@ Rails.application.routes.draw do
 		post 'v1/framework/course/create-activity-and-checklists', to: 'courses#create_activity' #uisng
 		post 'v1/framework/course/delete-activity-and-checklists', to: 'courses#delete_activity' #using
 		post 'v1/framework/course/delete-course-activity-and-checklists', to: 'courses#delete_course' #using
-		put 'v1/framework/course/checking', to: 'courses#assign_activity_to_startups' #using
+		put 'v1/framework/course/assign_activities_to_startup', to: 'courses#assign_activity_to_startups' #using
 
 		################################
 
@@ -244,10 +244,7 @@ Rails.application.routes.draw do
 		put 'v1/program/assign-attendess-for-session', to: 'sessions#assign_attendees_to_session'
 		put 'v1/program/get-sessions-for-startup', to: 'sessions#show_sessions_to_startups'
 		put 'v1/program/get-programs-related-users', to: 'sessions#get_program_related_users'
-
-
-
-
+		put 'v1/program/remove-attendee-from-session', to: 'sessions#delete_attendees_from_session'
 	end
 
 end

@@ -230,6 +230,22 @@ module V1
  	    		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
  	    	end
 	 	end
+	 	def delete_attendees_from_session
+	 		module_grand_access = permission_control("session","update")
+	 		if module_grand_access
+	 			session_attendees = SessionAttendee.where(session_id: params[:session_id],user_id: params[:user_id])
+	 			session_attendees.each do |sess_att|
+	 				if sess_att.destroy
+	 					puts "successfully removed attendees"
+	 				else
+	 					render json: sess_att.error,status: :bad_request
+	 				end
+	 			end
+	 			render json: {message: "Attendee successfully removed from session"},status: :ok
+	 		else
+
+			end
+	 	end
 
  	    private
  	    def session_params
