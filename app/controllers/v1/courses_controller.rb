@@ -290,7 +290,7 @@ module V1
 	 	# 					activities.each do |activity|
 	 	# 						checklists = activity.checklists
 	 	# 						checklists.each do |checklist|
-	 	# 							checklist_status = 
+	 	# 							checklist_status = create_checklist_response(checklist,course,activity,startup_profile,program)
 	 	# 						end
 	 	# 					end
 	 	# 				end

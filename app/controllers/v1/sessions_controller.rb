@@ -125,7 +125,7 @@ module V1
 	 			this_startup_user = startup_profile.users.first
 	 			startup_users.push({startup_name: startup_name,startup_users: this_startup_user })
 	 		end
-	 		site_users.push(program_admin: program_admin,program_director: program_director,application_manager: application_manager,contract_manager: contract_manager)
+	 		site_users = { program_admin: program_admin,program_director: program_director,application_manager: application_manager,contract_manager: contract_manager}
 	 		render json: {mentors: mentors,site_users: site_users,startup_users: startup_users}, status: :ok
 	 	end
 
@@ -136,6 +136,7 @@ module V1
 		 			session = Session.find(params[:session][:id])
 		 			if session.present?
 		 				mentors = params[:mentors]
+		 				binding.pry
 		 				mentors.each do |mentor|
 		 					user = User.find(mentor)
 		 					if user.present?
