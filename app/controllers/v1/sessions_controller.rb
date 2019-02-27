@@ -108,6 +108,27 @@ module V1
 			end	 		
 	 	end
 
+	 	def get_program_related_users
+	 		mentors = User.where(user_type: 'mentor')
+	 		program = Program.find(params[:program_id])
+	 		site_users = []
+	 		startup_users = []
+	 		# binding.pry
+	 		# site_admin = User.find(program.site_admin)
+	 		program_admin = User.find(program.program_admin)
+	 		program_director = User.find(program.program_director)
+	 		application_manager = User.find(program.application_manager)
+	 		contract_manager = User.find(program.contract_manager)
+	 		startup_profiles = program.startup_profiles
+	 		startup_profiles.each do |startup_profile|
+	 			startup_name = startup_profile.startup_name
+	 			this_startup_user = startup_profile.users.first
+	 			startup_users.push({startup_name: startup_name,startup_users: this_startup_user })
+	 		end
+	 		site_users.push(program_admin: program_admin,program_director: program_director,application_manager: application_manager,contract_manager: contract_manager)
+	 		render json: {mentors: mentors,site_users: site_users,startup_users: startup_users}, status: :ok
+	 	end
+
 	 	def assign_attendees_to_session
 	 		module_grand_access = permission_control("session","update")
 	 		if module_grand_access
@@ -122,7 +143,7 @@ module V1
 			 					attendee.session_id = session.id
 			 					attendee.user_id = user.id
 			 					attendee.role = user.user_type
-			 					attendee.role = user.user_type
+			 					# attendee.role = user.user_type
 			 					if attendee.save!
 			 						puts "Mentors added to sessions"
 			 					else
@@ -158,6 +179,26 @@ module V1
 		 					else
 		 						raise ActiveRecord::Rollback
 		 						render json: {error: "some thing happened"},status: :bad_request
+		 					end
+		 				end
+		 				site_users = params[:site_users]
+		 				site_users.each do |site_user|
+		 					user = User.find(site_user)
+		 					if user.present?
+			 					attendee = SessionAttendee.new
+			 					attendee.session_id = session.id
+			 					attendee.user_id = user.id
+			 					attendee.role = user.user_type
+			 					# attendee.role = user.user_type
+			 					if attendee.save!
+			 						puts "Mentors added to sessions"
+			 					else
+			 						raise ActiveRecord::Rollback
+			 						render json: attendee.errors,status: :bad_request
+			 					end
+		 					else
+	      						raise ActiveRecord::Rollback		 						
+		 						render json: {error: "Oops something happend"},status: :bad_request
 		 					end
 		 				end
 		 				render json: {message: "attendees added successfully"},status: :ok

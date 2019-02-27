@@ -277,35 +277,35 @@ module V1
 			end
 	 	end
 	 
-	 	def assign_activity_to_startups
-	 		module_grand_access = permission_control("activity","update")
-	 		if module_grand_access
-	 			ActivityResponse.transaction do
-	 				program = Program.find(params[:program_id])
-	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 				if program.present? && startup_profile.present?
-	 					courses = params[:courses]
-	 					courses.each do |course|
-	 						activities = course.activities
-	 						activities.each do |activity|
-	 							checklists = activity.checklists
-	 							checklists.each do |checklist|
-	 								checklist_status = 
-	 							end
-	 						end
-	 					end
-	 				else
-	 					render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
-	 				end
-	 			end
-	 		else
-   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 			
-	 		end
-	 	end
+	 	# def assign_activity_to_startups
+	 	# 	module_grand_access = permission_control("activity","update")
+	 	# 	if module_grand_access
+	 	# 		ActivityResponse.transaction do
+	 	# 			program = Program.find(params[:program_id])
+	 	# 			startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 	# 			if program.present? && startup_profile.present?
+	 	# 				courses = params[:courses]
+	 	# 				courses.each do |course|
+	 	# 					activities = course.activities
+	 	# 					activities.each do |activity|
+	 	# 						checklists = activity.checklists
+	 	# 						checklists.each do |checklist|
+	 	# 							checklist_status = 
+	 	# 						end
+	 	# 					end
+	 	# 				end
+	 	# 			else
+	 	# 				render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
+	 	# 			end
+	 	# 		end
+	 	# 	else
+   # 			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 			
+	 	# 	end
+	 	# end
 
-	 	def self.create_checklist_response(checklist,course,activity,startup_profile,program)
-	 		binding.pry
-	 	end
+	 	# def self.create_checklist_response(checklist,course,activity,startup_profile,program)
+	 	# 	binding.pry
+	 	# end
 
  	    private
  	    def framework_params

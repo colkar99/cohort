@@ -242,6 +242,7 @@ Rails.application.routes.draw do
 		put 'v1/program/get-session-attendees', to: 'sessions#show_session_attendees'
 		put 'v1/program/assign-attendess-for-session', to: 'sessions#assign_attendees_to_session'
 		put 'v1/program/get-sessions-for-startup', to: 'sessions#show_sessions_to_startups'
+		put 'v1/program/get-programs-related-users', to: 'sessions#get_program_related_users'
 
 
 
