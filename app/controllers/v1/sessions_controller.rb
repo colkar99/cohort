@@ -115,17 +115,21 @@ module V1
 	 		startup_users = []
 	 		# binding.pry
 	 		# site_admin = User.find(program.site_admin)
-	 		program_admin = User.find(program.program_admin)
-	 		program_director = User.find(program.program_director)
-	 		application_manager = User.find(program.application_manager)
-	 		contract_manager = User.find(program.contract_manager)
+	 		user = User.find(program.program_admin)
+	 		site_users.push(user)
+	 		user = User.find(program.program_director)
+	 		site_users.push(user)
+	 		user = User.find(program.application_manager)
+	 		site_users.push(user)
+	 		user = User.find(program.contract_manager)
+	 		site_users.push(user)
 	 		startup_profiles = program.startup_profiles
 	 		startup_profiles.each do |startup_profile|
 	 			startup_name = startup_profile.startup_name
-	 			this_startup_user = startup_profile.users.first
-	 			startup_users.push({startup_name: startup_name,startup_users: this_startup_user })
+	 			user = startup_profile.users.first
+	 			startup_users.push({startup_name: startup_name,startup_users: user })
 	 		end
-	 		site_users = { program_admin: program_admin,program_director: program_director,application_manager: application_manager,contract_manager: contract_manager}
+	 		# site_users = { program_admin: program_admin,program_director: program_director,application_manager: application_manager,contract_manager: contract_manager}
 	 		render json: {mentors: mentors,site_users: site_users,startup_users: startup_users}, status: :ok
 	 	end
 
