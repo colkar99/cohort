@@ -199,6 +199,7 @@ Rails.application.routes.draw do
 		post 'v1/framework/course/create-activity-and-checklists', to: 'courses#create_activity' #uisng
 		post 'v1/framework/course/delete-activity-and-checklists', to: 'courses#delete_activity' #using
 		post 'v1/framework/course/delete-course-activity-and-checklists', to: 'courses#delete_course' #using
+		put 'v1/framework/course/checking', to: 'courses#assign_activity_to_startups' #using
 
 		################################
 

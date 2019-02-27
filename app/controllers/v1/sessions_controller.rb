@@ -140,7 +140,6 @@ module V1
 		 			session = Session.find(params[:session][:id])
 		 			if session.present?
 		 				mentors = params[:mentors]
-		 				binding.pry
 		 				mentors.each do |mentor|
 		 					user = User.find(mentor)
 		 					if user.present?

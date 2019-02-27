@@ -286,11 +286,12 @@ module V1
 	 	# 			if program.present? && startup_profile.present?
 	 	# 				courses = params[:courses]
 	 	# 				courses.each do |course|
-	 	# 					activities = course.activities
+	 	# 					activities = course[:activities]
 	 	# 					activities.each do |activity|
-	 	# 						checklists = activity.checklists
+	 	# 						checklists = activity[:checklists]
+	 	# 							checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
 	 	# 						checklists.each do |checklist|
-	 	# 							checklist_status = create_checklist_response(checklist,course,activity,startup_profile,program)
+	 	# 							checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
 	 	# 						end
 	 	# 					end
 	 	# 				end
@@ -305,6 +306,34 @@ module V1
 
 	 	# def self.create_checklist_response(checklist,course,activity,startup_profile,program)
 	 	# 	binding.pry
+	 	# 	checklist_response = ChecklistResponse.new
+	 	# 	checklist_response.activity_id = activity[:id]
+	 	# 	checklist_response.course_id = course[:id]
+	 	# 	checklist_response.program_id = program[:id]
+	 	# 	checklist_response.startup_profile_id = startup_profile[:id]
+	 	# 	binding.pry
+	 	# 	# if checklist_response.save!
+	 	# 	# 	true
+	 	# 	# else
+	 	# 	# 	raise ActiveRecord::Rollback										
+	 	# 	# 	false
+	 	# 	# end
+	 	# end
+	 	# def self.create_activity_response(checklist,course,activity,startup_profile,program)
+	 	# 	binding.pry
+	 	# 	activity_response = ActivityResponse.new
+	 	# 	activity_response.activity_id = activity[:id]
+	 	# 	activity_response.course_id = course[:id]
+	 	# 	activity_response.program_id = program[:id]
+	 	# 	activity_response.startup_profile_id = startup_profile[:id]
+	 	# 	activity_response.target_date = activity[:target_date]
+	 	# 	binding.pry
+	 	# 	# if checklist_response.save!
+	 	# 	# 	true
+	 	# 	# else
+	 	# 	# 	raise ActiveRecord::Rollback										
+	 	# 	# 	false
+	 	# 	# end
 	 	# end
 
  	    private
@@ -363,3 +392,43 @@ end
 
 
 
+###########Checklist responses##########3
+    # t.integer "activity_id"
+    # t.integer "course_id"
+    # t.integer "program_id"
+    # t.integer "startup_profile_id"
+    # t.text "admin_feedback"
+    # t.boolean "admin_responsed", default: false
+    # t.text "mentor_feedback"
+    # t.boolean "mentor_responsed", default: false
+    # t.boolean "is_passed", default: false
+    # t.datetime "created_at", null: false
+    # t.datetime "updated_at", null: false
+    # t.index ["activity_id"], name: "index_checklist_responses_on_activity_id"
+    # t.index ["course_id"], name: "index_checklist_responses_on_course_id"
+    # t.index ["program_id"], name: "index_checklist_responses_on_program_id"
+    # t.index ["startup_profile_id"], name: "index_checklist_responses_on_startup_profile_id"
+
+    ###########Activity responses###############33
+    # t.text "startup_response"
+    # t.integer "startup_profile_id"
+    # t.integer "activity_id"
+    # t.integer "admin_rating"
+    # t.text "admin_feedback"
+    # t.integer "mentor_rating"
+    # t.text "mentor_feedback"
+    # t.integer "created_by"
+    # t.boolean "isActive", default: true
+    # t.boolean "isDelete", default: false
+    # t.integer "deleted_by"
+    # t.datetime "deleted_at"
+    # t.datetime "created_at", null: false
+    # t.datetime "updated_at", null: false
+    # t.integer "admin_id"
+    # t.integer "mentor_id"
+    # t.integer "program_id"
+    # t.string "target_date"
+    # t.boolean "startup_responsed", default: false
+    # t.integer "course_id"
+    # t.boolean "admin_responsed", default: false
+    # t.boolean "mentor_responsed", default: false
