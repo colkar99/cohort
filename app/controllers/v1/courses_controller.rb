@@ -434,8 +434,12 @@ module V1
  					end
 	 				course.is_assigned = is_activity_response_available
 	 			end
-	 			selected_courses = courses.where(is_assigned: true)
-	 			render json: selected_courses ,status: :ok
+	 			courses.each do |course|
+	 				if course.is_assigned
+	 					selected_courses.push(course)
+	 				end
+	 			end
+	 			render json: selected_courses,status: :ok
 	 		else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 				 			
 	 		end
