@@ -368,20 +368,20 @@ module V1
 	 						activity.startup_responsed = false
 	 						activity.admin_reviwed = false
 	 					end
-	 					checklists = activity.checklists
-	 					checklists.each do |checklist|
-	 						checklists_responses = ChecklistResponse.where(activity_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
-	 						if checklists_responses.present?
-	 							checklist.admin_responsed = checklists_responses.checklists_responses
-	 							checklist.admin_feedback = checklists_responses.admin_feedback
-	 							checklist.mentor_feedback = checklists_responses.mentor_feedback
-	 							checklist.mentor_responsed = checklists_responses.mentor_responsed
-	 						else
-	 							checklist.admin_responsed = false
-	 							checklist.mentor_responsed = false
-	 						end
-	 					end
 	 				end
+	 				checklists = as.checklists
+ 					checklists.each do |checklist|
+ 						checklists_responses = ChecklistResponse.where(checklist_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
+ 						if checklists_responses.present?
+ 							checklist.admin_responsed = checklists_responses.checklists_responses
+ 							checklist.admin_feedback = checklists_responses.admin_feedback
+ 							checklist.mentor_feedback = checklists_responses.mentor_feedback
+ 							checklist.mentor_responsed = checklists_responses.mentor_responsed
+ 						else
+ 							checklist.admin_responsed = false
+ 							checklist.mentor_responsed = false
+ 						end
+ 					end
 	 				as.is_assigned = is_activity_response_available
 	 			end
 	 			render json: course,status: :ok
