@@ -355,10 +355,10 @@ module V1
 	 		module_grand_access = permission_control("activity","update")
 	 		if module_grand_access
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 			course = Course.all
-	 			course.each do |as|
+	 			courses = Course.all
+	 			courses.each do |course|
 	 				is_activity_response_available = false
-	 				activities = as.activities
+	 				activities = course.activities
 	 				activities.each do |activity|
 	 					activity_responses = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
 	 					if activity_responses.present?
@@ -374,7 +374,7 @@ module V1
 	 						activity.mentor_responsed = false
 	 					end
 	 				end
-	 				checklists = as.checklists
+	 				checklists = course.checklists
  					checklists.each do |checklist|
  						checklists_responses = ChecklistResponse.where(checklist_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
  						if checklists_responses.present?
@@ -387,13 +387,14 @@ module V1
  							checklist.mentor_responsed = false
  						end
  					end
-	 				as.is_assigned = is_activity_response_available
+	 				course.is_assigned = is_activity_response_available
 	 			end
-	 			render json: course,status: :ok
+	 			render json: courses,status: :ok
 	 		else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 				 			
 	 		end
 	 	end
+
  	    private
  	    def framework_params
 		    params.require(:framework).permit(:id,:title,:description,:activity_name,:level,
