@@ -94,7 +94,6 @@ module V1
 			if module_grand_access
 				Checklist.transaction do
 					course = Course.find(params[:course_id])
-					binding.pry
 					if params[:checklist][:id].present?
 						# checklist = Checklist.find(params[:checklist][:id])
 						checklist_update = CoursesController.checklist_update(params[:checklist],course,current_user.id)
