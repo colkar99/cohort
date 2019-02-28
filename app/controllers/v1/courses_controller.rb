@@ -302,7 +302,7 @@ module V1
 	 						end
 							checklists = course[:checklists]
  							checklists.each do |checklist|
- 								checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
+ 								checklist_status = CoursesController.create_checklist_response(checklist,course,startup_profile,program)
  							end
 	 					end
 	 					if activity_status && checklist_status
@@ -320,13 +320,14 @@ module V1
 	 		end
 	 	end
 
-	 	def self.create_checklist_response(checklist,course,activity,startup_profile,program)
+	 	def self.create_checklist_response(checklist,course,startup_profile,program)
 	 		checklist_response = ChecklistResponse.new
-	 		checklist_response.activity_id = activity[:id]
+	 		checklist_response.checklist_id = checklist[:id]
 	 		checklist_response.course_id = course[:id]
 	 		checklist_response.program_id = program[:id]
 	 		checklist_response.startup_profile_id = startup_profile[:id]
 	 		if checklist_response.save!
+
 	 			true
 	 		else
 	 			raise ActiveRecord::Rollback										
@@ -371,7 +372,6 @@ module V1
 	 						activity.startup_responsed = false
 	 						activity.admin_responsed = false
 	 						activity.mentor_responsed = false
-
 	 					end
 	 				end
 	 				checklists = as.checklists
