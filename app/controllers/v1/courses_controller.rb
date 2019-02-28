@@ -1,6 +1,6 @@
 module V1
 	 class CoursesController < ApplicationController
-	 	skip_before_action :authenticate_request, only: [:get_assigned_courses_for_startup]
+	 	skip_before_action :authenticate_request, only: [:get_assigned_courses_for_startup,:startup_response_for_activity]
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		
@@ -453,22 +453,20 @@ module V1
 	 		end
 	 	end
 
-	 	def startup_response_for_course
+	 	def startup_response_for_activity
 	 		startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 		course = params[:course]
-	 		activities = course.activities
-	 		activities.each do |activity|
-	 			if activity.startup_responsed
-	 				activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
-	 				if activity_response.present?
-	 					activity_response.startup_response = activity.startup_response
-	 					activity_response.startup_responsed = activity.startup_responsed
-	 					activity_response.save!
-	 				end
+	 		activity_response = ActivityResponse.where(activity_id: params[:activity_id],startup_profile_id: params[:startup_profile_id],course_id: params[:course_id]).first
+	 		if activity_response.present?
+	 			activity_response.startup_response = params[:startup_response]
+	 			activity_response.startup_responsed = true
+	 			if activity_response.save!
+	 				render json: activity_response,status: :ok
 	 			else
-	 				puts "Startup no responsed"
+	 				render json: activity_response.errors,status: :bad_request
 	 			end
-	 		end
+	 		else
+	 			render json: {error: "Activity response not present with this ID"},status: :bad_request
+			end
 	 	end
 
  	    private
