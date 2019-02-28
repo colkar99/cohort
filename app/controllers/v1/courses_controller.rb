@@ -367,6 +367,7 @@ module V1
 	 						activity.startup_responsed = activity_responses.startup_responsed
 	 						activity.admin_responsed = activity_responses.admin_responsed
 	 						activity.mentor_responsed = activity_responses.mentor_responsed
+	 						activity.admin_feedback = activity_responses.admin_feedback
 	 						is_activity_response_available = true
 	 						fetch_target_date = activity_responses.target_date
 	 					else
@@ -415,6 +416,7 @@ module V1
 	 						activity.startup_responsed = activity_responses.startup_responsed
 	 						activity.admin_responsed = activity_responses.admin_responsed
 	 						activity.mentor_responsed = activity_responses.mentor_responsed
+	 						activity.admin_feedback = activity_responses.admin_feedback
 	 						is_activity_response_available = true
 	 						fetch_target_date = activity_responses.target_date
 
