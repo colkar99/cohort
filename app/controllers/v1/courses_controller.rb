@@ -1,6 +1,6 @@
 module V1
 	 class CoursesController < ApplicationController
-	 	# skip_before_action :authenticate_request, only: [:create,:show,:edit]
+	 	skip_before_action :authenticate_request, only: [:get_assigned_courses]
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		
@@ -352,7 +352,7 @@ module V1
 	 	end
 # :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
 	 	def get_assigned_courses
-	 		module_grand_access = permission_control("activity","update")
+	 		module_grand_access = true
 	 		if module_grand_access
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
 	 			courses = Course.all
