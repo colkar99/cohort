@@ -471,6 +471,22 @@ module V1
 			end
 	 	end
 
+	 	def admin_response_for_activity
+	 		startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 		activity_response = ActivityResponse.where(activity_id: params[:activity_id],startup_profile_id: params[:startup_profile_id],course_id: params[:course_id]).first
+	 		if activity_response.present?
+	 			activity_response.admin_responsed = true
+	 			activity_response.admin_feedback = params[:admin_feedback]
+	 			if activity_response.save!
+	 				render json: activity_response,status: :ok
+	 			else
+	 				render json: activity_response.errors,status: :bad_request
+	 			end
+	 		else
+	 			render json: {error: "Activity response not present with this ID"},status: :bad_request
+			end
+	 	end
+
  	    private
  	    def framework_params
 		    params.require(:framework).permit(:id,:title,:description,:activity_name,:level,
