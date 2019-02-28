@@ -355,6 +355,7 @@ module V1
 	 		module_grand_access = true
 	 		if module_grand_access
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 			fetch_target_date = ""
 	 			courses = Course.all
 	 			courses.each do |course|
 	 				is_activity_response_available = false
@@ -367,6 +368,7 @@ module V1
 	 						activity.admin_responsed = activity_responses.admin_responsed
 	 						activity.mentor_responsed = activity_responses.mentor_responsed
 	 						is_activity_response_available = true
+	 						fetch_target_date = activity_responses.target_date
 	 					else
 	 						activity.startup_response = ""
 	 						activity.startup_responsed = false
@@ -388,6 +390,7 @@ module V1
  						end
  					end
 	 				course.is_assigned = is_activity_response_available
+	 				course.target_date = fetch_target_date
 	 			end
 	 			render json: courses,status: :ok
 	 		else
@@ -400,6 +403,7 @@ module V1
 	 		selected_courses = []
 	 		if module_grand_access
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 			fetch_target_date = ""
 	 			courses = Course.all
 	 			courses.each do |course|
 	 				is_activity_response_available = false
@@ -412,6 +416,8 @@ module V1
 	 						activity.admin_responsed = activity_responses.admin_responsed
 	 						activity.mentor_responsed = activity_responses.mentor_responsed
 	 						is_activity_response_available = true
+	 						fetch_target_date = activity_responses.target_date
+
 	 					else
 	 						activity.startup_response = ""
 	 						activity.startup_responsed = false
@@ -433,6 +439,8 @@ module V1
  						end
  					end
 	 				course.is_assigned = is_activity_response_available
+	 				course.target_date = fetch_target_date
+
 	 			end
 	 			courses.each do |course|
 	 				if course.is_assigned
@@ -445,25 +453,23 @@ module V1
 	 		end
 	 	end
 
-	 	# def startup_response_for_course
-	 	# 	startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 	# 	course = params[:course]
-	 	# 	activities = course.activities
-	 	# 	activities.each do |activity|
-	 	# 		if activity.startup_responsed
-	 	# 			activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
-	 	# 			if activity_response.present?
-	 	# 				activity_response.startup_response = activity.startup_response
-	 	# 				activity_response.startup_responsed = activity.startup_responsed
-	 	# 				activity_response.save!
-	 	# 			else
-	 	# 				activity_response.startup_responsed = activity.startup_responsed
-	 	# 			end
-	 	# 		else
-	 	# 			puts "Startup no responsed"
-	 	# 		end
-	 	# 	end
-	 	# end
+	 	def startup_response_for_course
+	 		startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 		course = params[:course]
+	 		activities = course.activities
+	 		activities.each do |activity|
+	 			if activity.startup_responsed
+	 				activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
+	 				if activity_response.present?
+	 					activity_response.startup_response = activity.startup_response
+	 					activity_response.startup_responsed = activity.startup_responsed
+	 					activity_response.save!
+	 				end
+	 			else
+	 				puts "Startup no responsed"
+	 			end
+	 		end
+	 	end
 
  	    private
  	    def framework_params
