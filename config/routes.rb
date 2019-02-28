@@ -204,6 +204,7 @@ Rails.application.routes.draw do
 		post 'v1/framework/course/delete-course-activity-and-checklists', to: 'courses#delete_course' #using
 		put 'v1/framework/course/assign_activities_to_startup', to: 'courses#assign_activity_to_startups' #using
 		put 'v1/framework/course/get-assigned-courses', to: 'courses#get_assigned_courses' #using
+		put 'v1/framework/course/get-assigned-courses-for-startup', to: 'courses#get_assigned_courses_for_startup' #using
 
 		################################
 

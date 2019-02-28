@@ -1,6 +1,6 @@
 module V1
 	 class CoursesController < ApplicationController
-	 	skip_before_action :authenticate_request, only: [:get_assigned_courses]
+	 	skip_before_action :authenticate_request, only: [:get_assigned_courses_for_startup]
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
 		
@@ -394,6 +394,76 @@ module V1
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 				 			
 	 		end
 	 	end
+
+	 	def get_assigned_courses_for_startup
+	 		module_grand_access = true
+	 		selected_courses = []
+	 		if module_grand_access
+	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 			courses = Course.all
+	 			courses.each do |course|
+	 				is_activity_response_available = false
+	 				activities = course.activities
+	 				activities.each do |activity|
+	 					activity_responses = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
+	 					if activity_responses.present?
+	 						activity.startup_response = activity_responses.startup_response
+	 						activity.startup_responsed = activity_responses.startup_responsed
+	 						activity.admin_responsed = activity_responses.admin_responsed
+	 						activity.mentor_responsed = activity_responses.mentor_responsed
+	 						is_activity_response_available = true
+	 					else
+	 						activity.startup_response = ""
+	 						activity.startup_responsed = false
+	 						activity.admin_responsed = false
+	 						activity.mentor_responsed = false
+	 					end
+	 				end
+	 				checklists = course.checklists
+ 					checklists.each do |checklist|
+ 						checklists_responses = ChecklistResponse.where(checklist_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
+ 						if checklists_responses.present?
+ 							checklist.admin_responsed = checklists_responses.admin_responsed
+ 							checklist.admin_feedback = checklists_responses.admin_feedback
+ 							checklist.mentor_feedback = checklists_responses.mentor_feedback
+ 							checklist.mentor_responsed = checklists_responses.mentor_responsed
+ 						else
+ 							checklist.admin_responsed = false
+ 							checklist.mentor_responsed = false
+ 						end
+ 					end
+	 				course.is_assigned = is_activity_response_available
+	 			end
+	 			courses.each do |course|
+	 				if course.is_assigned
+	 					selected_courses.push(course)
+	 				end
+	 			end
+	 			render json: {courses: selected_courses},status: :ok
+	 		else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 				 			
+	 		end
+	 	end
+
+	 	# def startup_response_for_course
+	 	# 	startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 	# 	course = params[:course]
+	 	# 	activities = course.activities
+	 	# 	activities.each do |activity|
+	 	# 		if activity.startup_responsed
+	 	# 			activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
+	 	# 			if activity_response.present?
+	 	# 				activity_response.startup_response = activity.startup_response
+	 	# 				activity_response.startup_responsed = activity.startup_responsed
+	 	# 				activity_response.save!
+	 	# 			else
+	 	# 				activity_response.startup_responsed = activity.startup_responsed
+	 	# 			end
+	 	# 		else
+	 	# 			puts "Startup no responsed"
+	 	# 		end
+	 	# 	end
+	 	# end
 
  	    private
  	    def framework_params
