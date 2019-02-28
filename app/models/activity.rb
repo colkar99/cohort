@@ -4,7 +4,7 @@ class Activity < ApplicationRecord
   # belongs_to :checklist
   # has_many :checklists 
   has_many :activity_responses
-     attr_accessor :startup_response,:startup_responsed,:admin_reviwed
+     attr_accessor :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
 
 
 

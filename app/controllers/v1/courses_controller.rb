@@ -287,6 +287,8 @@ module V1
 	 
 	 	def assign_activity_to_startups
 	 		module_grand_access = permission_control("activity","update")
+	 		activity_status = false
+	 		checklist_status = false
 	 		if module_grand_access
 	 			ActivityResponse.transaction do
 	 				program = Program.find(params[:program_id])
@@ -297,18 +299,18 @@ module V1
 	 						activities = course[:activities]
 	 						activities.each do |activity|
 	 							activity_status = CoursesController.create_activity_response(course,activity,startup_profile,program)
-	 							if activity_status
-	 								checklists = activity[:checklists]
-		 							checklists.each do |checklist|
-		 								checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
-		 							end
-	 							else
-	 								raise ActiveRecord::Rollback
-	 								render json: {error: "Oops something happened please contact site admin"},status: :bad_request										
-	 							end
 	 						end
+							checklists = course[:checklists]
+ 							checklists.each do |checklist|
+ 								checklist_status = CoursesController.create_checklist_response(checklist,course,activity,startup_profile,program)
+ 							end
 	 					end
-	 					render json: {message: "Activities maped to startups"},status: :ok
+	 					if activity_status && checklist_status
+	 						render json: {message: "Courses maped to startups"},status: :ok
+	 					else
+	 						raise ActiveRecord::Rollback										
+	 						render json: {error: "Something happened"},status: :bad_request
+	 					end
 	 				else
 	 					render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
 	 				end
@@ -347,7 +349,7 @@ module V1
 	 			false
 	 		end
 	 	end
-
+# :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
 	 	def get_assigned_courses
 	 		module_grand_access = permission_control("activity","update")
 	 		if module_grand_access
@@ -361,12 +363,15 @@ module V1
 	 					if activity_responses.present?
 	 						activity.startup_response = activity_responses.startup_response
 	 						activity.startup_responsed = activity_responses.startup_responsed
-	 						activity.admin_reviwed = activity_responses.admin_responsed
+	 						activity.admin_responsed = activity_responses.admin_responsed
+	 						activity.mentor_responsed = activity_responses.mentor_responsed
 	 						is_activity_response_available = true
 	 					else
 	 						activity.startup_response = ""
 	 						activity.startup_responsed = false
-	 						activity.admin_reviwed = false
+	 						activity.admin_responsed = false
+	 						activity.mentor_responsed = false
+
 	 					end
 	 				end
 	 				checklists = as.checklists
