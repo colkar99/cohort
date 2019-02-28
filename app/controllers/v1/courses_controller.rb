@@ -60,23 +60,6 @@ module V1
 						if activity_update.update!(activity_params)
 							link_course_and_activity = CoursesController.link_course_and_activity(course,activity_update)
 							if link_course_and_activity
-								params[:activity][:checklists].each do |checklist|
-									if checklist[:id].present?
-										checklist_update = CoursesController.checklist_update(checklist,activity_update,current_user.id)
-										if checklist_update
-											puts "Checklist updated successfully"
-										else
-	      									raise ActiveRecord::Rollback										
-										end
-									else
-										checklist_create = CoursesController.checklist_create(checklist,activity_update,current_user.id)
-										if checklist_create
-											puts "checklists created successfully"
-										else
-											raise ActiveRecord::Rollback										
-										end
-									end
-								end
 								render json: course , status: :ok
 							else
 								raise ActiveRecord::Rollback										
@@ -87,31 +70,12 @@ module V1
 					else
 						activity_create = Activity.new(activity_params)
 						activity_create.created_by = current_user.id
-
 						if activity_create.save!
 							link_course_and_activity = CoursesController.link_course_and_activity(course,activity_create)
 							if link_course_and_activity
-								params[:activity][:checklists].each do |checklist|
-									if checklist[:id].present?
-										checklist_update = CoursesController.checklist_update(checklist,activity_create,current_user.id)
-										if checklist_update
-											puts "Checklist updated successfully"
-										else
-	      									raise ActiveRecord::Rollback										
-										end
-									else
-										checklist_create = CoursesController.checklist_create(checklist,activity_create,current_user.id)
-										if checklist_create
-											puts "checklists created successfully"
-										else
-											raise ActiveRecord::Rollback										
-										end
-									end
-								end
 								render json: course , status: :ok
 							else
 								raise ActiveRecord::Rollback										
-
 							end
 						else
 							render json: activity_update.errors ,status: :bad_request
@@ -123,6 +87,61 @@ module V1
 			end	 		
 	 	end
 
+	 	def create_checklists
+	 		# module_grand_access = permission_control("course","delete")
+			module_grand_access = true
+			result = ""
+			if module_grand_access
+				Checklist.transaction do
+					course = Course.find(params[:course_id])
+					binding.pry
+					if params[:checklist][:id].present?
+						# checklist = Checklist.find(params[:checklist][:id])
+						checklist_update = CoursesController.checklist_update(params[:checklist],course,current_user.id)
+						if checklist_update
+							puts "Checklist updated successfully"
+							result =  "Checklist updated successfully"
+						else
+							raise ActiveRecord::Rollback										
+						end
+					else
+						checklist_create = CoursesController.checklist_create(params[:checklist],course,current_user.id)
+						if checklist_create
+							puts "checklists created successfully"
+							result = "checklists created successfully"
+						else
+							raise ActiveRecord::Rollback										
+						end
+					end
+					render json: course,status: :ok
+				end
+			else
+				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized				
+			end	 			 		
+	 	end
+
+	 	def delete_checklist
+	 		# module_grand_access = permission_control("activity","delete")
+			module_grand_access = true
+			if module_grand_access
+				checklist = Checklist.find(params[:checklist_id])
+				if checklist.present?
+					Checklist.transaction do
+						if checklist.destroy
+							render json: {message: "Checklist deleted successfully"},status: :ok
+						else
+							raise ActiveRecord::Rollback										
+						end	
+					end
+				else
+					render json: {error: "Checklist not found"},status: :bad_request
+				end
+			else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
+	 		end	 		
+	 	end
+
+
 	 	def delete_course
 	 		# module_grand_access = permission_control("course","delete")
 			module_grand_access = true
@@ -132,30 +151,25 @@ module V1
 					if course.present?
 						activities = course.activities
 						activities.each do |activity|
-							checklists = activity.checklists
-							if checklists.destroy_all
-								course_activity_link_delete = CoursesController.course_activity_link_delete(course,activity)
-								if course_activity_link_delete
-									if activity.destroy
-										course_framework_link_delete = CoursesController.course_framework_link_delete(course)
-										if course_framework_link_delete
-											puts "course_framework_link_deleted"
-										else
-											raise ActiveRecord::Rollback																	
-										end
+							course_activity_link_delete = CoursesController.course_activity_link_delete(course,activity)
+							if course_activity_link_delete
+								if activity.destroy
+									course_framework_link_delete = CoursesController.course_framework_link_delete(course)
+									if course_framework_link_delete
+										puts "course_framework_link_deleted"
 									else
 										raise ActiveRecord::Rollback																	
 									end
 								else
 									raise ActiveRecord::Rollback																	
-
 								end
 							else
 								raise ActiveRecord::Rollback																	
+
 							end
 						end
 						if course.destroy
-							render json: {message: "Course and Related activity and checklists are deleted"}
+							render json: {message: "Course and Related activity and checklists are deleted"},status: :ok
 						else
 							raise ActiveRecord::Rollback																	
 						end
@@ -198,6 +212,7 @@ module V1
 	 		
 	 	end
 
+
 	 	def delete_activity
 	 		# module_grand_access = permission_control("activity","delete")
 			module_grand_access = true
@@ -205,22 +220,16 @@ module V1
 				activity = Activity.find(params[:activity_id])
 				if activity.present?
 					Activity.transaction do
-						checklists = activity.checklists
-						if checklists.destroy_all
-							puts "Checklists related to this activities are deleted"
-							if activity.destroy
-								course_activity_link = CourseActivityLink.where("course_id": params[:course_id],"activity_id": activity.id)
-								if course_activity_link.destroy_all
-									render json: {message: "Activity and related checklists are deleted successfully"},status: :ok
-								else
-									raise ActiveRecord::Rollback										
-								end
+						if activity.destroy
+							course_activity_link = CourseActivityLink.where("course_id": params[:course_id],"activity_id": activity.id)
+							if course_activity_link.destroy_all
+								render json: {message: "Activity deleted successfully"},status: :ok
 							else
 								raise ActiveRecord::Rollback										
 							end
 						else
 							raise ActiveRecord::Rollback										
-						end
+						end	
 					end
 				else
 					render json: {error: "Activity not found"},status: :bad_request
@@ -246,13 +255,13 @@ module V1
 	 		end
 	 	end
 
-	 	def self.checklist_update(checklist,activity,current_user_id)
+	 	def self.checklist_update(checklist,course,current_user_id)
 	 		checklist_update = Checklist.find(checklist[:id])
 			if checklist_update.present?
 				checklist_update.name = checklist[:name]
 				checklist_update.description = checklist[:description]
 				checklist_update.created_by = current_user_id
-				checklist_update.activity_id = activity.id
+				checklist_update.course_id = course.id
 				if checklist_update.save!
 					true
 				else
@@ -263,12 +272,12 @@ module V1
 			end	 		
 	 	end
 
-	 	def self.checklist_create(checklist,activity,current_user_id)
+	 	def self.checklist_create(checklist,course,current_user_id)
 			checklist_create = Checklist.new
 			checklist_create.name = checklist[:name]
 			checklist_create.description = checklist[:description]
 			checklist_create.created_by = current_user_id
-			checklist_create.activity_id = activity.id
+			checklist_create.course_id = course.id
 			if checklist_create.save!
 				puts "Created"
 				true
@@ -329,7 +338,8 @@ module V1
 	 		activity_response.course_id = course[:id]
 	 		activity_response.program_id = program[:id]
 	 		activity_response.startup_profile_id = startup_profile[:id]
-	 		activity_response.target_date = activity[:target_date]
+	 		activity_response.target_date = course[:target_date]
+	 		# activity_response.startup_response = ""
 	 		# activity_response.created_by = current_user.id
 	 		if activity_response.save!
 	 			true
@@ -339,6 +349,47 @@ module V1
 	 		end
 	 	end
 
+	 	def get_assigned_courses
+	 		module_grand_access = permission_control("activity","update")
+	 		if module_grand_access
+	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 			course = Course.all
+	 			course.each do |as|
+	 				is_activity_response_available = false
+	 				activities = as.activities
+	 				activities.each do |activity|
+	 					activity_responses = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
+	 					if activity_responses.present?
+	 						activity.startup_response = activity_responses.startup_response
+	 						activity.startup_responsed = activity_responses.startup_responsed
+	 						activity.admin_reviwed = activity_responses.admin_responsed
+	 						is_activity_response_available = true
+	 					else
+	 						activity.startup_response = ""
+	 						activity.startup_responsed = false
+	 						activity.admin_reviwed = false
+	 					end
+	 					checklists = activity.checklists
+	 					checklists.each do |checklist|
+	 						checklists_responses = ChecklistResponse.where(activity_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
+	 						if checklists_responses.present?
+	 							checklist.admin_responsed = checklists_responses.checklists_responses
+	 							checklist.admin_feedback = checklists_responses.admin_feedback
+	 							checklist.mentor_feedback = checklists_responses.mentor_feedback
+	 							checklist.mentor_responsed = checklists_responses.mentor_responsed
+	 						else
+	 							checklist.admin_responsed = false
+	 							checklist.mentor_responsed = false
+	 						end
+	 					end
+	 				end
+	 				as.is_assigned = is_activity_response_available
+	 			end
+	 			render json: course,status: :ok
+	 		else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 				 			
+	 		end
+	 	end
  	    private
  	    def framework_params
 		    params.require(:framework).permit(:id,:title,:description,:activity_name,:level,
@@ -346,8 +397,8 @@ module V1
 		    									 )
  	    end
  	    def course_params
- 	    	params.require(:course).permit(:id,
-		    									:title,:description,:additional_description,:isActive,:created_by,:deleted_by
+ 	    	params.require(:course).permit(:id,:pass_metric,
+		    								:title,:description,:additional_description,:isActive,:created_by,:deleted_by
 		    									 )
  	    end
  	    def activity_params
@@ -435,3 +486,40 @@ end
     # t.integer "course_id"
     # t.boolean "admin_responsed", default: false
     # t.boolean "mentor_responsed", default: false
+
+
+    				# 			params[:activity][:checklists].each do |checklist|
+								# 	if checklist[:id].present?
+								# 		checklist_update = CoursesController.checklist_update(checklist,activity_update,current_user.id)
+								# 		if checklist_update
+								# 			puts "Checklist updated successfully"
+								# 		else
+	      	# 								raise ActiveRecord::Rollback										
+								# 		end
+								# 	else
+								# 		checklist_create = CoursesController.checklist_create(checklist,activity_update,current_user.id)
+								# 		if checklist_create
+								# 			puts "checklists created successfully"
+								# 		else
+								# 			raise ActiveRecord::Rollback										
+								# 		end
+								# 	end
+								# end
+
+								# params[:activity][:checklists].each do |checklist|
+								# 	if checklist[:id].present?
+								# 		checklist_update = CoursesController.checklist_update(checklist,activity_create,current_user.id)
+								# 		if checklist_update
+								# 			puts "Checklist updated successfully"
+								# 		else
+	      	# 								raise ActiveRecord::Rollback										
+								# 		end
+								# 	else
+								# 		checklist_create = CoursesController.checklist_create(checklist,activity_create,current_user.id)
+								# 		if checklist_create
+								# 			puts "checklists created successfully"
+								# 		else
+								# 			raise ActiveRecord::Rollback										
+								# 		end
+								# 	end
+								# end

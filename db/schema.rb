@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_26_062513) do
+ActiveRecord::Schema.define(version: 2019_02_28_061251) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -117,7 +117,6 @@ ActiveRecord::Schema.define(version: 2019_02_26_062513) do
   end
 
   create_table "checklist_responses", force: :cascade do |t|
-    t.integer "activity_id"
     t.integer "course_id"
     t.integer "program_id"
     t.integer "startup_profile_id"
@@ -128,7 +127,8 @@ ActiveRecord::Schema.define(version: 2019_02_26_062513) do
     t.boolean "is_passed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["activity_id"], name: "index_checklist_responses_on_activity_id"
+    t.integer "checklist_id"
+    t.index ["checklist_id"], name: "index_checklist_responses_on_checklist_id"
     t.index ["course_id"], name: "index_checklist_responses_on_course_id"
     t.index ["program_id"], name: "index_checklist_responses_on_program_id"
     t.index ["startup_profile_id"], name: "index_checklist_responses_on_startup_profile_id"
@@ -137,7 +137,6 @@ ActiveRecord::Schema.define(version: 2019_02_26_062513) do
   create_table "checklists", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.integer "activity_id"
     t.integer "created_by"
     t.boolean "isActive", default: true
     t.boolean "isDelete", default: false
@@ -145,7 +144,8 @@ ActiveRecord::Schema.define(version: 2019_02_26_062513) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["activity_id"], name: "index_checklists_on_activity_id"
+    t.integer "course_id"
+    t.index ["course_id"], name: "index_checklists_on_course_id"
   end
 
   create_table "contract_forms", force: :cascade do |t|
@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 2019_02_26_062513) do
     t.integer "created_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "pass_metric"
   end
 
   create_table "current_state_forms", force: :cascade do |t|

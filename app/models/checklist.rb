@@ -1,5 +1,5 @@
 class Checklist < ApplicationRecord
   # belongs_to :framework 
-  belongs_to :activity 
-  has_many :activity_responses ,dependent: :delete_all
+  belongs_to :course 
+  has_many :checklists_responses 
 end

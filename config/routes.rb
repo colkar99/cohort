@@ -196,10 +196,14 @@ Rails.application.routes.draw do
 		##########courses###############
 		get 'v1/framework/course/view-all', to: 'courses#view_all_courses' #using
 		post 'v1/framework/course/create-and-update-course', to: 'courses#create_new_course' #using
-		post 'v1/framework/course/create-activity-and-checklists', to: 'courses#create_activity' #uisng
-		post 'v1/framework/course/delete-activity-and-checklists', to: 'courses#delete_activity' #using
+		post 'v1/framework/course/create-activity', to: 'courses#create_activity' #uisng
+		post 'v1/framework/course/delete-activity', to: 'courses#delete_activity' #using
+		post 'v1/framework/course/create-update-checklist', to: 'courses#create_checklists' #using
+		put 'v1/framework/course/delete-checklist', to: 'courses#delete_checklist' #using
+
 		post 'v1/framework/course/delete-course-activity-and-checklists', to: 'courses#delete_course' #using
 		put 'v1/framework/course/assign_activities_to_startup', to: 'courses#assign_activity_to_startups' #using
+		put 'v1/framework/course/get-assigned-courses', to: 'courses#get_assigned_courses' #using
 
 		################################
 

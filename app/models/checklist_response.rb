@@ -1,4 +1,4 @@
 class ChecklistResponse < ApplicationRecord
-  belongs_to :activity
+  belongs_to :checklist
   belongs_to :course
 end
