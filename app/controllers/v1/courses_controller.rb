@@ -378,7 +378,7 @@ module V1
  					checklists.each do |checklist|
  						checklists_responses = ChecklistResponse.where(checklist_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
  						if checklists_responses.present?
- 							checklist.admin_responsed = checklists_responses.checklists_responses
+ 							checklist.admin_responsed = checklists_responses.admin_responsed
  							checklist.admin_feedback = checklists_responses.admin_feedback
  							checklist.mentor_feedback = checklists_responses.mentor_feedback
  							checklist.mentor_responsed = checklists_responses.mentor_responsed
