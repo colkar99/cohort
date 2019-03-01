@@ -219,7 +219,8 @@ module V1
 	 	def show_sessions_to_startups
  	    	startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
  	    	if startup_auth
- 	    		program = Program.find(params[:program_id])
+ 	    		startup_profile = StartupProfile.find(params[:startup_profile_id])
+ 	    		program = startup_profile.startup_registration.program
  	    		if program.present?
  	    			sessions = program.sessions
  	    			render json: sessions,status: :ok
