@@ -385,6 +385,7 @@ module V1
  							checklist.admin_feedback = checklists_responses.admin_feedback
  							checklist.mentor_feedback = checklists_responses.mentor_feedback
  							checklist.mentor_responsed = checklists_responses.mentor_responsed
+ 							checklist.is_passed = checklists_responses.is_passed
  						else
  							checklist.admin_responsed = false
  							checklist.mentor_responsed = false
@@ -435,6 +436,7 @@ module V1
  							checklist.admin_feedback = checklists_responses.admin_feedback
  							checklist.mentor_feedback = checklists_responses.mentor_feedback
  							checklist.mentor_responsed = checklists_responses.mentor_responsed
+ 							checklist.is_passed = checklists_responses.is_passed
  						else
  							checklist.admin_responsed = false
  							checklist.mentor_responsed = false
@@ -456,35 +458,99 @@ module V1
 	 	end
 
 	 	def startup_response_for_activity
-	 		startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 		activity_response = ActivityResponse.where(activity_id: params[:activity_id],startup_profile_id: params[:startup_profile_id],course_id: params[:course_id]).first
-	 		if activity_response.present?
-	 			activity_response.startup_response = params[:startup_response]
-	 			activity_response.startup_responsed = true
-	 			if activity_response.save!
-	 				render json: activity_response,status: :ok
-	 			else
-	 				render json: activity_response.errors,status: :bad_request
-	 			end
-	 		else
-	 			render json: {error: "Activity response not present with this ID"},status: :bad_request
-			end
+	 		ActivityResponse.transaction do
+	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
+		 		activity_response = ActivityResponse.where(activity_id: params[:activity_id],startup_profile_id: params[:startup_profile_id],course_id: params[:course_id]).first
+		 		if activity_response.present?
+		 			activity_response.startup_response = params[:startup_response]
+		 			activity_response.startup_responsed = true
+		 			if activity_response.save!
+		 				# render json: activity_response,status: :ok
+		 				puts "Activity responses updated"
+		 			else
+		 				raise ActiveRecord::Rollback										
+		 				render json: activity_response.errors,status: :bad_request
+		 			end
+		 		else
+		 			create_activity_response = ActivityResponse.new
+		 			create_activity_response.startup_profile_id = startup_profile.id
+		 			create_activity_response.activity_id = params[:activity_id]
+		 			create_activity_response.course_id = params[:course_id]
+		 			create_activity_response.startup_response = params[:startup_response]
+		 			create_activity_response.startup_responsed = true
+		 			if create_activity_response.save!
+		 				puts "New Activity responses created"
+		 			else
+		 				raise ActiveRecord::Rollback										
+		 				render json: create_activity_response.errors,status: :bad_request
+		 			end
+				end
+				render json: {message: "Startup response successfully received"},status: :ok
+	 		end
 	 	end
 
 	 	def admin_response_for_activity
-	 		startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 		activity_response = ActivityResponse.where(activity_id: params[:activity_id],startup_profile_id: params[:startup_profile_id],course_id: params[:course_id]).first
-	 		if activity_response.present?
-	 			activity_response.admin_responsed = true
-	 			activity_response.admin_feedback = params[:admin_feedback]
-	 			if activity_response.save!
-	 				render json: activity_response,status: :ok
-	 			else
-	 				render json: activity_response.errors,status: :bad_request
+	 		module_grand_access = permission_control("activity","update")
+	 		if module_grand_access
+	 			ActivityResponse.transaction do
+	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
+			 		activity_response = ActivityResponse.where(activity_id: params[:activity_id],startup_profile_id: params[:startup_profile_id],course_id: params[:course_id]).first
+			 		if activity_response.present?
+			 			activity_response.admin_responsed = true
+			 			activity_response.admin_feedback = params[:admin_feedback]
+			 			if activity_response.save!
+			 				render json: activity_response,status: :ok
+			 			else
+			 				raise ActiveRecord::Rollback										
+			 				render json: activity_response.errors,status: :bad_request
+			 			end
+			 		else
+			 			raise ActiveRecord::Rollback										
+			 			render json: {error: "Activity response not present with this ID"},status: :bad_request
+					end
 	 			end
 	 		else
-	 			render json: {error: "Activity response not present with this ID"},status: :bad_request
-			end
+   				render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized			 				 			
+	 		end
+	 	end
+
+	 	def checklists_response_by_admin
+	 		module_grand_access = permission_control("activity","update")
+	 		if module_grand_access
+	 			ChecklistResponse.transaction do
+	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
+			 		checklists = params[:checklists]
+			 		checklists.each do |checklist|
+			 			checklist_response = ChecklistResponse.where(startup_profile_id: startup_profile.id,course_id: params[:course_id],checklist_id: checklist[:id]).first
+			 			if checklist_response.present?
+			 				checklist_response.admin_responsed = true
+			 				checklist_response.is_passed = checklist[:is_passed]
+			 				if	checklists_response.save!
+			 					puts "Checklists are updated"
+			 				else
+			 					raise ActiveRecord::Rollback										
+			 					render json: checklist_response.errors,status: :bad_request
+			 				end
+			 			else
+			 				create_checklist_response = ChecklistResponse.new
+			 				checklist_response.startup_profile_id = params[:startup_profile_id]
+			 				checklist_response.course_id = params[:course_id]
+			 				checklist_response.checklist_id = checklist[:id]
+			 				checklist_response.admin_responsed = true
+			 				checklist_response.is_passed = checklist[:is_passed]
+			 				if create_checklist_response.save!
+			 					puts "New checklists created"
+			 				else
+			 					raise ActiveRecord::Rollback										
+			 					render json: create_checklist_response.errors,status: :bad_request
+			 				end
+			 			end
+			 		end
+			 		render json: {message: "admin response successfully submitted"},status: :ok
+	 			end
+	 		else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 				 				 			
+	 		end
 	 	end
 
  	    private

@@ -207,6 +207,7 @@ Rails.application.routes.draw do
 		put 'v1/framework/course/get-assigned-courses-for-startup', to: 'courses#get_assigned_courses_for_startup' #using
 		put 'v1/framework/course/startup-response-for-activity', to: 'courses#startup_response_for_activity' #using
 		put 'v1/framework/course/admin-response-for-activity', to: 'courses#admin_response_for_activity' #using
+		put 'v1/framework/course/admin-response-for-checklists', to: 'courses#checklists_response_by_admin' #using
 
 		################################
 
