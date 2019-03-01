@@ -320,7 +320,7 @@ module V1
 	 					if activity_status && checklist_status
 	 						startup_application = startup_profile.startup_registration
 	 						if startup_application.application_status != "VDC"
-	 							status = ProgramStatus.find(status:"VDC")
+	 							status = ProgramStatus.find_by_status("VDC")
 	 							update_status = CoursesController.status_update(status,startup_application)
 	 							if update_status
 	 								render json: {message: "Courses maped to startups"},status: :ok
