@@ -9,6 +9,8 @@ class StartupProfile < ApplicationRecord
 	has_many :users, through: :startup_users
 	has_many :founding_sources
 	has_many :courses, through: :activity_responses
+	# has_one :program_status ,through: :startup_registrations
+
 
 	# has_many :current_state_forms
 
