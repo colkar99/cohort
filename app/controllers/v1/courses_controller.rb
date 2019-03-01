@@ -318,9 +318,17 @@ module V1
  							end
 	 					end
 	 					if activity_status && checklist_status
-	 						# startup_application = startup_profile.startup_registration
-	 						# status = ProgramStatus.find(status:"VDC")
-	 						# update_status = CoursesController.status_update(status,startup_application)
+	 						startup_application = startup_profile.startup_registration
+	 						if startup_application.application_status != "VDC"
+	 							status = ProgramStatus.find(status:"VDC")
+	 							update_status = CoursesController.status_update(status,startup_application)
+	 							if update_status
+	 								render json: {message: "Courses maped to startups"},status: :ok
+	 							else
+	 								raise ActiveRecord::Rollback										
+	 								render json: {error: "Something happened"},status: :bad_request
+	 							end
+	 						end
 	 						render json: {message: "Courses maped to startups"},status: :ok
 	 					else
 	 						raise ActiveRecord::Rollback										
@@ -335,9 +343,20 @@ module V1
 	 		end
 	 	end
 
-	 	# def self.status_update(status,startup_application)
-	 	# 	if status.present?  && 
-	 	# end
+	 	def self.status_update(status,startup_application)
+	 		if status.present?  &&  startup_application.present?
+	 			startup_application.program_status_id = status.id
+	 			startup_application.application_status = status.status
+	 			startup_application.app_status_description = status.description
+	 			if startup_application.save!
+	 				true
+	 			else
+	 				false
+	 			end
+	 		else
+	 			false
+	 		end
+	 	end
 
 	 	def self.create_checklist_response(checklist,course,startup_profile,program)
 	 		checklist_response = ChecklistResponse.new
