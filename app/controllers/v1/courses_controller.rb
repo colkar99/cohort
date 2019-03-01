@@ -330,7 +330,7 @@ module V1
 	 								render json: {error: "Something happened"},status: :bad_request
 	 							end
 	 						end
-	 						mailer_courses = CourseController.get_assigned_course_internal(startup_profile.id)
+	 						mailer_courses = CoursesController.get_assigned_course_internal(startup_profile.id)
 	 						VentureMailer.assign_activities_mail(startup_application,mailer_courses,program).deliver_later
 	 						render json: {message: "Courses maped to startups"},status: :ok
 	 					else
