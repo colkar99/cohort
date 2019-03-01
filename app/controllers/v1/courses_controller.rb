@@ -318,6 +318,9 @@ module V1
  							end
 	 					end
 	 					if activity_status && checklist_status
+	 						# startup_application = startup_profile.startup_registration
+	 						# status = ProgramStatus.find(status:"VDC")
+	 						# update_status = CoursesController.status_update(status,startup_application)
 	 						render json: {message: "Courses maped to startups"},status: :ok
 	 					else
 	 						raise ActiveRecord::Rollback										
@@ -331,6 +334,10 @@ module V1
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 			
 	 		end
 	 	end
+
+	 	# def self.status_update(status,startup_application)
+	 	# 	if status.present?  && 
+	 	# end
 
 	 	def self.create_checklist_response(checklist,course,startup_profile,program)
 	 		checklist_response = ChecklistResponse.new
@@ -537,7 +544,7 @@ module V1
 			 			if checklist_response.present?
 			 				checklist_response.admin_responsed = true
 			 				checklist_response.is_passed = checklist[:is_passed]
-			 				if	checklists_response.save!
+			 				if	checklist_response.save!
 			 					puts "Checklists are updated"
 			 				else
 			 					raise ActiveRecord::Rollback										
@@ -545,11 +552,11 @@ module V1
 			 				end
 			 			else
 			 				create_checklist_response = ChecklistResponse.new
-			 				checklist_response.startup_profile_id = params[:startup_profile_id]
-			 				checklist_response.course_id = params[:course_id]
-			 				checklist_response.checklist_id = checklist[:id]
-			 				checklist_response.admin_responsed = true
-			 				checklist_response.is_passed = checklist[:is_passed]
+			 				create_checklist_response.startup_profile_id = params[:startup_profile_id]
+			 				create_checklist_response.course_id = params[:course_id]
+			 				create_checklist_response.checklist_id = checklist[:id]
+			 				create_checklist_response.admin_responsed = true
+			 				create_checklist_response.is_passed = checklist[:is_passed]
 			 				if create_checklist_response.save!
 			 					puts "New checklists created"
 			 				else
