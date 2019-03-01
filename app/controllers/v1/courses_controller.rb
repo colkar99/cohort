@@ -323,7 +323,8 @@ module V1
 	 							status = ProgramStatus.find_by_status("VDC")
 	 							update_status = CoursesController.status_update(status,startup_application)
 	 							if update_status
-	 								render json: {message: "Courses maped to startups"},status: :ok
+	 								# render json: {message: "Courses maped to startups"},status: :ok
+	 								puts "Status updated in statup applications"
 	 							else
 	 								raise ActiveRecord::Rollback										
 	 								render json: {error: "Something happened"},status: :bad_request
