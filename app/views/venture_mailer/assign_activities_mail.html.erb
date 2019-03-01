@@ -38,9 +38,9 @@ th {
     <tbody>
       <% @courses.each do |course| %>
       <tr>
-        <td><%= raw(course.title)%></td>
+        <td><%= course.title%></td>
         <% course.activities.each do |activity| %>
-           <td><%= raw(activity.name)%></td>
+           <td><%= activity.name%></td>
         <% end %>
          <td><%= course.target_date%></td>
       </tr>
