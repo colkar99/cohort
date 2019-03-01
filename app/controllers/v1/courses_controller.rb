@@ -330,6 +330,8 @@ module V1
 	 								render json: {error: "Something happened"},status: :bad_request
 	 							end
 	 						end
+	 						mailer_courses = CourseController.get_assigned_course_internal(startup_profile.id)
+	 						VentureMailer.assign_activities_mail(startup_application,mailer_courses,program).deliver_later
 	 						render json: {message: "Courses maped to startups"},status: :ok
 	 					else
 	 						raise ActiveRecord::Rollback										
@@ -388,6 +390,59 @@ module V1
 	 			raise ActiveRecord::Rollback										
 	 			false
 	 		end
+	 	end
+
+	 	def self.get_assigned_course_internal(startup_profile_id)
+	 			selected_courses = []
+	 			startup_profile = StartupProfile.find(startup_profile_id)
+	 			fetch_target_date = ""
+	 			courses = Course.all
+	 			courses.each do |course|
+	 				is_activity_response_available = false
+	 				activities = course.activities
+	 				activities.each do |activity|
+	 					activity_responses = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
+	 					if activity_responses.present?
+	 						activity.startup_response = activity_responses.startup_response
+	 						activity.startup_responsed = activity_responses.startup_responsed
+	 						activity.admin_responsed = activity_responses.admin_responsed
+	 						activity.mentor_responsed = activity_responses.mentor_responsed
+	 						activity.admin_feedback = activity_responses.admin_feedback
+	 						is_activity_response_available = true
+	 						fetch_target_date = activity_responses.target_date
+
+	 					else
+	 						activity.startup_response = ""
+	 						activity.startup_responsed = false
+	 						activity.admin_responsed = false
+	 						activity.mentor_responsed = false
+	 					end
+	 				end
+	 				checklists = course.checklists
+ 					checklists.each do |checklist|
+ 						checklists_responses = ChecklistResponse.where(checklist_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
+ 						if checklists_responses.present?
+ 							checklist.admin_responsed = checklists_responses.admin_responsed
+ 							checklist.admin_feedback = checklists_responses.admin_feedback
+ 							checklist.mentor_feedback = checklists_responses.mentor_feedback
+ 							checklist.mentor_responsed = checklists_responses.mentor_responsed
+ 							checklist.is_passed = checklists_responses.is_passed
+ 						else
+ 							checklist.admin_responsed = false
+ 							checklist.mentor_responsed = false
+ 						end
+ 					end
+	 				course.is_assigned = is_activity_response_available
+	 				course.target_date = fetch_target_date
+
+	 			end
+	 			courses.each do |course|
+	 				if course.is_assigned
+	 					selected_courses.push(course)
+	 				end
+	 			end
+	 			selected_courses
+	 	
 	 	end
 # :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
 	 	def get_assigned_courses
