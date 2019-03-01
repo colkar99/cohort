@@ -217,7 +217,8 @@ module V1
 	 	end
 
 	 	def show_sessions_to_startups
- 	    	startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
+ 	    	# startup_auth = startup_auth_check(params[:startup_profile_id],current_user)
+ 	    	startup_auth = true
  	    	if startup_auth
  	    		startup_profile = StartupProfile.find(params[:startup_profile_id])
  	    		program = startup_profile.startup_registration.program
