@@ -300,6 +300,8 @@ module V1
 	 						activities.each do |activity|
 	 							activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity[:id],course_id: course[:id]).first
 	 							if activity_response.present?
+	 								activity_response.target_date = course[:target_date]
+	 								activity_response.save!
 	 								puts "This activity already assigned to startup"
 	 								activity_status = true
 	 							else
