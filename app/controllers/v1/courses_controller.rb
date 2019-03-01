@@ -298,11 +298,23 @@ module V1
 	 					courses.each do |course|
 	 						activities = course[:activities]
 	 						activities.each do |activity|
-	 							activity_status = CoursesController.create_activity_response(course,activity,startup_profile,program)
+	 							activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity[:id],course_id: course[:id]).first
+	 							if activity_response.present?
+	 								puts "This activity already assigned to startup"
+	 								activity_status = true
+	 							else
+	 								activity_status = CoursesController.create_activity_response(course,activity,startup_profile,program)
+	 							end
 	 						end
 							checklists = course[:checklists]
  							checklists.each do |checklist|
- 								checklist_status = CoursesController.create_checklist_response(checklist,course,startup_profile,program)
+	 							checklist_response = ChecklistResponse.where(startup_profile_id: startup_profile.id,checklist_id: checklist[:id],course_id: course[:id]).first
+	 							if checklist_response.present?
+	 								puts "This checklist already assigned to startup"
+	 								checklist_status = true
+	 							else
+	 								checklist_status = CoursesController.create_checklist_response(checklist,course,startup_profile,program)
+	 							end
  							end
 	 					end
 	 					if activity_status && checklist_status
