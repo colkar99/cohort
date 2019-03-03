@@ -253,6 +253,8 @@ Rails.application.routes.draw do
 		put 'v1/program/get-sessions-for-startup', to: 'sessions#show_sessions_to_startups'
 		put 'v1/program/get-programs-related-users', to: 'sessions#get_program_related_users'
 		put 'v1/program/remove-attendee-from-session', to: 'sessions#delete_attendees_from_session'
+		put 'v1/program/update-invite', to: 'sessions#update_invite'
+
 	end
 
 end

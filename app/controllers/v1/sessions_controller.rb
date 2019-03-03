@@ -249,6 +249,26 @@ module V1
 			end
 	 	end
 
+	 	def update_invite
+	 		module_grand_access = permission_control("session","update")
+	 		if module_grand_access
+	 			session = Session.find(params[:session_id])
+	 			if session.present?
+	 				session.invited = true
+	 				if session.save!
+	 					render json:session,status: :ok
+	 				else
+	 					render json: session.errors,status: :bad_request
+	 				end
+	 			else
+	 				render json: {error: "Session not found with this ID"},status: :not_found
+	 			end
+	 		else
+	 			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized
+	 		end
+	 		
+	 	end
+
  	    private
  	    def session_params
 		    params.require(:session).permit(:id,
