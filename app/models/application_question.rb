@@ -5,4 +5,5 @@ class ApplicationQuestion < ApplicationRecord
     has_many :programs , through: :link_of_program_questions
     has_many :link_of_program_questions
     has_many :program_locations , through: :link_of_program_questions
+    has_many :app_ques_responses
 end
