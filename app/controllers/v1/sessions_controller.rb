@@ -255,6 +255,7 @@ module V1
 	 			session = Session.find(params[:session_id])
 	 			if session.present?
 	 				session.invited = true
+	 				session.event_id = params[:event_id]
 	 				if session.save!
 	 					render json:session,status: :ok
 	 				else
@@ -291,6 +292,8 @@ module V1
 		    									:startup_profile_id,
 		    									:created_by,
 		    									:isActive,
+		    									:event_id,
+		    									:time_zone
 		    									 )
  	    end
 

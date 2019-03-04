@@ -1,5 +1,5 @@
 class SessionSerializer < ActiveModel::Serializer
-    attributes :id ,:title,:description,:start_date_time,:end_date_time,:where,:invited,:created_at,:updated_at
+    attributes :id ,:title,:description,:start_date_time,:end_date_time,:event_id,:time_zone,:where,:invited,:created_at,:updated_at
 	has_many :session_attendees
 	has_many :users, through: :session_attendees
 end
