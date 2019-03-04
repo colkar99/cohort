@@ -20,7 +20,7 @@ module V1
 			startup = 0
 			programs = Program.all
 			programs.each do |program|
-				changed_program_title = ActionView::Base.full_sanitizer.sanitize(program.title)
+				changed_program_title = "pro-1"
 				changed_program_description = ActionView::Base.full_sanitizer.sanitize(program.description)
 				startup = program.startup_registrations.count
 				value = {label: changed_program_title,value: startup,link: "newchart-xml-#{changed_program_title}"}
