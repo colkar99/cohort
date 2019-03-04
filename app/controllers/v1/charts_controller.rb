@@ -22,7 +22,7 @@ module V1
 			programs = Program.all
 			programs.each do |program|
 				program_title_count += 1
-				changed_program_title = "pro-#{program_title_count}"
+				changed_program_title = Rails::Html::FullSanitizer.new.sanitize(program.title)
 				changed_program_description = ActionView::Base.full_sanitizer.sanitize(program.description)
 				startup = program.startup_registrations.count
 				value = {label: changed_program_title,value: startup,link: "newchart-xml-#{changed_program_title}"}
