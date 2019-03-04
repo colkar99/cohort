@@ -280,7 +280,9 @@ module V1
 		    									:where,
 		    									:created_by,
 		    									:isActive,
-		    									:program_id
+		    									:program_id,
+		    									:event_id,
+		    									:time_zone
 		    									 )
  	    end
  	    def session_attendee_params
@@ -291,9 +293,7 @@ module V1
 		    									:attendence_confirmation,
 		    									:startup_profile_id,
 		    									:created_by,
-		    									:isActive,
-		    									:event_id,
-		    									:time_zone
+		    									:isActive
 		    									 )
  	    end
 
