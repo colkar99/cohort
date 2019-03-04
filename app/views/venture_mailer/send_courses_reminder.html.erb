@@ -27,7 +27,6 @@ th {
 		You have some pending activities in the following course please ensure to complete within target date.
 	</p>
   <div><label>Course name: <%=raw @course.title %></label></div>
-  <!-- <%= @course.inspect %> -->
   <div>
       <table>
     <thead>
@@ -44,7 +43,8 @@ th {
           <% if activity.startup_responsed == false %>
               <td style="color: red;">Not completed </td>
           <% else %>
-            <td style="color: blue;">completed </td>
+            <%= activity.inspect %>
+              <td style="color: green;">completed </td>
           <% end %>
           <td><%= @target_date %></td>
         </tr>
