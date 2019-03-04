@@ -446,6 +446,51 @@ module V1
 	 			selected_courses
 	 	
 	 	end
+	 	def self.get_single_course(course_id,startup_profile_id)
+	 			selected_courses = []
+	 			startup_profile = StartupProfile.find(startup_profile_id)
+	 			fetch_target_date = ""
+	 			course =  Course.find(course_id)
+	 				is_activity_response_available = false
+	 				activities = course.activities
+	 				activities.each do |activity|
+	 					activity_responses = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity.id).first
+	 					if activity_responses.present?
+	 						activity.startup_response = activity_responses.startup_response
+	 						activity.startup_responsed = activity_responses.startup_responsed
+	 						activity.admin_responsed = activity_responses.admin_responsed
+	 						activity.mentor_responsed = activity_responses.mentor_responsed
+	 						activity.admin_feedback = activity_responses.admin_feedback
+	 						is_activity_response_available = true
+	 						fetch_target_date = activity_responses.target_date
+
+	 					else
+	 						activity.startup_response = ""
+	 						activity.startup_responsed = false
+	 						activity.admin_responsed = false
+	 						activity.mentor_responsed = false
+	 					end
+	 				end
+	 				checklists = course.checklists
+ 					checklists.each do |checklist|
+ 						checklists_responses = ChecklistResponse.where(checklist_id: checklist.id,startup_profile_id: startup_profile.id, course_id: course.id).first
+ 						if checklists_responses.present?
+ 							checklist.admin_responsed = checklists_responses.admin_responsed
+ 							checklist.admin_feedback = checklists_responses.admin_feedback
+ 							checklist.mentor_feedback = checklists_responses.mentor_feedback
+ 							checklist.mentor_responsed = checklists_responses.mentor_responsed
+ 							checklist.is_passed = checklists_responses.is_passed
+ 						else
+ 							checklist.admin_responsed = false
+ 							checklist.mentor_responsed = false
+ 						end
+ 					end
+	 				course.is_assigned = is_activity_response_available
+	 				course.target_date = fetch_target_date
+
+	 			selected_courses
+	 	
+	 	end
 # :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
 	 	def get_assigned_courses
 	 		module_grand_access = true
@@ -652,13 +697,13 @@ module V1
 	 	def send_reminder_to_complete_activities
 	 		module_grand_access = permission_control("activity","update")
 	 		if module_grand_access
-	 			courses = CoursesController.get_assigned_course_internal(params[:startup_profile_id])
-	 			course = []
-	 			courses.each do |course_current|
-	 				if (course_current[:id] == params[:course_id])
-	 					course.push(course_current)
-	 				end
-	 			end
+	 			course = CoursesController.get_single_course(params[:course_id],params[:startup_profile_id])
+	 			
+	 			# courses.each do |course_current|
+	 			# 	if (course_current[:id] == params[:course_id])
+	 			# 		course.push(course_current)
+	 			# 	end
+	 			# end
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
 	 			if course.present? && startup_profile.present?
 	 				program = startup_profile.startup_registration.program

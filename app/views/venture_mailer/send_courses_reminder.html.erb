@@ -38,15 +38,15 @@ th {
     </thead>
     <tbody>
       <% @course.activities.each do |activity| %>
-      <tr>
-        <td><%=raw activity.title %></td>
-        <% if activity.startup_responsed == false %>
-            <td style="color: red;">Not completed </td>
-        <% else %>
-          <td style="color: blue;">completed </td>
-        <% end %>
-        <td><%= activity.target_date %></td>
-      </tr>
+        <tr>
+          <td><%=raw activity.title %></td>
+          <% if activity.startup_responsed == false %>
+              <td style="color: red;">Not completed </td>
+          <% else %>
+            <td style="color: blue;">completed </td>
+          <% end %>
+          <td><%= activity.target_date %></td>
+        </tr>
       <% end %>
     </tbody>
   </table>
