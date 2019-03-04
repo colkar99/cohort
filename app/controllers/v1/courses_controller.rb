@@ -451,6 +451,7 @@ module V1
 	 			startup_profile = StartupProfile.find(startup_profile_id)
 	 			fetch_target_date = ""
 	 			course =  Course.find(course_id)
+	 			course.target_date = fetch_target_date
 	 				is_activity_response_available = false
 	 				activities = course.activities
 	 				activities.each do |activity|
@@ -487,8 +488,7 @@ module V1
  					end
 	 				course.is_assigned = is_activity_response_available
 	 				course.target_date = fetch_target_date
-	 			final_course = course
-	 			final_course
+	 			course
 	 	end
 # :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
 	 	def get_assigned_courses
