@@ -654,9 +654,9 @@ module V1
 	 		if module_grand_access
 	 			courses = CoursesController.get_assigned_course_internal(params[:startup_profile_id])
 	 			course = []
-	 			courses.each do |course|
+	 			courses.each do |course_current|
 	 				if (course[:id] == params[:course_id])
-	 					course.push(course)
+	 					course.push(course_current)
 	 				end
 	 			end
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
