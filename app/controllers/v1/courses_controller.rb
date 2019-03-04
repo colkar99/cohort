@@ -711,7 +711,7 @@ module V1
 	 				current_user_logged = current_user
     				program_dir =  User.find(program.program_director)
 	 				startup_user = startup_profile.users.first
-	 				VentureMailer.send_courses_reminder(course,startup_user,program_dir,program_admin,program,startup_profile,target_date).deliver_later
+	 				VentureMailer.send_courses_reminder(course,startup_user,program_dir,program_admin,program,startup_profile,target_date).deliver_now
 	 				render json: {message: "reminder posted successfully"},status: :ok
 	 			else
 	 				render json: {error: "Course or startup Profile not found"},status: :bad_request
