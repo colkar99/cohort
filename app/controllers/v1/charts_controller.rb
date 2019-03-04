@@ -18,14 +18,10 @@ module V1
 					linkeddata: []
 					} 
 			startup = 0
-			program_title_count = 0
 			programs = Program.all
 			programs.each do |program|
-				program_title_count += 1
-				changed_program_title = Rails::Html::FullSanitizer.new.sanitize(program.title)
-				changed_program_description = ActionView::Base.full_sanitizer.sanitize(program.description)
 				startup = program.startup_registrations.count
-				value = {label: changed_program_title,value: startup,link: "newchart-xml-#{changed_program_title}"}
+				value = {label: program.title,value: startup,link: "newchart-xml-#{program.title}"}
 				result[:data].push(value);
 				program_registred = 0
 				accepted = 0
@@ -68,9 +64,9 @@ module V1
 
 					end																
 				end
-				pieChart = {id: changed_program_title,linkedchart:{
+				pieChart = {id: program.title,linkedchart:{
 					                chart: {
-                  						caption: changed_program_description,
+                  						caption: program.description,
 					                    subcaption: "Last year",
 					                    numberprefix: "",
 					                    theme: "fusion",
