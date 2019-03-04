@@ -649,6 +649,33 @@ module V1
 	 		end
 	 	end
 
+	 	def send_reminder_to_complete_activities
+	 		module_grand_access = permission_control("activity","update")
+	 		if module_grand_access
+	 			courses = CoursesController.get_assigned_course_internal(params[:startup_profile_id])
+	 			course = []
+	 			courses.each do |course|
+	 				if (course[:id] == params[:course_id])
+	 					course.push(course)
+	 				end
+	 			end
+	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 			if course.present? && startup_profile.present?
+	 				program = startup_profile.startup_registration.program
+	 				program_admin = User.find(program.program_admin)
+	 				current_user_logged = current_user
+    				program_dir =  User.find(program.program_director)
+	 				startup_user = startup_profile.users.first
+	 				VentureMailer.send_courses_reminder(course,startup_user,program_dir,program_admin,program,startup_profile).deliver_later
+	 				render json: {message: "reminder posted successfully"}.status: :ok
+	 			else
+	 				render json: {error: "Course or startup Profile not found"},status: :bad_request
+	 			end
+	 		else
+   			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	 		 			
+			end
+	 	end
+
  	    private
  	    def framework_params
 		    params.require(:framework).permit(:id,:title,:description,:activity_name,:level,

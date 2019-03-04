@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+  </head>
+  <body>
+    <h1>Hello <%= @startup_profile.startup_name%></h1>
+	<p>
+		You have some pending activities in the following course please ensure to complete within target date.
+	</p>
+  <div><label>Course name: <%= @course.title %></label></div>
+  <div>
+      <table>
+    <thead>
+      <tr>
+        <th>Activity Title</th>
+        <th>Startup Response</th>
+          <th>Target date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @course.activities.each do |activity| %>
+      <tr>
+        <td><%=raw activity.title %></td>
+        <% if activity.startup_responsed == false %>
+            <td style="color: red;">Not completed </td>
+        <% else %>
+          <td style="color: blue;">completed </td>
+        <% end %>
+        <td><%= activity.target_date %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+  </body>
+</html>

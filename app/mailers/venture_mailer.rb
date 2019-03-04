@@ -17,6 +17,18 @@ class VentureMailer < ApplicationMailer
      # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
      :cc => [@program_admin.email,@application_manager.email,@program_dir.email] )
   end
+    def send_courses_reminder(course,startup_user,program_dir,program_admin,program,startup_profile)
+    @program = program
+    @program_admin =program_admin
+    @program_dir = program_dir
+    @startup_profile = startup_profile
+    @course = course
+    @startup_user = startup_user
+
+     mail(:to => @startup_user.email ,  :subject => "Venture development courses reminder",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@program_admin.email,@program_dir.email] )
+  end
   # def startup_application_registered(startup_app)
   #   @startup = startup_app
   #     mail to: @startup.founder_email, subject: "Thank you for your interest"
