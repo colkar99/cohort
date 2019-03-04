@@ -20,9 +20,9 @@ module V1
 			startup = 0
 			programs = Program.all
 			programs.each do |program|
-				startup = program.startup_registrations.count
 				changed_program_title = ActionView::Base.full_sanitizer.sanitize(program.title)
 				changed_program_description = ActionView::Base.full_sanitizer.sanitize(program.description)
+				startup = program.startup_registrations.count
 				value = {label: changed_program_title,value: startup,link: "newchart-xml-#{changed_program_title}"}
 				result[:data].push(value);
 				program_registred = 0
@@ -66,7 +66,7 @@ module V1
 
 					end																
 				end
-				pieChart = {id: "newchart-xml-#{changed_program_title}",linkedchart:{
+				pieChart = {id: changed_program_title,linkedchart:{
 					                chart: {
                   						caption: changed_program_description,
 					                    subcaption: "Last year",
