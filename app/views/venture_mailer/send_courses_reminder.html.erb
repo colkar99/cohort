@@ -27,7 +27,7 @@ th {
 		You have some pending activities in the following course please ensure to complete within target date.
 	</p>
   <div><label>Course name: <%=raw @course.title %></label></div>
-  <%= debug @course %>
+  <%= @course.inspect %>
   <div>
       <table>
     <thead>
