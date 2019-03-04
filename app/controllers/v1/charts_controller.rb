@@ -18,9 +18,11 @@ module V1
 					linkeddata: []
 					} 
 			startup = 0
+			program_title_count = 0
 			programs = Program.all
 			programs.each do |program|
-				changed_program_title = "pro-1"
+				program_title_count += 1
+				changed_program_title = "pro-#{program_title_count}"
 				changed_program_description = ActionView::Base.full_sanitizer.sanitize(program.description)
 				startup = program.startup_registrations.count
 				value = {label: changed_program_title,value: startup,link: "newchart-xml-#{changed_program_title}"}
