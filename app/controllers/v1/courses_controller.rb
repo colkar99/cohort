@@ -655,7 +655,7 @@ module V1
 	 			courses = CoursesController.get_assigned_course_internal(params[:startup_profile_id])
 	 			course = []
 	 			courses.each do |course_current|
-	 				if (course[:id] == params[:course_id])
+	 				if (course_current[:id] == params[:course_id])
 	 					course.push(course_current)
 	 				end
 	 			end
