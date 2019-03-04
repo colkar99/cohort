@@ -333,7 +333,7 @@ module V1
 	 							end
 	 						end
 	 						mailer_courses = CoursesController.get_assigned_course_internal(startup_profile.id)
-	 						VentureMailer.assign_activities_mail(startup_application,mailer_courses,program).deliver_later
+	 						VentureMailer.assign_activities_mail(startup_application,mailer_courses,program).deliver_now
 	 						render json: {message: "Courses maped to startups"},status: :ok
 	 					else
 	 						raise ActiveRecord::Rollback										
