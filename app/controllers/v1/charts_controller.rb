@@ -23,7 +23,7 @@ module V1
 				startup = program.startup_registrations.count
 				changed_program_title = ActionView::Base.full_sanitizer.sanitize(program.title)
 				changed_program_description = ActionView::Base.full_sanitizer.sanitize(program.description)
-				value = {label: ActionViechanged_program_title,value: startup,link: "newchart-xml-#{changed_program_title}"}
+				value = {label: changed_program_title,value: startup,link: "newchart-xml-#{changed_program_title}"}
 				result[:data].push(value);
 				program_registred = 0
 				accepted = 0
