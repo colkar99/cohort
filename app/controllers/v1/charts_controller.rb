@@ -66,7 +66,7 @@ module V1
 
 					end																
 				end
-				pieChart = {id: changed_program_title,linkedchart:{
+				pieChart = {id: "newchart-xml-#{changed_program_title}",linkedchart:{
 					                chart: {
                   						caption: changed_program_description,
 					                    subcaption: "Last year",
