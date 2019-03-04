@@ -39,7 +39,7 @@ th {
     <tbody>
       <% @course.activities.each do |activity| %>
         <tr>
-          <td><%=raw activity.title %></td>
+          <td><%=raw activity.name %></td>
           <% if activity.startup_responsed == false %>
               <td style="color: red;">Not completed </td>
           <% else %>
