@@ -487,8 +487,9 @@ module V1
  					end
 	 				course.is_assigned = is_activity_response_available
 	 				course.target_date = fetch_target_date
-
+	 				puts course
 	 			course
+	 			
 	 	
 	 	end
 # :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
