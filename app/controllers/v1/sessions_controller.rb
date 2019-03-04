@@ -254,7 +254,7 @@ module V1
 	 		if module_grand_access
 	 			session = Session.find(params[:session_id])
 	 			if session.present?
-	 				session.invited = true
+	 				session.invited = params[:invited]
 	 				session.event_id = params[:event_id]
 	 				if session.save!
 	 					render json:session,status: :ok
