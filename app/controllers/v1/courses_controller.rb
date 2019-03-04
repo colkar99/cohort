@@ -447,7 +447,7 @@ module V1
 	 	
 	 	end
 	 	def self.get_single_course(course_id,startup_profile_id)
-	 			selected_courses = []
+
 	 			startup_profile = StartupProfile.find(startup_profile_id)
 	 			fetch_target_date = ""
 	 			course =  Course.find(course_id)
@@ -488,7 +488,7 @@ module V1
 	 				course.is_assigned = is_activity_response_available
 	 				course.target_date = fetch_target_date
 
-	 			selected_courses
+	 			course
 	 	
 	 	end
 # :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
