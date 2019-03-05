@@ -10,10 +10,11 @@ module V1
 	 			if role_user.present?
 	 				user_roles = UserRole.where("user_id": params[:user_id],"role_id": params[:role_id],"isDelete":false)
 	 				if user_roles.present?
-	 					user_roles.each do |user_role|
-	 						user_role.isDelete = true
-	 						user_role.save!
-	 					end
+	 					user_roles.destroy_all
+	 					# user_roles.each do |user_role|
+	 					# 	user_role.isDelete = true
+	 					# 	user_role.save!
+	 					# end
 	 				end
 	 				if role_user.destroy!
 	 					render json: role_user,status: :ok
