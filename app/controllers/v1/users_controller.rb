@@ -71,6 +71,10 @@ module V1
 
 	      		end
 	      	else
+	      		roles.each do |role|
+	      			present_permissions = UserRole.where(user_id: user.id,role_id: role.id)
+	      			present_permissions.destroy_all	
+	      		end
 	      		roles.destroy_all
 	  			if user.update!(user_params)
 	  				role_user = RoleUser.new
@@ -330,6 +334,73 @@ module V1
 	  			render json: user, status: :ok 
 	  		else
 	  			render json: {error: "User not found with this ID"}, status: :not_found
+	  		end
+	  	end
+
+	  	def create_default_privileges
+	  		module_access_grands = permission_control("user","update")
+	  		if module_access_grands
+	  			user = User.find(params[:user_id])
+	  			role = Role.find(params[:role_id])
+		  		module_types = ModuleType.all
+		  		contract_manager_modules = ["program","startup_application","contract_form","additional_contract_information"]
+		  		program_admin_modules = ["user","role","user_role","role_user"]
+		  		application_manager_modules = ["current_state_form","roadmap","startup_application","application_question","app_ques_response","contract_form"]
+				if role.name == "site_admin"
+					module_types.each do |module_type|
+						already_present = UserRole.where(user_id: user.id,role_id: role.id, module_type_id: module_type.id).first
+						if !already_present.present?
+							UserRole.create!(user_id: user.id,role_id: role.id, module_type_id: module_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")
+						end
+					end
+				elsif role.name == "program_admin"
+					program_admin_modules.each do |program_admin_type|
+						module_types.each do |module_type|
+							if program_admin_type != module_type.name
+								already_present = UserRole.where(user_id: user.id,role_id: role.id, module_type_id: module_type.id).first
+								if !already_present.present?
+								UserRole.create!(user_id: user.id,role_id: role.id, module_type_id: module_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")									
+								end								
+							end
+						end
+					end
+				elsif role.name == "program_director"
+					program_admin_modules.each do |program_admin_type|
+						module_types.each do |module_type|
+							if program_admin_type != module_type.name
+								already_present = UserRole.where(user_id: user.id,role_id: role.id, module_type_id: module_type.id).first
+								if !already_present.present?
+									UserRole.create!(user_id: user.id,role_id: role.id, module_type_id: module_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")
+								end	
+							end
+						end
+					end
+				elsif role.name == "application_manager"
+					application_manager_modules.each do |application_manager_type|
+						module_types.each do |module_type|
+							if application_manager_type != module_type.name
+								already_present = UserRole.where(user_id: user.id,role_id: role.id, module_type_id: module_type.id).first
+								if !already_present.present?
+									UserRole.create!(user_id: user.id,role_id: role.id, module_type_id: module_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")
+								end								
+							end
+						end
+					end
+				elsif role.name == "contract_manager"
+					contract_manager_modules.each do |contract_manager_type|
+						module_types.each do |module_type|
+							if contract_manager_type == module_type.name
+								already_present = UserRole.where(user_id: user.id,role_id: role.id, module_type_id: module_type.id).first
+								if !already_present.present?
+									UserRole.create!(user_id: user.id,role_id: role.id, module_type_id: module_type.id,create_rule: true,update_rule: true, delete_rule: true, show_rule: true, user_role_type: "site")
+								end									
+							end
+						end
+					end
+				end 
+				render json: {message: "privileges are successfully updated"}, status: :ok
+	  		else
+		   		render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized	  			
 	  		end
 	  	end
 
