@@ -132,7 +132,7 @@ module V1
 	       	  role.each do |role|
 	       	  	roles.push({id: role.id, name: role.name})
 	       	  end
-	       	  user_roles = UserRole.where("user_id": params[:user_id],"isDelete": false)
+	       	  user_roles = UserRole.where("user_id": params[:user_id])
 	       	  user_roles.each do |usrRole |
 	       	  	privileges.push({id: usrRole.id,
 	       	  						user_id: usrRole.user_id ,role_id: usrRole.role_id ,role_name: usrRole.role.name,
