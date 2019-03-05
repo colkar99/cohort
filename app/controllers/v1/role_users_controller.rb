@@ -8,7 +8,7 @@ module V1
 	 		if module_grand_access
 	 			role_user = RoleUser.where("user_id": params[:user_id],"role_id": params[:role_id]).first
 	 			if role_user.present?
-	 				user_roles = UserRole.where("user_id": params[:user_id],"role_id": params[:role_id],"isDelete":false)
+	 				user_roles = UserRole.where("user_id": params[:user_id],"role_id": params[:role_id])
 	 				if user_roles.present?
 	 					user_roles.destroy_all
 	 					# user_roles.each do |user_role|
