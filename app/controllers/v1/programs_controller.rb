@@ -145,7 +145,7 @@ module V1
 					end
 				end
 				if site_admin
-					program = Program.all
+					programs = Program.all
 					render json: programs, status: :ok
 				else
 					programs = Program.all
