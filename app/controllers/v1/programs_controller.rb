@@ -156,7 +156,7 @@ module V1
 							live_programs.push(program)
 						elsif program.application_manager == user.id
 							live_programs.push(program)
-						elsif program.contract_manger == user.id
+						elsif program.contract_manager == user.id
 							live_programs.push(program)
 						end
 					end
