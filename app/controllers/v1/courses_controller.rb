@@ -533,7 +533,7 @@ module V1
  						else
  							checklist.admin_responsed = false
  							checklist.mentor_responsed = false
- 							course_passed_internal = false
+ 							# course_passed_internal = false
  						end
  					end
 	 				course.is_assigned = is_activity_response_available
@@ -590,7 +590,7 @@ module V1
  						else
  							checklist.admin_responsed = false
  							checklist.mentor_responsed = false
- 							course_passed_internal = false
+ 							# course_passed_internal = false
  						end
  					end
 	 				course.is_assigned = is_activity_response_available
