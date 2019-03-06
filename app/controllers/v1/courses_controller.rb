@@ -710,7 +710,7 @@ module V1
 			 				if	checklist_response.save!
 			 					if !checklist_response.is_passed
 	 								internal_course_passed = false
-			 					else
+			 					end
 			 					puts "Checklists are updated"
 			 				else
 			 					raise ActiveRecord::Rollback										
@@ -726,7 +726,7 @@ module V1
 			 				if create_checklist_response.save!
 			 					if !create_checklist_response.is_passed
 	 								internal_course_passed = false
-			 					else
+			 					end
 			 					puts "New checklists created"
 			 				else
 			 					raise ActiveRecord::Rollback										
