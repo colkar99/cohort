@@ -704,9 +704,10 @@ module V1
 			 				end
 			 			end
 			 		end
+			 		set_course = CoursesController.get_single_course(course.id,startup_profile.id)
 	 				program_admin = User.find(program.program_admin)
 					program_director = User.find(program.program_director)
-					VentureMailer.checklists_responsed_by_admin(checklists,course,startup_profile,program,program_admin,program_director,startup_user).deliver_now			 		
+					VentureMailer.checklists_responsed_by_admin(set_course,startup_profile,program,program_admin,program_director,startup_user).deliver_now			 		
 			 		render json: {message: "admin response successfully submitted"},status: :ok
 	 			end
 	 		else
