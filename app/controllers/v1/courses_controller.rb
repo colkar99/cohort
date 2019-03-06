@@ -584,6 +584,8 @@ module V1
  							checklist.mentor_feedback = checklists_responses.mentor_feedback
  							checklist.mentor_responsed = checklists_responses.mentor_responsed
  							checklist.is_passed = checklists_responses.is_passed
+ 							puts "asdasdasdasddddddddddddddddddddddddddddddddddddssssssssssssssssssssssssssssssssssssssssssssssssss #{checklist.is_passed}
+ 							asdddddddddddddddddddddddddddddddddddddddddddddd"
  							if checklist.is_passed == false
  								course_passed_internal = false
  							end
