@@ -337,6 +337,39 @@ module V1
 	  		end
 	  	end
 
+	  	def user_profile_update
+	  		user = User.find(current_user)
+	  		if user.present?
+	  			if user.update!(user_params)
+	  				if params[:user][:mentor_user].present?
+	  					mentor_user = MentorUser.find(params[:user][:mentor_user][:id])
+	  					if mentor_user.update!(mentor_user_params)
+	  						render json: mentor_user,status: :ok
+	  					else
+	  						render json: mentor_user.errors,status: :bad_request
+	  					end
+	  				else
+	  					render json: user,status: :ok
+	  				end
+		  			# render json: user,status: :ok
+		  		else
+		  			render json: user.errors,status: :bad_request
+		  		end
+	  		else
+	  			render json: {error: "User not found with this Auth token"},status: :bad_request
+	  		end
+	  	end
+
+	  	def get_user_for_profile
+	  		user = current_user
+	  		mentor_profile = []
+	  		if user.present?
+	  			render json: user,status: :ok
+	  		else
+	  			render json: {error: "User not present with Auth token"},status: :bad_request
+	  		end
+	  	end
+
 	  	def create_default_privileges
 	  		module_access_grands = permission_control("user","update")
 	  		if module_access_grands
@@ -409,10 +442,17 @@ module V1
 	    def user_params
 	    	params.require(:user).permit(:first_name,:full_name,:last_name, :email, :phone_number,
 	    								:password, :password_confirmation,:user_main_image,:designation,
+	    								:facebook_link,:linkedin_link,:skype_id,:other_links,
 	   									:credentials,:commitment,:isDelete,:deleted_by,:deleted_date,:created_by,:id,:user_type)
 	    end
 	    def role_user_params
 	    	params.require(:role_user).permit(:id, :user_id, :role_id, :created_by, :isActive, :isDelete, :deleted_by, :deleted_at)
+	    	
+	    end
+	    def mentor_user_params
+	    	params.require(:mentor_user).permit(:id,:type_name,:title,:company,:linked_in_url,:facebook_url,:primary_expertise,:why_mentor,
+	    		:startup_experience,:startup_experience_level,:expertise_expanded,:start_date,:end_date,:commitment,:mentorship_type,:looking_for,
+	    		:visibility,:area_of_expertise,:isActive)
 	    	
 	    end
 	    def return_user(user)

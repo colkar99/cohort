@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_04_044701) do
+ActiveRecord::Schema.define(version: 2019_03_06_044255) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -619,6 +619,10 @@ ActiveRecord::Schema.define(version: 2019_03_04_044701) do
     t.datetime "updated_at", null: false
     t.integer "startup_registration_id"
     t.boolean "logged_in_first_time", default: true
+    t.string "facebook_link"
+    t.string "linkedin_link"
+    t.string "skype_id"
+    t.text "other_links"
     t.index ["startup_registration_id"], name: "index_startup_profiles_on_startup_registration_id"
   end
 
@@ -733,6 +737,10 @@ ActiveRecord::Schema.define(version: 2019_03_04_044701) do
     t.string "user_type"
     t.string "designation"
     t.boolean "is_first_time_logged_in", default: true
+    t.string "facebook_link"
+    t.string "linkedin_link"
+    t.string "skype_id"
+    t.text "other_links"
   end
 
 end

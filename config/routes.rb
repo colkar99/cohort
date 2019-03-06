@@ -32,6 +32,8 @@ Rails.application.routes.draw do
 		get 'v1/show-program-types', to: 'program_types#show'
 		post 'v1/delete-program-type', to: 'program_types#delete'#using
 		put 'v1/permission/create-default-permissions', to: 'users#create_default_privileges'
+		put 'v1/profile/update-user-account', to: 'users#user_profile_update'
+		get 'v1/profile/get-user-details', to: 'users#get_user_for_profile'
 		###################
 		##########Initial Flow controller##########
 		post 'v1/program/admin/request-current-form', to: 'initial_flows#request_current_state_form' #using
