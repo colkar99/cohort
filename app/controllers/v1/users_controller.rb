@@ -338,7 +338,7 @@ module V1
 	  	end
 
 	  	def user_profile_update
-	  		user = User.find(current_user)
+	  		user = User.find(current_user.id)
 	  		if user.present?
 	  			if user.update!(user_params)
 	  				if params[:user][:mentor_user].present?
