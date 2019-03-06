@@ -40,9 +40,22 @@ class VentureMailer < ApplicationMailer
     @program_director = program_director
     @application_manager = application_manager
     
-    mail(:to => [@program_admin.email,@program_director.email] ,  :subject => "Venture development courses responsed",
+    mail(:to => [@program_admin.email,@program_director.email] ,  :subject => "Venture development courses responsed (startup)",
      # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
      :cc => [@application_manager.email] )
+  end
+
+  def activities_responsed_by_admin(course,activity,startup_profile,program,program_admin,program_director,startup_user)
+    @course = course
+    @activity = activity
+    @startup_profile = startup_profile
+    @program = program
+    @program_admin = program_admin
+    @program_director = program_director
+    @startup_user = startup_user
+    mail(:to => [@startup_user.email] ,  :subject => "Venture development courses responsed (admin)",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@program_admin.email,@program_director.email] )
   end
   # def startup_application_registered(startup_app)
   #   @startup = startup_app

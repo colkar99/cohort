@@ -640,12 +640,20 @@ module V1
 	 		module_grand_access = permission_control("activity","update")
 	 		if module_grand_access
 	 			ActivityResponse.transaction do
+	 				course = Course.find(params[:course_id])
+	 				activity = Activity.find(params[:activity_id])
 	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 				startup_user = startup_profile.users.first
+	 				program = startup_profile.startup_registration.program
 			 		activity_response = ActivityResponse.where(activity_id: params[:activity_id],startup_profile_id: params[:startup_profile_id],course_id: params[:course_id]).first
 			 		if activity_response.present?
 			 			activity_response.admin_responsed = true
 			 			activity_response.admin_feedback = params[:admin_feedback]
 			 			if activity_response.save!
+			 				program_admin = User.find(program.program_admin)
+							program_director = User.find(program.program_director)
+							application_manager = User.find(program.application_manager)
+							VentureMailer.activities_responsed_by_admin(course,activity,startup_profile,program,program_admin,program_director,startup_user).deliver_now
 			 				render json: activity_response,status: :ok
 			 			else
 			 				raise ActiveRecord::Rollback										
