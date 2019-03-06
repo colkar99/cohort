@@ -32,9 +32,9 @@ th {
       <tr>
         <th>Program title</th>
         <th>Startup name</th>
-          <th>Course name</th>
-          <th>Checklist names</th>
-          <th>Checklist status</th>
+        <th>Course name</th>
+        <th>Checklist names</th>
+        <th>Checklist status</th>
       </tr>
     </thead>
     <tbody>
@@ -42,7 +42,9 @@ th {
           <td><%=raw @program.title %></td>
           <td><%= @startup_profile.startup_name %> </td>
           <td><%=raw @course.title%></td>
-          
+          <% @course.checklists.each do |checklist| %>
+          <td><%= checklist.name%></td>
+          <% end %>
         </tr>
   
     </tbody>
