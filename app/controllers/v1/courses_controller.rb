@@ -493,7 +493,7 @@ module V1
 # :startup_response,:startup_responsed,:admin_responsed,:mentor_responsed
 	 	def get_assigned_courses
 	 		module_grand_access = true
-	 		course_passed = true
+	 		course_passed_internal = true
 	 		if module_grand_access
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
 	 			fetch_target_date = ""
@@ -528,17 +528,17 @@ module V1
  							checklist.mentor_responsed = checklists_responses.mentor_responsed
  							checklist.is_passed = checklists_responses.is_passed
  							if !checklist.is_passed
- 								course_passed = false
+ 								course_passed_internal = false
  							end
  						else
  							checklist.admin_responsed = false
  							checklist.mentor_responsed = false
- 							course_passed = false
+ 							course_passed_internal = false
  						end
  					end
 	 				course.is_assigned = is_activity_response_available
 	 				course.target_date = fetch_target_date
-	 				course.course_passed = course_passed
+	 				course.course_passed = course_passed_internal
 	 			end
 	 			render json: courses,status: :ok
 	 		else
@@ -549,7 +549,7 @@ module V1
 	 	def get_assigned_courses_for_startup
 	 		module_grand_access = true
 	 		selected_courses = []
-	 		course_passed = true
+	 		course_passed_internal = true
 	 		if module_grand_access
 	 			startup_profile = StartupProfile.find(params[:startup_profile_id])
 	 			fetch_target_date = ""
@@ -585,17 +585,17 @@ module V1
  							checklist.mentor_responsed = checklists_responses.mentor_responsed
  							checklist.is_passed = checklists_responses.is_passed
  							if !checklist.is_passed
- 								course_passed = false
+ 								course_passed_internal = false
  							end
  						else
  							checklist.admin_responsed = false
  							checklist.mentor_responsed = false
- 							course_passed = false
+ 							course_passed_internal = false
  						end
  					end
 	 				course.is_assigned = is_activity_response_available
 	 				course.target_date = fetch_target_date
-	 				course.course_passed = course_passed
+	 				course.course_passed = course_passed_internal
 	 			end
 	 			courses.each do |course|
 	 				if course.is_assigned
