@@ -42,18 +42,12 @@ th {
           <td><%=raw @program.title %></td>
           <td><%= @startup_profile.startup_name %> </td>
           <td><%=raw @course.title%></td>
-          <% @checklists.each do |checklist| %>
-            <td><%= checklist.name %></td>
-            <% if checklist.is_passed %>
-              <td style="color: green">Passed</td>
-            <% else %>
-              <td style="color: red">Not Passed</td>
-            <% end %>
-          <% end %>
+          
         </tr>
   
     </tbody>
   </table>
+  <% @checklists.inspect %>
   </div>
   </body>
 </html>
