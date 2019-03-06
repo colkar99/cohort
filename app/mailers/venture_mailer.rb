@@ -60,7 +60,6 @@ class VentureMailer < ApplicationMailer
 
     def checklists_responsed_by_admin(course,startup_profile,program,program_admin,program_director,startup_user)
     @course = course
-    @checklists = checklists
     @startup_profile = startup_profile
     @program = program
     @program_admin = program_admin
