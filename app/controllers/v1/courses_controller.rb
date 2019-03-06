@@ -534,7 +534,6 @@ module V1
  							checklist.admin_responsed = false
  							checklist.mentor_responsed = false
  							course_passed = false
-
  						end
  					end
 	 				course.is_assigned = is_activity_response_available
