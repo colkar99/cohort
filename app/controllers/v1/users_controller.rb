@@ -342,7 +342,7 @@ module V1
 	  		if user.present?
 	  			if user.update!(user_params)
 	  				if params[:user][:mentor_user].present?
-	  					mentor_user = MentorUser.find(params[:user][:mentor_user][:id])
+	  					mentor_user = MentorUser.find(params[:mentor_user][:id])
 	  					if mentor_user.update!(mentor_user_params)
 	  						render json: mentor_user,status: :ok
 	  					else
