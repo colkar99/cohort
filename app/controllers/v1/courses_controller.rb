@@ -673,7 +673,10 @@ module V1
 	 		module_grand_access = permission_control("activity","update")
 	 		if module_grand_access
 	 			ChecklistResponse.transaction do
+	 				course = Course.find(params[:course_id])
 	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
+	 				startup_user = startup_profile.users.first
+	 				program = startup_profile.startup_registration.program
 			 		checklists = params[:checklists]
 			 		checklists.each do |checklist|
 			 			checklist_response = ChecklistResponse.where(startup_profile_id: startup_profile.id,course_id: params[:course_id],checklist_id: checklist[:id]).first
@@ -701,6 +704,9 @@ module V1
 			 				end
 			 			end
 			 		end
+	 				program_admin = User.find(program.program_admin)
+					program_director = User.find(program.program_director)
+					VentureMailer.checklists_responsed_by_admin(checklists,course,startup_profile,program,program_admin,program_director,startup_user).deliver_now			 		
 			 		render json: {message: "admin response successfully submitted"},status: :ok
 	 			end
 	 		else

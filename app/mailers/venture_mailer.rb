@@ -57,6 +57,19 @@ class VentureMailer < ApplicationMailer
      # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
      :cc => [@program_admin.email,@program_director.email] )
   end
+
+    def checklists_responsed_by_admin(checklists,course,startup_profile,program,program_admin,program_director,startup_user)
+    @course = course
+    @checklists = checklists
+    @startup_profile = startup_profile
+    @program = program
+    @program_admin = program_admin
+    @program_director = program_director
+    @startup_user = startup_user
+    mail(:to => [@startup_user.email] ,  :subject => "Venture development courses responsed (checklists)",
+     # :bcc => ["bcc@example.com", "Order Watcher <watcher@example.com>"] ,
+     :cc => [@program_admin.email,@program_director.email] )
+  end
   # def startup_application_registered(startup_app)
   #   @startup = startup_app
   #     mail to: @startup.founder_email, subject: "Thank you for your interest"
