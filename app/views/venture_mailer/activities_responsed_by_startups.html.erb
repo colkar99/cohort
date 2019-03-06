@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+  </head>
+  <body>
+    <h1>Hello <%= @program_admin.full_name%>,<%= @program_director.full_name%></h1>,
+	<p>
+		Startup <%= @startup_profile.startup_name %>, has responsed for activities,Please find the details below.
+
+	</p>
+  <div><label>Course name: <%=raw @course.title %></label></div>
+  <div>
+      <table>
+    <thead>
+      <tr>
+        <th>Program title</th>
+        <th>Startup name</th>
+          <th>Course name</th>
+          <th>Activity name</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><%=raw @program.title %></td>
+          <td><%= @startup_profile.startup_name %> </td>
+          <td><%=raw @course.title%></td>
+          <td><%=raw @activity.name %></td>
+        </tr>
+  
+    </tbody>
+  </table>
+  </div>
+  </body>
+</html>
