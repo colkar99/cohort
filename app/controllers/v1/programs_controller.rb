@@ -135,12 +135,39 @@ module V1
 		def contract_manager_programs
 			module_grand_access = permission_control("program","show")
 			if module_grand_access
-				programs = Program.where("contract_manager": current_user.id)
-				if programs
+				user = current_user
+				site_admin = false
+				roles = user.roles
+				live_programs = []
+				roles.each do |role|
+					if role.name == "site_admin"
+						site_admin = true
+					end
+				end
+				if site_admin
+					program = Program.all
 					render json: programs, status: :ok
 				else
-					render json: {error: "Oops program not found for your id"}, status: :not_found
+					programs = Program.all
+					programs.each do |program|
+						if program.program_admin == user.id
+							live_programs.push(program)
+						elsif program.program_director == user.id
+							live_programs.push(program)
+						elsif program.application_manager == user.id
+							live_programs.push(program)
+						elsif program.contract_manger == user.id
+							live_programs.push(program)
+						end
+					end
+					render json: live_programs, status: :ok						
 				end
+				# programs = Program.where("contract_manager": current_user.id)
+				# if programs
+				# 	render json: programs, status: :ok
+				# else
+				# 	render json: {error: "Oops program not found for your id"}, status: :not_found
+				# end
 			else
 				render json: { error: "You dont have access to perform this action,Please contact Site admin" }, status: :unauthorized
 			end
