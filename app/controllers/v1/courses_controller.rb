@@ -697,6 +697,7 @@ module V1
 	 		if module_grand_access
 	 			ChecklistResponse.transaction do
 	 				course = Course.find(params[:course_id])
+	 				internal_course_passed = true
 	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
 	 				startup_user = startup_profile.users.first
 	 				program = startup_profile.startup_registration.program
@@ -707,6 +708,9 @@ module V1
 			 				checklist_response.admin_responsed = true
 			 				checklist_response.is_passed = checklist[:is_passed]
 			 				if	checklist_response.save!
+			 					if !checklist_response.is_passed
+	 								internal_course_passed = false
+			 					else
 			 					puts "Checklists are updated"
 			 				else
 			 					raise ActiveRecord::Rollback										
@@ -720,6 +724,9 @@ module V1
 			 				create_checklist_response.admin_responsed = true
 			 				create_checklist_response.is_passed = checklist[:is_passed]
 			 				if create_checklist_response.save!
+			 					if !create_checklist_response.is_passed
+	 								internal_course_passed = false
+			 					else
 			 					puts "New checklists created"
 			 				else
 			 					raise ActiveRecord::Rollback										
@@ -727,10 +734,15 @@ module V1
 			 				end
 			 			end
 			 		end
+
 			 		set_course = CoursesController.get_single_course(course.id,startup_profile.id)
 	 				program_admin = User.find(program.program_admin)
 					program_director = User.find(program.program_director)
-					VentureMailer.checklists_responsed_by_admin(set_course,startup_profile,program,program_admin,program_director,startup_user).deliver_now			 		
+					if internal_course_passed
+			 			VentureMailer.course_completed_by_startup(set_course,startup_profile,program,program_admin,program_director,startup_user).deliver_now
+			 		else
+			 			VentureMailer.checklists_responsed_by_admin(set_course,startup_profile,program,program_admin,program_director,startup_user).deliver_now	
+			 		end
 			 		render json: {message: "admin response successfully submitted"},status: :ok
 	 			end
 	 		else
