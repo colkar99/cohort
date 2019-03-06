@@ -22,18 +22,19 @@ th {
 </style>
   </head>
   <body>
-    <h1>Hello <%= @startup_user.full_name%>%></h1>,
-	<p>
-		Congrats ,You have successfully completed the following course,
-	</p>
+    <h1>Hello <%= @startup_user.full_name%></h1>,
+  <p>
+    Admin has reponsed checklists given below,
+  </p>
   <div>
       <table>
     <thead>
       <tr>
         <th>Program title</th>
         <th>Startup name</th>
-          <th>Course name</th>
-          <th>Activity name</th>
+        <th>Course name</th>
+        <th>Checklist names</th>
+        <th>Checklist status</th>
       </tr>
     </thead>
     <tbody>
@@ -41,7 +42,20 @@ th {
           <td><%=raw @program.title %></td>
           <td><%= @startup_profile.startup_name %> </td>
           <td><%=raw @course.title%></td>
-          <td><%=raw @activity.name %></td>
+          <td>
+          <% @course.checklists.each do |checklist| %>
+            <p><%= checklist.name%></p>         
+           <% end %>
+         </td>
+         <td>
+          <% @course.checklists.each do |checklist| %>
+            <% if checklist.is_passed %>
+              <p style="color:green">Passed</p>
+            <%else%>
+              <p style="color:red">Not Passed</p>
+            <% end %>
+          <% end %> 
+         </td>
         </tr>
   
     </tbody>
