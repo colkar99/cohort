@@ -44,7 +44,7 @@ th {
           <td><%=raw @course.title%></td>
           <td>
           <% @course.checklists.each do |checklist| %>
-          <%= checklist.name%>         
+            <p><%= checklist.name%></p>         
            <% end %>
          </td>
          <td>
