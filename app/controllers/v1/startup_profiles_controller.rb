@@ -308,8 +308,8 @@ module V1
  	    			startup_applications.each do |startup_application|
  	    				startup_status = startup_application.program_status
  	    				startup_profile = startup_application.startup_profile
- 	    				startup_profile.startup_name = startup_application.founder_email
- 	    				startup_profile.email = startup_application.founder_email
+ 	    				startup_profile.startup_name = startup_application[:startup_name]
+ 	    				startup_profile.email = startup_application[:founder_email]
  	    				if startup_status.stage == "onboard" || startup_status.stage == "venture"
  	    					startup_profiles.push(startup_profile)
  	    				else
