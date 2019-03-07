@@ -311,7 +311,7 @@ module V1
  	    				if startup_status.stage === "onboard" && startup_status.stage === "venture"
  	    					startup_profiles.push(startup_profile)
  	    				else
- 	    					puts "Reject"
+ 	    					puts "Reject#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasdasdasdasd"
  	    				end
  	    			end
  	    			render json: startup_profiles,status: :ok
