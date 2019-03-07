@@ -308,15 +308,15 @@ module V1
  	    			startup_applications.each do |startup_application|
  	    				startup_status = startup_application.program_status
  	    				startup_profile = startup_application.startup_profile
- 	    				if startup_status.stage === "onboard" && startup_status.stage === "venture"
+ 	    				if startup_status.stage == ("onboard" || "venture")
  	    					startup_profiles.push(startup_profile)
  	    				else
- 	    					puts "Reject#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasdasdasdasd"
+ 	    					puts "Reject"
  	    				end
  	    			end
  	    			render json: startup_profiles,status: :ok
  	    		else
- 	    			render json: {error: "program not found with this ID"}
+ 	    			render json: {error: "program not found with this ID"},status: :not_found
  	    		end
  	    	else
 	       	render json: { error: "You dont have access to create users,Please contact Site admin" }, status: :unauthorized
