@@ -442,7 +442,8 @@ module V1
 	    def user_params
 	    	params.require(:user).permit(:first_name,:full_name,:last_name, :email, :phone_number,
 	    								:password, :password_confirmation,:user_main_image,:designation,
-	    								:facebook_link,:linkedin_link,:skype_id,:other_links,
+	    								:facebook_link,:linkedin_link,:skype_id,:other_links,:address_line_1,:address_line_2,:city,
+	    								:state_province_region,:zip_pincode_postalcode,:country,:geo_location,
 	   									:credentials,:commitment,:isDelete,:deleted_by,:deleted_date,:created_by,:id,:user_type)
 	    end
 	    def role_user_params
