@@ -4,12 +4,12 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Hello <%= @user.full_name%></h1>
+    <h1>Hello <%= @user.full_name%>,</h1>
 	<p>
-		You Have successfully registered with us ,
-    Thank you for your interest we will shortly contact you.
-    Please click the blow link to set your password
-  		<a href="http://sarveshbday.xyz/reset-password/<%= @user.id%>" target="_blank">Click here to reset you password</a>
+		You are successfully registered with us.
+    Thank you for your interest we will contact you shortly.
+    Please click the below link to set your password
+  		<a href="http://sarveshbday.xyz/reset-password/<%= @user.id%>" target="_blank">Click here to set your password</a>
 	</p>
   </body>
 </html>

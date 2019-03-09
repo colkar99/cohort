@@ -7,7 +7,7 @@
   <body>
     <h1>Hello <%= @user.full_name%></h1>
 	<p>
-    <%= @current_user.full_name%> was added you as a <%= @user.user_type %> user in Cohort programs,Please click the below link to activate you account and set your password.
+    <%= @current_user.full_name%> was added you as a <%= @user.user_type %> user in Cohort programs,Please click the below link to activate your account and set your password.
     <a href="http://sarveshbday.xyz/reset-password/<%= @user.id%>">Create Password!</a>
 	</p>
   </body>
