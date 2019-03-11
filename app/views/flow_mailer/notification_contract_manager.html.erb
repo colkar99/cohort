@@ -41,7 +41,7 @@ th {
     <tbody>
       <% @startups.each do |startup| %>
       <tr>
-        <td><%= @program.title%></td>
+        <td><%=raw @program.title%></td>
         <td><%= startup.startup_name%></td>
         <td><%= startup.founder_email%></td>
         <td><%= startup.founder_phone_number%></td>
