@@ -127,6 +127,10 @@ module V1
 					                    {
 					                        label: "Road map drafted by startup",
 					                        value: road_map_drafted
+					                    },
+					                    {
+					                        label: "Venture development course started",
+					                        value: venture_course_started
 					                    }
 					                ]
 					            }
