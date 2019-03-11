@@ -35,6 +35,7 @@ module V1
 				contract_form_signed_wait_for_app = 0
 				startup_profile_created = 0
 				road_map_drafted = 0
+				venture_course_started = 0
 				program.startup_registrations.each do |startup_reg|
 					if startup_reg.application_status == "AA"
 						accepted += 1
@@ -60,6 +61,8 @@ module V1
 						road_map_drafted += 1
 					elsif startup_reg.application_status == "PR"
 						program_registred += 1
+					elsif startup_reg.application_status == "VDC"
+						venture_course_started += 1
 					else
 
 					end																
