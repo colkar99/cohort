@@ -1,9 +1,12 @@
 module V1
+
 	 class ChartsController < ApplicationController
 	 	skip_before_action :authenticate_request
 	 	# skip_before_action :authenticate_request, only: [:direct_registration,:startup_authenticate,:show ,:edit, :delete]
 	 	# before_action  :current_user, :get_module
-	
+		
+
+
 		def get_program_startups
 			result = {chart: {
 					      caption: "Registered startup program wise",
@@ -141,8 +144,10 @@ module V1
 		end
 
 		def get_event
-			event = [{title: "Event no 1", start: '2019-03-05T01:00:00+05:30'},{title: "Event no 6", start: '2019-03-06T01:00:00+05:30'}]
-			render json: event, status: :ok
+			like =  params[:s_data][:like]
+			# render json: liked_count, status: :ok
+			# pusher_client.trigger('events-channel', 'new-like', {:data => 1})
+			  Pusher.trigger('events-channel', 'new-like', {:data => like}.as_json)
 		end
 
 

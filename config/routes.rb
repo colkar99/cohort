@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   	scope module: :v1 do
+  		post 'v1/update',to: "charts#get_event"
 		post 'v1/authenticate', to: 'authentication#authenticate' ##using
 		put 'v1/google-login', to: 'authentication#google_login' #using
 		get 'v1/get-user-details', to: 'users#get_user_detail' #using

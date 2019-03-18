@@ -59,5 +59,5 @@ gem 'rack-cors'
 
 gem 'carrierwave'
 gem 'carrierwave-base64'
-
+gem 'pusher', '~> 1.3', '>= 1.3.2'
 
