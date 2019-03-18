@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_06_044255) do
+ActiveRecord::Schema.define(version: 2019_03_18_052901) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -623,6 +623,10 @@ ActiveRecord::Schema.define(version: 2019_03_06_044255) do
     t.string "linkedin_link"
     t.string "skype_id"
     t.text "other_links"
+    t.string "twitter_url"
+    t.string "youtube_url"
+    t.string "instagram_url"
+    t.string "pinterest_url"
     t.index ["startup_registration_id"], name: "index_startup_profiles_on_startup_registration_id"
   end
 

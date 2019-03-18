@@ -346,7 +346,8 @@ module V1
 		    									:country,
 		    									:geo_location,
 		    									:team_size,
-		    									:current_stage,:facebook_link,:linkedin_link,:skype_id,:other_links
+		    									:current_stage,:facebook_link,:linkedin_link,:skype_id,:other_links,
+		    									:twitter_url,:youtube_url,:instagram_url,:pinterest_url
 		    									 )
  	    end
  	    def user_params
