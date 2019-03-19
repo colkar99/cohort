@@ -11,6 +11,7 @@ class StartupProfile < ApplicationRecord
 	has_many :courses, through: :activity_responses
 	# has_one :program_status ,through: :startup_registrations
 	 mount_base64_uploader :main_image, PictureUploader
+	 has_many :news_feed_comments
 
 
 	# has_many :current_state_forms

@@ -259,6 +259,16 @@ Rails.application.routes.draw do
 		put 'v1/program/get-programs-related-users', to: 'sessions#get_program_related_users'
 		put 'v1/program/remove-attendee-from-session', to: 'sessions#delete_attendees_from_session'
 		put 'v1/program/update-invite', to: 'sessions#update_invite'
+		###########################################news Feed
+		post 'v1/program/create-news-feed', to: 'news_feeds#create_news_feed'
+		put 'v1/program/update-news-feed', to: 'news_feeds#update_news_feed'
+		put 'v1/program/delete-news-feed', to: 'news_feeds#delete_news_feed'
+		put 'v1/program/show-news-feeds', to: 'news_feeds#show_program_related_news_feed'
+		######################################news Feed Comments
+		post 'v1/program/create-news-feed-comment', to: 'news_feeds#create_comment_for_feed'
+		put 'v1/program/update-news-feed-comment', to: 'news_feeds#update_comment_for_feed'
+		put 'v1/program/delete-news-feed-comment', to: 'news_feeds#delete_comment_for_feed'
+		put 'v1/program/show-news-feeds-comments', to: 'news_feeds#show_comment_for_feed'
 
 	end
 

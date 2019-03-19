@@ -292,55 +292,110 @@ module V1
 	 		if module_grand_access
 	 			ActivityResponse.transaction do
 	 				program = Program.find(params[:program_id])
-	 				startup_profile = StartupProfile.find(params[:startup_profile_id])
-	 				if program.present? && startup_profile.present?
-	 					courses = params[:courses]
-	 					courses.each do |course|
-	 						activities = course[:activities]
-	 						activities.each do |activity|
-	 							activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity[:id],course_id: course[:id]).first
-	 							if activity_response.present?
-	 								activity_response.target_date = course[:target_date]
-	 								activity_response.save!
-	 								puts "This activity already assigned to startup"
-	 								activity_status = true
-	 							else
-	 								activity_status = CoursesController.create_activity_response(course,activity,startup_profile,program)
+	 				if params[:singular]
+		 				if program.present?
+		 					startup_profile = StartupProfile.find(params[:startup_profile_id])
+		 					courses = params[:courses]
+		 					courses.each do |course|
+		 						activities = course[:activities]
+		 						activities.each do |activity|
+		 							activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity[:id],course_id: course[:id]).first
+		 							if activity_response.present?
+		 								activity_response.target_date = course[:target_date]
+		 								activity_response.save!
+		 								puts "This activity already assigned to startup"
+		 								activity_status = true
+		 							else
+		 								activity_status = CoursesController.create_activity_response(course,activity,startup_profile,program)
+		 							end
+		 						end
+								checklists = course[:checklists]
+	 							checklists.each do |checklist|
+		 							checklist_response = ChecklistResponse.where(startup_profile_id: startup_profile.id,checklist_id: checklist[:id],course_id: course[:id]).first
+		 							if checklist_response.present?
+		 								puts "This checklist already assigned to startup"
+		 								checklist_status = true
+		 							else
+		 								checklist_status = CoursesController.create_checklist_response(checklist,course,startup_profile,program)
+		 							end
 	 							end
-	 						end
-							checklists = course[:checklists]
- 							checklists.each do |checklist|
-	 							checklist_response = ChecklistResponse.where(startup_profile_id: startup_profile.id,checklist_id: checklist[:id],course_id: course[:id]).first
-	 							if checklist_response.present?
-	 								puts "This checklist already assigned to startup"
-	 								checklist_status = true
-	 							else
-	 								checklist_status = CoursesController.create_checklist_response(checklist,course,startup_profile,program)
-	 							end
- 							end
-	 					end
-	 					if activity_status && checklist_status
-	 						startup_application = startup_profile.startup_registration
-	 						if startup_application.application_status != "VDC"
-	 							status = ProgramStatus.find_by_status("VDC")
-	 							update_status = CoursesController.status_update(status,startup_application)
-	 							if update_status
-	 								# render json: {message: "Courses maped to startups"},status: :ok
-	 								puts "Status updated in statup applications"
-	 							else
-	 								raise ActiveRecord::Rollback										
-	 								render json: {error: "Something happened"},status: :bad_request
-	 							end
-	 						end
-	 						mailer_courses = CoursesController.get_assigned_course_internal(startup_profile.id)
-	 						VentureMailer.assign_activities_mail(startup_application,mailer_courses,program).deliver_now
-	 						render json: {message: "Courses maped to startups"},status: :ok
-	 					else
-	 						raise ActiveRecord::Rollback										
-	 						render json: {error: "Something happened"},status: :bad_request
-	 					end
+		 					end
+		 					if activity_status && checklist_status
+		 						startup_application = startup_profile.startup_registration
+		 						if startup_application.application_status != "VDC"
+		 							status = ProgramStatus.find_by_status("VDC")
+		 							update_status = CoursesController.status_update(status,startup_application)
+		 							if update_status
+		 								# render json: {message: "Courses maped to startups"},status: :ok
+		 								puts "Status updated in statup applications"
+		 							else
+		 								raise ActiveRecord::Rollback										
+		 								render json: {error: "Something happened"},status: :bad_request
+		 							end
+		 						end
+		 						mailer_courses = CoursesController.get_assigned_course_internal(startup_profile.id)
+		 						VentureMailer.assign_activities_mail(startup_application,mailer_courses,program).deliver_now
+		 						render json: {message: "Courses maped to startups"},status: :ok
+		 					else
+		 						raise ActiveRecord::Rollback										
+		 						render json: {error: "Something happened"},status: :bad_request
+		 					end
+		 				else
+		 					render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
+		 				end	 					
 	 				else
-	 					render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
+	 					params[:startups].each do |startup|
+	 						if program.present? 
+	 							startup_profile = StartupProfile.find(startup)
+			 					courses = params[:courses]
+			 					courses.each do |course|
+			 						activities = course[:activities]
+			 						activities.each do |activity|
+			 							activity_response = ActivityResponse.where(startup_profile_id: startup_profile.id,activity_id: activity[:id],course_id: course[:id]).first
+			 							if activity_response.present?
+			 								activity_response.target_date = course[:target_date]
+			 								activity_response.save!
+			 								puts "This activity already assigned to startup"
+			 								activity_status = true
+			 							else
+			 								activity_status = CoursesController.create_activity_response(course,activity,startup_profile,program)
+			 							end
+			 						end
+									checklists = course[:checklists]
+		 							checklists.each do |checklist|
+			 							checklist_response = ChecklistResponse.where(startup_profile_id: startup_profile.id,checklist_id: checklist[:id],course_id: course[:id]).first
+			 							if checklist_response.present?
+			 								puts "This checklist already assigned to startup"
+			 								checklist_status = true
+			 							else
+			 								checklist_status = CoursesController.create_checklist_response(checklist,course,startup_profile,program)
+			 							end
+		 							end
+			 					end
+			 					if activity_status && checklist_status
+			 						startup_application = startup_profile.startup_registration
+			 						if startup_application.application_status != "VDC"
+			 							status = ProgramStatus.find_by_status("VDC")
+			 							update_status = CoursesController.status_update(status,startup_application)
+			 							if update_status
+			 								# render json: {message: "Courses maped to startups"},status: :ok
+			 								puts "Status updated in statup applications"
+			 							else
+			 								raise ActiveRecord::Rollback										
+			 								render json: {error: "Something happened"},status: :bad_request
+			 							end
+			 						end
+			 						mailer_courses = CoursesController.get_assigned_course_internal(startup_profile.id)
+			 						VentureMailer.assign_activities_mail(startup_application,mailer_courses,program).deliver_now
+			 					else
+			 						raise ActiveRecord::Rollback										
+			 						render json: {error: "Something happened"},status: :bad_request
+			 					end
+			 				else
+			 					render json: {error: "Program or StartupProfile not found this ID"},status: :bad_request
+			 				end	
+	 					end 
+	 						render json: {message: "Courses maped to startups"},status: :ok
 	 				end
 	 			end
 	 		else

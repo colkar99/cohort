@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_18_052901) do
+ActiveRecord::Schema.define(version: 2019_03_18_102043) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -354,6 +354,26 @@ ActiveRecord::Schema.define(version: 2019_03_18_052901) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "news_feed_comments", force: :cascade do |t|
+    t.text "comment"
+    t.integer "news_feed_id"
+    t.integer "startup_profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["news_feed_id"], name: "index_news_feed_comments_on_news_feed_id"
+    t.index ["startup_profile_id"], name: "index_news_feed_comments_on_startup_profile_id"
+  end
+
+  create_table "news_feeds", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "images"
+    t.integer "program_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["program_id"], name: "index_news_feeds_on_program_id"
   end
 
   create_table "program_locations", force: :cascade do |t|
