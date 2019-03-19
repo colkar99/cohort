@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  comment: MyText
+  news_feed: one
+  startup_profile: one
+
+two:
+  comment: MyText
+  news_feed: two
+  startup_profile: two

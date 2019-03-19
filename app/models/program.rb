@@ -12,6 +12,7 @@ class Program < ApplicationRecord
   has_many :link_of_program_questions
   has_many :application_questions , through: :link_of_program_questions
   has_many :sessions
+  has_many :news_feeds
 
   
 end
