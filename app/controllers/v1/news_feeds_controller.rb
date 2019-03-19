@@ -134,7 +134,8 @@ module V1
 		    									:title,
 		    									:description,
 		    									:images,
-		    									:program_id
+		    									:program_id,
+		    									:startup_profile_id
 		    									 )
  	    end
  	    def news_feed_comment_params
