@@ -99,7 +99,12 @@ module V1
 			end		
 	 	end
 
+	 	def trigger_pusher_event
+	 		program = params[:program][:id]
+	 		news_feeds = program.news_feeds
+	 		Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)
 
+	 	end
 
  	    private
  	    def news_feed_params
