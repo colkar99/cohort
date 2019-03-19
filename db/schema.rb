@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_18_102043) do
+ActiveRecord::Schema.define(version: 2019_03_19_073523) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -373,7 +373,9 @@ ActiveRecord::Schema.define(version: 2019_03_18_102043) do
     t.integer "program_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "startup_profile_id"
     t.index ["program_id"], name: "index_news_feeds_on_program_id"
+    t.index ["startup_profile_id"], name: "index_news_feeds_on_startup_profile_id"
   end
 
   create_table "program_locations", force: :cascade do |t|
