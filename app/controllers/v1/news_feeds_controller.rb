@@ -11,6 +11,9 @@ module V1
 			if module_grand_access
 				news_feed = NewsFeed.new(news_feed_params)
 				if news_feed.save!
+					program = Program.find(news_feed.program_id)
+	 				news_feeds = program.news_feeds
+	 				Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)
 					render json: news_feed,status: :created
 				else
 					render json: news_feed.errors,status: :bad_request
@@ -25,6 +28,9 @@ module V1
 			if module_grand_access
 				news_feed = NewsFeed.find(params[:news_feed][:id])
 				if news_feed.update!(news_feed_params)
+					program = Program.find(news_feed.program_id)
+	 				news_feeds = program.news_feeds
+	 				Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)					
 					render json: news_feed, status: :ok
 				else
 					render json: news_feed.errors, status: :bad_request
@@ -39,6 +45,9 @@ module V1
 			if module_grand_access
 				news_feed = NewsFeed.find(params[:news_feed][:id])
 				if news_feed.destroy
+					program = Program.find(news_feed.program_id)
+	 				news_feeds = program.news_feeds
+	 				Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)					
 					render json: news_feed, status: :ok
 				else
 					render json: news_feed.errors, status: :bad_request
@@ -66,6 +75,9 @@ module V1
 	 	def create_comment_for_feed
 	 		news_feed_comment = NewsFeedComment.new(news_feed_comment_params)
 	 		if news_feed_comment.save!
+	 			program = Program.find(news_feed_comment.news_feed.program_id)
+	 			news_feeds = program.news_feeds
+	 			Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)
 	 			render json: news_feed_comment,status: :ok
 	 		else
 	 			render json: news_feed_comment.errors,status: :bad_request
@@ -75,6 +87,9 @@ module V1
 	 	def update_comment_for_feed
 	 		news_feed_comment = NewsFeedComment.find(params[:news_feed_comment][:id])
 	 		if news_feed_comment.update!(news_feed_comment_params)
+	 			program = Program.find(news_feed_comment.news_feed.program_id)
+	 			news_feeds = program.news_feeds
+	 			Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)
 	 			render json: news_feed_comment,status: :ok
 	 		else
 	 			render json: news_feed_comment.errors,status: :bad_request
@@ -84,6 +99,9 @@ module V1
 	 	def delete_comment_for_feed
 	 		news_feed_comment = NewsFeedComment.find(params[:news_feed_comment][:id])
 	 		if news_feed_comment.destroy
+	 			program = Program.find(news_feed_comment.news_feed.program_id)
+	 			news_feeds = program.news_feeds
+	 			Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)
 	 			render json: news_feed_comment,status: :ok
 	 		else
 	 			render json: news_feed_comment.errors,status: :bad_request
@@ -99,12 +117,12 @@ module V1
 			end		
 	 	end
 
-	 	def trigger_pusher_event
-	 		program = params[:program][:id]
-	 		news_feeds = program.news_feeds
-	 		Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)
+	 	# def trigger_pusher_event
+	 	# 	program = params[:program][:id]
+	 	# 	news_feeds = program.news_feeds
+	 	# 	Pusher.trigger('events-channel', 'new-like', {:news_feeds => news_feeds}.as_json)
 
-	 	end
+	 	# end
 
  	    private
  	    def news_feed_params

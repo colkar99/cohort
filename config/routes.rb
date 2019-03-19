@@ -270,7 +270,7 @@ Rails.application.routes.draw do
 		put 'v1/program/delete-news-feed-comment', to: 'news_feeds#delete_comment_for_feed'
 		put 'v1/program/show-news-feeds-comments', to: 'news_feeds#show_comment_for_feed'
 		##################################################
-		put 'v1/trigger/pusher/news-feed',to: "news_feeds#trigger_pusher_event"
+		# put 'v1/trigger/pusher/news-feed',to: "news_feeds#trigger_pusher_event"
 
 
 	end
