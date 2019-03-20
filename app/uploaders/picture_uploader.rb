@@ -14,7 +14,7 @@ class PictureUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{Time.now.to_i}"
+    "#{Time.now.to_i}" if original_filename.present?
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
