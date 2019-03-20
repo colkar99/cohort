@@ -13,7 +13,7 @@ module V1
 				if news_feed.save!
 					program = Program.find(news_feed.program_id)
 	 				news_feeds = program.news_feeds
-	 				Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds.as_json)
+	 				Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
 					render json: news_feed,status: :created
 				else
 					render json: news_feed.errors,status: :bad_request
