@@ -18,7 +18,7 @@ module V1
 	   	elsif @user.user_type == "startup"
 	   		UserMailer.login(@user).deliver_later
 	   		startup_user = StartupUser.find_by_user_id(@user.id)
-	   		program_id = startup_user.startup_profile.startup_profile.startup_registration.program.id
+	   		program_id = startup_user.startup_profile.startup_registration.program.id
 	   		render json: { auth_token: command.result,
 	   						 user_type: @user.user_type,
 	   						 user_id: @user.id,
@@ -51,7 +51,7 @@ module V1
 	   	elsif @user.user_type == "startup"
 	   		UserMailer.login(@user).deliver_later
 	   		startup_user = StartupUser.find_by_user_id(@user.id)
-	   		program_id = startup_user.startup_profile.startup_profile.startup_registration.program.id
+	   		program_id = startup_user.startup_profile.startup_registration.program.id
 	   		render json: { auth_token: command.result,
 	   						 user_type: @user.user_type,
 	   						 user_id: @user.id,
