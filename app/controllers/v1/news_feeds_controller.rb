@@ -11,10 +11,9 @@ module V1
 			if module_grand_access
 				news_feed = NewsFeed.new(news_feed_params)
 				if news_feed.save!
-					# succ = "success"
-					# program = Program.find(news_feed.program_id)
-	 				# news_feeds = program.news_feeds.all
-	 				Pusher.trigger('events-channel', 'news-feed-data',{:news_feed => news_feed}.as_json)
+					program = Program.find(news_feed.program_id)
+	 				news_feeds = program.news_feeds
+	 				Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds.as_json)
 					render json: news_feed,status: :created
 				else
 					render json: news_feed.errors,status: :bad_request
@@ -30,9 +29,9 @@ module V1
 			if module_grand_access
 				news_feed = NewsFeed.find(params[:news_feed][:id])
 				if news_feed.update!(news_feed_params)
-					# program = Program.find(news_feed.program_id)
-	 				# news_feeds = program.news_feeds
-	 				Pusher.trigger('events-channel', 'news-feed-data', {:data => news_feed}.as_json)					
+					program = Program.find(news_feed.program_id)
+	 				news_feeds = program.news_feeds
+	 				Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)					
 					render json: news_feed, status: :ok
 				else
 					render json: news_feed.errors, status: :bad_request
@@ -48,9 +47,9 @@ module V1
 			if module_grand_access
 				news_feed = NewsFeed.find(params[:news_feed][:id])
 				if news_feed.destroy
-					# program = Program.find(news_feed.program_id)
-	 				# news_feeds = program.news_feeds
-	 				Pusher.trigger('events-channel', 'news-feed-data', {:data => "success"}.as_json)					
+					program = Program.find(news_feed.program_id)
+	 				news_feeds = program.news_feeds
+	 				Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)					
 					render json: news_feed, status: :ok
 				else
 					render json: news_feed.errors, status: :bad_request
@@ -66,7 +65,7 @@ module V1
 			if module_grand_access
 				program = Program.find(params[:program][:id])
 				if program.present?
-					news_feeds = program.news_feeds.order(id: :desc)
+					news_feeds = program.news_feeds
 					render json: news_feeds, status: :ok
 				else
 					render json: {error: "Program not found with this ID"},status: :bad_request
@@ -79,9 +78,9 @@ module V1
 	 	def create_comment_for_feed
 	 		news_feed_comment = NewsFeedComment.new(news_feed_comment_params)
 	 		if news_feed_comment.save!
-	 			# program = Program.find(news_feed_comment.news_feed.program_id)
-	 			# news_feeds = program.news_feeds
-	 			Pusher.trigger('events-channel', 'news-feed-data', {:data => "success"}.as_json)
+	 			program = Program.find(news_feed_comment.news_feed.program_id)
+	 			news_feeds = program.news_feeds
+	 			Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
 	 			render json: news_feed_comment,status: :ok
 	 		else
 	 			render json: news_feed_comment.errors,status: :bad_request
@@ -91,9 +90,9 @@ module V1
 	 	def update_comment_for_feed
 	 		news_feed_comment = NewsFeedComment.find(params[:news_feed_comment][:id])
 	 		if news_feed_comment.update!(news_feed_comment_params)
-	 			# program = Program.find(news_feed_comment.news_feed.program_id)
-	 			# news_feeds = program.news_feeds
-	 			Pusher.trigger('events-channel', 'news-feed-data',{:data => "success"}.as_json)
+	 			program = Program.find(news_feed_comment.news_feed.program_id)
+	 			news_feeds = program.news_feeds
+	 			Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
 	 			render json: news_feed_comment,status: :ok
 	 		else
 	 			render json: news_feed_comment.errors,status: :bad_request
@@ -103,9 +102,9 @@ module V1
 	 	def delete_comment_for_feed
 	 		news_feed_comment = NewsFeedComment.find(params[:news_feed_comment][:id])
 	 		if news_feed_comment.destroy
-	 			# program = Program.find(news_feed_comment.news_feed.program_id)
-	 			# news_feeds = program.news_feeds
-	 			Pusher.trigger('events-channel', 'news-feed-data', {:data => "success"}.as_json)
+	 			program = Program.find(news_feed_comment.news_feed.program_id)
+	 			news_feeds = program.news_feeds
+	 			Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
 	 			render json: news_feed_comment,status: :ok
 	 		else
 	 			render json: news_feed_comment.errors,status: :bad_request
