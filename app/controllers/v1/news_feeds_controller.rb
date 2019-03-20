@@ -65,7 +65,7 @@ module V1
 			if module_grand_access
 				program = Program.find(params[:program][:id])
 				if program.present?
-					news_feeds = program.news_feeds
+					news_feeds = program.news_feeds.order(id: :desc)
 					render json: news_feeds, status: :ok
 				else
 					render json: {error: "Program not found with this ID"},status: :bad_request
