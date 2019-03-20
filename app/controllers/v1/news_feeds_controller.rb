@@ -46,13 +46,18 @@ module V1
 			module_grand_access = true
 			if module_grand_access
 				news_feed = NewsFeed.find(params[:news_feed][:id])
-				if news_feed.destroy
-					program = Program.find(news_feed.program_id)
-	 				news_feeds = program.news_feeds
-	 				Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)					
-					render json: news_feed, status: :ok
+				news_feed_comments = news_feed.news_feed_comments
+				if news_feed_comments.destroy_all
+					if news_feed.destroy
+						program = Program.find(news_feed.program_id)
+		 				news_feeds = program.news_feeds
+		 				Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)					
+						render json: news_feed, status: :ok
+					else
+						render json: news_feed.errors, status: :bad_request
+					end
 				else
-					render json: news_feed.errors, status: :bad_request
+					render json: {error: "something happened please contact site admin"},status: :ok
 				end
 			else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
