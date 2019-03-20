@@ -11,10 +11,10 @@ module V1
 			if module_grand_access
 				news_feed = NewsFeed.new(news_feed_params)
 				if news_feed.save!
-					succ = "success"
+					# succ = "success"
 					# program = Program.find(news_feed.program_id)
 	 				# news_feeds = program.news_feeds.all
-	 				Pusher.trigger('events-channel', 'news-feed-data',{:data => succ}.as_json)
+	 				Pusher.trigger('events-channel', 'news-feed-data',{:news_feed => news_feed}.as_json)
 					render json: news_feed,status: :created
 				else
 					render json: news_feed.errors,status: :bad_request
@@ -32,7 +32,7 @@ module V1
 				if news_feed.update!(news_feed_params)
 					# program = Program.find(news_feed.program_id)
 	 				# news_feeds = program.news_feeds
-	 				Pusher.trigger('events-channel', 'news-feed-data', {:data => "success"}.as_json)					
+	 				Pusher.trigger('events-channel', 'news-feed-data', {:data => news_feed}.as_json)					
 					render json: news_feed, status: :ok
 				else
 					render json: news_feed.errors, status: :bad_request
