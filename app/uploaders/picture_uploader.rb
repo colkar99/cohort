@@ -14,7 +14,7 @@ class PictureUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "test-#{model.id}.#{File.extname(super)}"
+    "news-feed-#{Time.now.to_i}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
