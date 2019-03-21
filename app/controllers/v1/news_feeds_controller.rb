@@ -52,7 +52,8 @@ module V1
 						if news_feed.destroy
 							program = Program.find(news_feed.program_id)
 			 				news_feeds = program.news_feeds
-			 				# Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)					
+			 				# Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
+			 				NewsFeedBroadcastJob.perform_later(news_feed)					
 							render json: news_feed, status: :ok
 						else
 							render json: news_feed.errors, status: :bad_request
@@ -61,14 +62,15 @@ module V1
 						render json: {error: "something happened please contact site admin"},status: :ok
 					end
 				else
-						if news_feed.destroy
-							program = Program.find(news_feed.program_id)
-			 				news_feeds = program.news_feeds
-			 				# Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)					
-							render json: news_feed, status: :ok
-						else
-							render json: news_feed.errors, status: :bad_request
-						end					
+					if news_feed.destroy
+						program = Program.find(news_feed.program_id)
+		 				news_feeds = program.news_feeds
+		 				# Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
+		 				NewsFeedBroadcastJob.perform_later(news_feed)					
+						render json: news_feed, status: :ok
+					else
+						render json: news_feed.errors, status: :bad_request
+					end					
 				end
 			else
    			render json: { error: "You dont have permission to perform this action,Please contact Site admin" }, status: :unauthorized								
