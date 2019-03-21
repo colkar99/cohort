@@ -35,3 +35,4 @@ module Cohort
     config.api_only = true
   end
 end
+
