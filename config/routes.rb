@@ -272,7 +272,7 @@ Rails.application.routes.draw do
 		##################################################
 		# put 'v1/trigger/pusher/news-feed',to: "news_feeds#trigger_pusher_event"
 
-
+		mount ActionCable.server => '/news-feed-websocket'
 	end
 
 end
