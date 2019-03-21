@@ -50,10 +50,8 @@ module V1
 				if news_feed_comments.present?
 					if news_feed_comments.destroy_all
 						if news_feed.destroy
-							program = Program.find(news_feed.program_id)
-			 				news_feeds = program.news_feeds
 			 				# Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
-			 				NewsFeedBroadcastJob.perform_later(news_feed)					
+			 				# NewsFeedBroadcastJob.perform_later(news_feed)					
 							render json: news_feed, status: :ok
 						else
 							render json: news_feed.errors, status: :bad_request
@@ -63,10 +61,9 @@ module V1
 					end
 				else
 					if news_feed.destroy
-						program = Program.find(news_feed.program_id)
-		 				news_feeds = program.news_feeds
+
 		 				# Pusher.trigger('events-channel', 'news-feed-data', {:news_feeds => news_feeds}.as_json)
-		 				NewsFeedBroadcastJob.perform_later(news_feed)					
+		 				# NewsFeedBroadcastJob.perform_later(news_feed)					
 						render json: news_feed, status: :ok
 					else
 						render json: news_feed.errors, status: :bad_request

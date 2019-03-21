@@ -6,4 +6,6 @@ class NewsFeed < ApplicationRecord
 
   after_create_commit {NewsFeedBroadcastJob.perform_later(self)}
 
+  after_destroy {NewsFeedBroadcastJob.perform_later(self)}
+
 end
