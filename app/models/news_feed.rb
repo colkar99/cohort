@@ -4,4 +4,6 @@ class NewsFeed < ApplicationRecord
   has_many :news_feed_comments
   mount_base64_uploader :images, PictureUploader
 
+  after_create_commit {NewsFeedBroadcastJob.perform_later(self)}
+
 end
