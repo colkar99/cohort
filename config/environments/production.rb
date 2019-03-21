@@ -98,7 +98,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {host: "localhost:3000"}
     # config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, /file:\/\/*/, 'file://']
     config.action_cable.url = 'wss://ec2-54-172-0-213.compute-1.amazonaws.com:3000/cable'
-    config.action_cable.allowed_request_origins = ['http://sarveshbday.xyz']
-      # config.action_cable.disable_request_forgery_protection = true
+    # config.action_cable.allowed_request_origins = ['http://sarveshbday.xyz']
+      config.action_cable.disable_request_forgery_protection = true
 
 end
