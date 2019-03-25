@@ -60,6 +60,6 @@ gem 'rack-cors'
 gem 'carrierwave'
 gem 'carrierwave-base64'
 # gem 'pusher', '~> 1.3', '>= 1.3.2'
-gem 'em-hiredis', '~> 0.3.1'# gem 'redis'
-gem 'redis', '~> 4.1'
+# gem 'em-hiredis', '~> 0.3.1'
+# gem 'redis', '~> 4.1'
 
