@@ -48,7 +48,6 @@ Rails.application.configure do
   config.log_level = :debug
 
 # or
-  Rails.logger.level = :debug if AnyCable.config.debug?
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
