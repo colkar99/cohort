@@ -1,16 +1,16 @@
 development:
-  # adapter: async
-    adapter: any_cable # or anycable
+  adapter: async
+    # adapter: any_cable # or anycable
 
 
 test:
-  # adapter: async
-    adapter: any_cable # or anycable
+  adapter: async
+    # adapter: any_cable # or anycable
 
 
 production:
-    # adapter: async
-      adapter: any_cable # or anycable
+    adapter: async
+      # adapter: any_cable # or anycable
 
 
   # adapter: redis

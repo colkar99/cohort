@@ -61,9 +61,9 @@ gem 'rack-cors'
 gem 'carrierwave'
 gem 'carrierwave-base64'
 # gem 'pusher', '~> 1.3', '>= 1.3.2'
-# gem 'em-hiredis', '~> 0.3.1'
-# gem 'redis', '~> 4.1'
-gem "anycable-rails"
+gem 'em-hiredis', '~> 0.3.1'
+gem 'redis', '~> 4.1'
+# gem "anycable-rails"
 
 # when using Redis broadcast adapter
-gem "redis", ">= 4.0"
+# gem "redis", ">= 4.0"
