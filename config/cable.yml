@@ -1,11 +1,17 @@
 development:
-  adapter: async
+  # adapter: async
+    adapter: any_cable # or anycable
+
 
 test:
-  adapter: async
+  # adapter: async
+    adapter: any_cable # or anycable
+
 
 production:
-    adapter: async
+    # adapter: async
+      adapter: any_cable # or anycable
+
 
   # adapter: redis
   # url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
