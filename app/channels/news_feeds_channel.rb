@@ -4,7 +4,7 @@ class NewsFeedsChannel < ApplicationCable::Channel
 	end
 
 	def unsubscribed
-		      chat_request_chanel_token = "What to put here????"
+		      chat_request_chanel_token = "Disconnected............."
 
       message = "Client disconnected"  
 
