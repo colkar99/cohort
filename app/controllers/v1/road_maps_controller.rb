@@ -146,6 +146,228 @@ module V1
 			end
 		end
 
+
+		def create_all_roadmap_milestones_resource
+			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
+			if check_valid_auth
+				startup_profile = StartupProfile.find(params[:startup_profile_id])
+				RoadMap.transaction do
+					if params[:road_map][:id].present?
+						road_map = RoadMap.find(params[:road_map][:id])
+						if road_map.present?
+							road_map.startup_profile_id = startup_profile.id
+							if road_map.update!(road_map_params)
+								params[:milestones].each do |milestone|
+									if milestone[:id].present?
+										milestone_update = Milestone.find(milestone[:id])
+										milestone_update.name = milestone[:name]
+										milestone_update.description = milestone[:description]
+										milestone_update.metric = milestone[:metric]
+										milestone_update.month = milestone[:month]
+										milestone_update.road_map_id = road_map.id
+										if milestone_update.save!
+											milestone[:resources].each do |resource|
+												if resource[:id].present?
+													cr_resource = RoadMapsController.edit_resource(startup_profile,road_map,milestone_update,resource)
+													if cr_resource
+														puts "Resource created successfully"
+													else
+														raise ActiveRecord::Rollback
+														render json: {error: "Some thing happened "},status: :bad_request
+													end
+												else
+													cr_resource = RoadMapsController.create_resource(startup_profile,road_map,milestone_update,resource)
+													if cr_resource
+														puts "Resource created successfully"
+													else
+														raise ActiveRecord::Rollback
+														render json: {error: "Some thing happened "},status: :bad_request
+													end
+												end
+											end												
+											puts "Milestone successfully updated"
+										else
+											raise ActiveRecord::Rollback
+											render json: milestone_update.errors, status: :unprocessable_entity
+										end
+									else
+										milestone_create = Milestone.new
+										milestone_create.name = milestone[:name]
+										milestone_create.description = milestone[:description]
+										milestone_create.metric = milestone[:metric]
+										milestone_create.month = milestone[:month]
+										milestone_create.road_map_id = road_map.id
+										if milestone_create.save!
+											milestone[:resources].each do |resource|
+												if resource[:id].present?
+													cr_resource = RoadMapsController.edit_resource(startup_profile,road_map,milestone_create,resource)
+													if cr_resource
+														puts "Resource created successfully"
+													else
+														raise ActiveRecord::Rollback
+														render json: {error: "Some thing happened "},status: :bad_request
+													end
+												else
+													cr_resource = RoadMapsController.create_resource(startup_profile,road_map,milestone_create,resource)
+													if cr_resource
+														puts "Resource created successfully"
+													else
+														raise ActiveRecord::Rollback
+														render json: {error: "Some thing happened "},status: :bad_request
+													end
+												end
+											end												
+											puts "Mile stone created successfully"
+										else
+											raise ActiveRecord::Rollback
+											render json: milestone_create.errors, status: :unprocessable_entity
+										end
+									end
+								end
+								render json: road_map,status: :ok								
+							else
+								render json: road_map.errors,status: :unprocessable_entity
+							end
+						else
+							render json: {error: "Roadmap not found with this id"}
+						end
+					else
+						road_map = RoadMap.new(road_map_params)
+						program_status = ProgramStatus.find_by_status("RMD")
+						startup_application = startup_profile.startup_registration
+						startup_application.application_status = program_status.status
+						startup_application.app_status_description = program_status.description
+						startup_application.program_status_id = program_status.id
+						road_map.startup_profile_id = startup_profile.id
+						if road_map.save! && startup_application.save!
+							params[:milestones].each do |milestone|
+								if milestone[:id].present?
+									milestone_update = Milestone.find(milestone[:id])
+									milestone_update.name = milestone[:name]
+									milestone_update.description = milestone[:description]
+									milestone_update.metric = milestone[:metric]
+									milestone_update.month = milestone[:month]
+									milestone_update.road_map_id = road_map.id
+									if milestone_update.save!
+										milestone[:resources].each do |resource|
+											if resource[:id].present?
+												cr_resource = RoadMapsController.edit_resource(startup_profile,road_map,milestone_update,resource)
+												if cr_resource
+													puts "Resource created successfully"
+												else
+													raise ActiveRecord::Rollback
+													render json: {error: "Some thing happened "},status: :bad_request
+												end
+											else
+												cr_resource = RoadMapsController.create_resource(startup_profile,road_map,milestone_update,resource)
+												if cr_resource
+													puts "Resource created successfully"
+												else
+													raise ActiveRecord::Rollback
+													render json: {error: "Some thing happened "},status: :bad_request
+												end
+											end
+										end										
+										puts "Milestone successfully updated"
+									else
+										raise ActiveRecord::Rollback
+										render json: milestone_update.errors, status: :unprocessable_entity
+									end
+								else
+									milestone_create = Milestone.new
+									milestone_create.name = milestone[:name]
+									milestone_create.description = milestone[:description]
+									milestone_create.metric = milestone[:metric]
+									milestone_create.month = milestone[:month]
+									milestone_create.road_map_id = road_map.id
+									if milestone_create.save!
+										milestone[:resources].each do |resource|
+											if resource[:id].present?
+												cr_resource = RoadMapsController.edit_resource(startup_profile,road_map,milestone_create,resource)
+												if cr_resource
+													puts "Resource created successfully"
+												else
+													raise ActiveRecord::Rollback
+													render json: {error: "Some thing happened "},status: :bad_request
+												end
+											else
+												cr_resource = RoadMapsController.create_resource(startup_profile,road_map,milestone_create,resource)
+												if cr_resource
+													puts "Resource created successfully"
+												else
+													raise ActiveRecord::Rollback
+													render json: {error: "Some thing happened "},status: :bad_request
+												end
+											end
+										end
+										puts "Milestone created successfully"
+									else
+										raise ActiveRecord::Rollback
+										render json: milestone_create.errors, status: :unprocessable_entity
+									end
+								end
+							end
+							render json: road_map,status: :created
+						else
+							# render json: {:errors => activity_response.errors}
+							render json: road_map.errors, status: :unprocessable_entity                
+						end
+					end
+				end
+			else
+				render json: {error: "Invalid Authorization"}, status: :unauthorized
+
+			end
+		end
+
+		def self.create_resource(startup_profile,roadmap,milestone,resource)
+			create_resource = Resource.new
+			create_resource.resource_type = resource[:resource_type]
+			create_resource.no_of_resource = resource[:no_of_resource]
+			create_resource.hours_needed = resource[:hours_needed]
+			create_resource.date_needed = resource[:date_needed]
+			create_resource.payment_mode = resource[:payment_mode]
+			create_resource.road_map_id = roadmap[:id]
+			create_resource.startup_profile_id = startup_profile[:id]
+			if create_resource.save!
+				create_milestone_resource_link = MilestoneResourceLink.new
+				create_milestone_resource_link.milestone_id = milestone[:id]
+				create_milestone_resource_link.resource_id = create_resource.id
+				create_milestone_resource_link.road_map_id = roadmap[:id]
+				if create_milestone_resource_link.save!
+					true
+				else
+					false
+				end
+			else
+				false
+			end				
+		end
+
+		def self.edit_resource(startup_profile,roadmap,milestone,resource)
+			edit_resource = Resource.find(resource[:id])
+			edit_resource.resource_type = resource[:resource_type]
+			edit_resource.no_of_resource = resource[:no_of_resource]
+			edit_resource.hours_needed = resource[:hours_needed]
+			edit_resource.date_needed = resource[:date_needed]
+			edit_resource.payment_mode = resource[:payment_mode]
+			edit_resource.road_map_id = roadmap[:id]
+			edit_resource.startup_profile_id = startup_profile[:id]
+			if edit_resource.save!
+				edit_milestone_resource_link = MilestoneResourceLink.where(milestone_id: milestone[:id],resource_id: edit_resource.id,road_map_id: roadmap[:id]).first
+				edit_milestone_resource_link.milestone_id = milestone[:id]
+				edit_milestone_resource_link.resource_id = edit_resource.id
+				edit_milestone_resource_link.road_map_id = roadmap[:id]
+				if edit_milestone_resource_link.save!
+					true
+				else
+					false
+				end
+			else
+				false
+			end				
+		end				
+
 		def delete
 			check_valid_auth = startup_auth_check(params[:startup_profile_id],current_user)
 			if check_valid_auth
