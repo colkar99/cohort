@@ -314,6 +314,7 @@ module V1
 								user = User.new
 								user.full_name = startup_application.founder_name
 								user.email = startup_application.founder_email
+								user.phone_number = startup_application.founder_phone_number
 								user.password = SecureRandom.urlsafe_base64(8)
 								user.password_confirmation = user.password
 								password = user.password_confirmation
